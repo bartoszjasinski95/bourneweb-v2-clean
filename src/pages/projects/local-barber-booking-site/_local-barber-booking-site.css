@@ -1,0 +1,66 @@
+/* Tailwind utilities for THIS demo (self-contained) */
+@import "tailwindcss";
+
+/* =========================================================
+   South Coast Barber Club — demo-only theme (no BaseLayout)
+   ========================================================= */
+
+:root{
+  --bb-bg: #0b0f16;
+  --bb-panel: rgba(255,255,255,.04);
+  --bb-panel2: rgba(255,255,255,.06);
+  --bb-stroke: rgba(255,255,255,.10);
+  --bb-stroke2: rgba(255,255,255,.14);
+
+  --bb-text: rgba(255,255,255,.88);
+  --bb-muted: rgba(255,255,255,.55);
+  --bb-muted2: rgba(255,255,255,.40);
+
+  --bb-gold: #d7ab72;
+  --bb-mint: #2fe6d3;
+
+  --bb-radius-xl: 28px;
+  --bb-radius-lg: 22px;
+  --bb-radius-md: 16px;
+
+  --bb-shadow: 0 28px 120px rgba(0,0,0,.55);
+}
+
+/* Reset-ish */
+*{ box-sizing: border-box; }
+html,body{ height: 100%; }
+body{ margin: 0; }
+img,svg{ display:block; }
+a{ color: inherit; text-decoration: none; }
+
+/* Base page styling */
+.bw-barber{
+  min-height: 100vh;
+  background:
+    radial-gradient(1100px 600px at 50% -10%, rgba(18,60,82,.45), transparent 60%),
+    radial-gradient(900px 520px at 70% 30%, rgba(22,87,88,.35), transparent 62%),
+    radial-gradient(700px 500px at 30% 40%, rgba(7,12,20,.9), transparent 60%),
+    var(--bb-bg);
+  color: var(--bb-text);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography helpers */
+.bw-barber .bb-brand{
+  font-family: "Playfair Display", serif;
+  letter-spacing: -0.01em;
+}
+
+.bw-barber ::selection{
+  background: rgba(46,230,211,.22);
+}
+
+/* Optional: nicer focus */
+.bw-barber a:focus-visible,
+.bw-barber button:focus-visible{
+  outline: 2px solid rgba(46,230,211,.55);
+  outline-offset: 3px;
+  border-radius: 12px;
+}

@@ -1,0 +1,360 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { demos } from "../../../data/demos";
+
+export function getStaticPaths() {
+  return demos.map((demo) => ({
+    params: { slug: demo.slug },
+    props: { demo },
+  }));
+}
+
+const { demo } = Astro.props;
+---
+
+<BaseLayout title={`BourneWeb · ${demo.industry} Demo`} description={demo.summary}>
+  <main class="min-h-screen">
+    <section class="relative">
+      <div class="mx-auto max-w-6xl px-6 pb-10 pt-14 md:pt-20">
+        <a
+          href="/demos"
+          class="inline-flex items-center gap-3 rounded-2xl border border-white/12 bg-white/5 px-5 py-3 text-sm font-semibold text-white/85 shadow-[0_22px_90px_rgba(0,0,0,0.45)] backdrop-blur hover:bg-white/10"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Back to demos
+        </a>
+
+        <div class="mt-10 grid gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-start">
+          <div>
+            <span class:list={[
+              "inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold shadow-[0_18px_70px_rgba(0,0,0,0.35)]",
+              demo.active ? "border border-[#2fe6d3]/25 bg-[#2fe6d3]/10 text-[#2fe6d3]" : "border border-white/12 bg-white/5 text-white/65"
+            ]}>
+              {demo.active ? "Live demo" : "Coming soon"}
+            </span>
+
+            <h1 class="mt-6 text-balance text-[44px] font-semibold leading-[1.05] tracking-tight text-white/85 md:text-[56px]">
+              {demo.industry}
+              <span class="text-white/55"> demo</span>
+            </h1>
+
+            <p class="mt-4 max-w-xl text-base leading-relaxed text-white/55">
+              {demo.summary}
+            </p>
+
+            <div class="mt-8 flex flex-wrap gap-2">
+              {demo.highlights.map((t) => (
+                <span class="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/60">
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div class="rounded-[28px] border border-white/10 bg-white/[0.04] p-6 shadow-[0_28px_120px_rgba(0,0,0,0.5)] backdrop-blur">
+            <div class="flex items-center justify-between">
+              <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[12px] text-white/55">
+                {demo.stack}
+              </span>
+              <span class="rounded-xl bg-[#2fe6d3] px-4 py-2 text-sm font-semibold text-neutral-950 shadow-[0_18px_70px_rgba(0,0,0,0.35)]">
+                {demo.goal}
+              </span>
+            </div>
+
+            <a
+              href={demo.active ? demo.demoHref : undefined}
+              class:list={[
+                "mt-6 inline-flex w-full items-center justify-center gap-3 rounded-2xl px-6 py-4 text-sm font-semibold shadow-[0_22px_90px_rgba(0,0,0,0.45)]",
+                demo.active ? "bg-[#d9aa73] text-neutral-950 hover:brightness-95" : "cursor-not-allowed border border-white/12 bg-white/5 text-white/45"
+              ]}
+              target={demo.active ? "_blank" : undefined}
+              rel={demo.active ? "noreferrer" : undefined}
+              aria-disabled={!demo.active}
+            >
+              Open live demo
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 17L17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </a>
+
+            {!demo.active && (
+              <p class="mt-4 text-xs text-white/45">
+                This demo isn’t published yet — preview will appear once it exists.
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <!-- TOGGLE -->
+      <div class="mx-auto max-w-6xl px-6 pb-20">
+        <div class="flex justify-center">
+          <div class="inline-flex rounded-full border border-white/12 bg-white/5 p-1 backdrop-blur" id="viewToggle">
+            <button type="button" data-view="desktop" aria-pressed="true" class="toggle-btn is-active">
+              Desktop
+            </button>
+            <button type="button" data-view="mobile" aria-pressed="false" class="toggle-btn">
+              Mobile
+            </button>
+          </div>
+        </div>
+
+        <!-- PREVIEW -->
+        <div class="mt-10" id="previewRoot" data-view="desktop">
+          <!-- Desktop device -->
+          <div class="device device-desktop">
+            <div class="device-topbar">
+              <div class="dots">
+                <span class="dot dot-r"></span>
+                <span class="dot dot-y"></span>
+                <span class="dot dot-g"></span>
+              </div>
+              <div class="address">bourneweb demo preview</div>
+            </div>
+
+            <div class="device-screen">
+              {demo.active ? (
+                <div class="viewport" data-vw="1440" data-vh="900">
+                  <iframe
+                    class="iframe"
+                    src={demo.demoHref}
+                    title={`${demo.title} preview (desktop)`}
+                    loading="lazy"
+                  />
+                </div>
+              ) : (
+                <div class="placeholder">Preview will appear here.</div>
+              )}
+            </div>
+          </div>
+
+          <!-- Mobile device -->
+          <div class="device device-mobile">
+            <div class="phone-notch">
+              <span class="speaker"></span>
+            </div>
+
+            <div class="device-screen">
+              {demo.active ? (
+                <div class="viewport" data-vw="390" data-vh="844" data-align="top">
+                  <iframe
+                    class="iframe"
+                    src={demo.demoHref}
+                    title={`${demo.title} preview (mobile)`}
+                    loading="lazy"
+                  />
+                </div>
+              ) : (
+                <div class="placeholder">Preview will appear here.</div>
+              )}
+            </div>
+
+            <div class="home-indicator"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <style>
+      .toggle-btn{
+        padding: .6rem 1.1rem;
+        border-radius: 9999px;
+        font-weight: 700;
+        font-size: .9rem;
+        color: rgba(255,255,255,.65);
+        background: transparent;
+        transition: background .15s ease, color .15s ease;
+      }
+      .toggle-btn.is-active{
+        background: rgba(255,255,255,.08);
+        color: rgba(255,255,255,.9);
+        box-shadow: 0 18px 70px rgba(0,0,0,.25);
+      }
+
+      #previewRoot[data-view="desktop"] .device-desktop{ display:block; }
+      #previewRoot[data-view="desktop"] .device-mobile{ display:none; }
+      #previewRoot[data-view="mobile"] .device-desktop{ display:none; }
+      #previewRoot[data-view="mobile"] .device-mobile{ display:block; }
+
+      .device{
+        margin: 0 auto;
+        border-radius: 28px;
+        border: 1px solid rgba(255,255,255,.12);
+        background: rgba(255,255,255,.04);
+        box-shadow: 0 28px 120px rgba(0,0,0,.55);
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+      }
+
+      .device-desktop{ max-width: 1100px; }
+      .device-topbar{
+        display:flex;
+        align-items:center;
+        gap: 14px;
+        padding: 14px 16px;
+        border-bottom: 1px solid rgba(255,255,255,.10);
+        background: rgba(11,15,22,.75);
+      }
+      .dots{ display:flex; gap:8px; }
+      .dot{ width:10px; height:10px; border-radius:999px; opacity:.9; }
+      .dot-r{ background: rgba(244,63,94,.85); }
+      .dot-y{ background: rgba(245,158,11,.75); }
+      .dot-g{ background: rgba(46,230,211,.75); }
+      .address{
+        margin: 0 auto;
+        font-size: 12px;
+        color: rgba(255,255,255,.45);
+        padding: 6px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(255,255,255,.10);
+        background: rgba(255,255,255,.05);
+      }
+
+      .device-screen{
+        position: relative;
+        width: 100%;
+        height: 680px;
+        background: rgba(6,7,11,.9);
+        overflow: hidden;
+      }
+
+      /* Mobile device */
+      .device-mobile{
+        max-width: 390px;
+        border-radius: 40px;
+      }
+      .device-mobile .device-screen{
+        height: 760px;
+        border-radius: 40px;
+      }
+      .phone-notch{
+        position:absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 10px;
+        width: 120px;
+        height: 26px;
+        border-radius: 999px;
+        background: rgba(0,0,0,.35);
+        border: 1px solid rgba(255,255,255,.10);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        z-index: 5;
+        pointer-events:none;
+      }
+      .speaker{
+        width: 44px;
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.16);
+      }
+      .home-indicator{
+        height: 18px;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background: rgba(11,15,22,.75);
+        border-top: 1px solid rgba(255,255,255,.10);
+      }
+      .home-indicator::before{
+        content:"";
+        width: 120px;
+        height: 5px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.18);
+      }
+
+      /* Placeholder */
+      .placeholder{
+        height: 100%;
+        display:grid;
+        place-items:center;
+        color: rgba(255,255,255,.45);
+        font-weight: 600;
+      }
+
+      /* ===== Pixel-perfect iframe viewport scaling ===== */
+.viewport{
+  position: absolute;
+  inset: 0;
+  --vw: 1440;
+  --vh: 900;
+  --s: 1;
+  --tx: 0px;
+  --ty: 0px;
+  overflow: hidden;            /* ważne: żadnych “pasków” z tła */
+  background: rgba(6,7,11,.9); /* maskuje ewentualne micro-seams */
+}
+
+.viewport .iframe{
+  display: block;
+  width: calc(var(--vw) * 1px);
+  height: calc(var(--vh) * 1px);
+  border: 0;
+  background: transparent;
+  transform: translate3d(var(--tx), var(--ty), 0) scale(var(--s));
+  transform-origin: 0 0;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+
+    </style>
+
+    <script is:inline>
+      const root = document.getElementById("previewRoot");
+      const wrap = document.getElementById("viewToggle");
+      const buttons = wrap?.querySelectorAll("button[data-view]") || [];
+
+function rescaleViewports(){
+  document.querySelectorAll(".viewport").forEach((vp) => {
+    const vw = Number(vp.dataset.vw || 1440);
+    const vh = Number(vp.dataset.vh || 900);
+
+    const rect = vp.getBoundingClientRect();
+    const sx = rect.width / vw;
+    const sy = rect.height / vh;
+
+    // COVER: wypełnij ekran
+    const s = Math.max(sx, sy);
+
+    // domyślnie center
+    let tx = (rect.width - vw * s) / 2;
+    let ty = (rect.height - vh * s) / 2;
+
+    // MOBILE: nie centruj w pionie — wyrównaj do góry, żeby nie ucinało nav
+    const align = vp.dataset.align || "center";
+    if (align === "top") ty = 0;
+
+    vp.style.setProperty("--vw", vw);
+    vp.style.setProperty("--vh", vh);
+    vp.style.setProperty("--s", String(s));
+    vp.style.setProperty("--tx", `${tx.toFixed(2)}px`);
+    vp.style.setProperty("--ty", `${ty.toFixed(2)}px`);
+  });
+}
+
+
+      function setView(view){
+        root.dataset.view = view;
+        buttons.forEach((b) => {
+          const on = b.dataset.view === view;
+          b.classList.toggle("is-active", on);
+          b.setAttribute("aria-pressed", on ? "true" : "false");
+        });
+        setTimeout(rescaleViewports, 0);
+      }
+
+      buttons.forEach((b) => {
+        b.addEventListener("click", () => setView(b.dataset.view));
+      });
+
+      window.addEventListener("resize", rescaleViewports);
+      setTimeout(rescaleViewports, 0);
+    </script>
+  </main>
+</BaseLayout>

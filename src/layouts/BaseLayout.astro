@@ -1,0 +1,39 @@
+---
+import "../styles/global.css";
+
+const { title = "BourneWeb", description = "Agency site" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0a0a0a" />
+    <title>{title}</title>
+
+    <!-- Agency fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="min-h-screen bg-neutral-950 text-neutral-50 antialiased">
+    <!-- soft glow -->
+    <div
+      class="pointer-events-none fixed inset-0 -z-10 opacity-70"
+      style="background:
+        radial-gradient(900px 450px at 15% 10%, rgba(245, 158, 11, 0.18), transparent 60%),
+        radial-gradient(800px 420px at 85% 20%, rgba(56, 189, 248, 0.14), transparent 60%),
+        radial-gradient(700px 400px at 60% 95%, rgba(244, 63, 94, 0.10), transparent 60%);"
+    ></div>
+
+    <div class="[font-family:Inter,system-ui,-apple-system,Segoe_UI,Roboto,Arial,sans-serif]">
+      <slot />
+    </div>
+  </body>
+</html>

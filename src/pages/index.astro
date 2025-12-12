@@ -1,16 +1,1172 @@
 ---
-
+import BaseLayout from "../layouts/BaseLayout.astro";
+const year = new Date().getFullYear();
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="BourneWeb · Web Design & Development" description="Modern websites for local businesses. Fast, sharp, conversion-first.">
+  <main class="min-h-screen">
+    <!-- HERO (BourneWeb) -->
+<section class="relative overflow-hidden">
+  <!-- background glow -->
+  <div
+    class="pointer-events-none absolute inset-0 -z-10"
+    style="background:
+      radial-gradient(1200px 700px at 50% 10%, rgba(22, 87, 88, 0.55), transparent 60%),
+      radial-gradient(900px 600px at 70% 35%, rgba(18, 62, 82, 0.55), transparent 62%),
+      radial-gradient(800px 520px at 30% 40%, rgba(10, 18, 30, 0.9), transparent 60%);"
+  ></div>
+  <div class="pointer-events-none absolute inset-0 -z-20 bg-[#06070b]"></div>
+
+  <!-- NAV -->
+  <header class="pt-6">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-6">
+      <!-- logo -->
+      <a href="/" class="flex items-center gap-3">
+        <span class="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-emerald-200 via-amber-100 to-sky-200 text-[12px] font-extrabold text-neutral-950 shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
+          BW
+        </span>
+        <span class="text-sm font-semibold tracking-tight text-white/90">BourneWeb</span>
+      </a>
+
+      <!-- links -->
+      <nav class="hidden items-center gap-8 text-sm text-white/65 md:flex">
+        <a class="hover:text-white" href="#services">Services</a>
+        <a class="hover:text-white" href="#process">Process</a>
+        <a class="hover:text-white" href="/demos">Demos</a>
+        <a class="hover:text-white" href="#pricing">Pricing</a>
+        <a class="hover:text-white" href="#contact">Contact</a>
+      </nav>
+
+      <!-- CTA -->
+      <a
+        href="#contact"
+        class="rounded-xl bg-[#d9aa73] px-5 py-2.5 text-sm font-semibold text-neutral-950 shadow-[0_18px_60px_rgba(0,0,0,0.35)] hover:brightness-95"
+      >
+        Get a quote
+      </a>
+    </div>
+  </header>
+
+  <!-- HERO GRID -->
+  <div class="mx-auto max-w-6xl px-6 pb-20 pt-16 md:pb-28 md:pt-20">
+    <div class="grid gap-14 md:grid-cols-[1.05fr_0.95fr] md:items-center">
+      <!-- LEFT -->
+      <div>
+        <!-- location pill -->
+        <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70 backdrop-blur">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-300"></span>
+          Bournemouth · Poole · Christchurch
+        </div>
+
+        <h1 class="mt-6 text-balance text-[56px] font-semibold leading-[0.92] tracking-tight text-white/85 md:text-[74px]">
+          Websites that
+          <span class="bg-gradient-to-r from-[#e6c38f] via-[#bfe9d9] to-[#42e6d6] bg-clip-text text-transparent">
+            load fast
+          </span>
+          <br />
+          <span class="text-white/75">and sell harder.</span>
+        </h1>
+
+        <p class="mt-6 max-w-xl text-base leading-relaxed text-white/55">
+          Ultra-fast builds. Clean SEO. Real conversions. We&apos;re a
+          Bournemouth web studio crafting websites that get your
+          business seen, booked, and paid.
+        </p>
+
+        <!-- buttons -->
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <a
+            href="#contact"
+            class="inline-flex items-center gap-3 rounded-2xl bg-[#d9aa73] px-6 py-3 text-sm font-semibold text-neutral-950 shadow-[0_18px_70px_rgba(0,0,0,0.40)] hover:brightness-95"
+          >
+            Get a quote
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 17L17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </a>
+
+          <a
+            href="#demos"
+            class="inline-flex items-center justify-center rounded-2xl border border-white/12 bg-white/6 px-6 py-3 text-sm font-semibold text-white/85 shadow-[0_18px_60px_rgba(0,0,0,0.25)] hover:bg-white/10"
+          >
+            See demos
+          </a>
+        </div>
+
+        <!-- lighthouse pill -->
+        <div class="mt-10 inline-flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/70 backdrop-blur">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-emerald-300">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+          <span class="text-white/65">Avg. Lighthouse score</span>
+          <span class="font-semibold text-emerald-300">95+</span>
+        </div>
+
+        <!-- feature pills -->
+        <div class="mt-5 flex flex-wrap gap-3">
+          {[
+            "SEO-ready",
+            "Mobile-first",
+            "Book-more leads",
+          ].map((t) => (
+            <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/65 backdrop-blur">
+              <span class="grid h-5 w-5 place-items-center rounded-full border border-white/10 bg-white/5">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-emerald-300">
+                  <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              {t}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <!-- RIGHT (mock browser card) -->
+      <div class="relative">
+        <!-- floating pills -->
+        <div class="absolute -top-10 left-6 z-10 inline-flex items-center gap-2 rounded-xl bg-[#2fe6d3] px-4 py-2 text-sm font-semibold text-neutral-950 shadow-[0_18px_70px_rgba(0,0,0,0.35)]">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 8v4l3 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          Launch in 7 days
+        </div>
+
+        <div class="absolute -top-10 right-6 z-10 inline-flex items-center gap-2 rounded-xl bg-[#d9aa73] px-4 py-2 text-sm font-semibold text-neutral-950 shadow-[0_18px_70px_rgba(0,0,0,0.35)]">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M20 10l-8-8H4v8l8 8 8-8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M7 7h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+          From £1,295
+        </div>
+
+        <!-- browser -->
+        <div class="rounded-[28px] border border-white/12 bg-white/5 p-4 shadow-[0_28px_120px_rgba(0,0,0,0.55)] backdrop-blur">
+          <div class="rounded-[22px] border border-white/10 bg-[#0b0f16]/80">
+            <!-- top bar -->
+            <div class="flex items-center gap-3 border-b border-white/10 px-4 py-3">
+              <div class="flex gap-2">
+                <span class="h-2.5 w-2.5 rounded-full bg-rose-400/80"></span>
+                <span class="h-2.5 w-2.5 rounded-full bg-amber-300/80"></span>
+                <span class="h-2.5 w-2.5 rounded-full bg-emerald-300/80"></span>
+              </div>
+              <div class="ml-2 flex-1">
+                <div class="mx-auto w-[210px] rounded-full border border-white/10 bg-white/5 px-4 py-1 text-center text-xs text-white/45">
+                  localcafe.co.uk
+                </div>
+              </div>
+            </div>
+
+            <!-- content skeleton -->
+            <div class="p-5">
+              <div class="flex items-start justify-between gap-6">
+                <div class="h-8 w-44 rounded-lg bg-gradient-to-r from-[#d9aa73]/70 via-[#bfe9d9]/70 to-[#2fe6d3]/70"></div>
+                <div class="flex gap-3">
+                  <div class="h-10 w-10 rounded-xl bg-white/6"></div>
+                  <div class="h-10 w-10 rounded-xl bg-white/6"></div>
+                </div>
+              </div>
+
+              <div class="mt-6 h-8 w-[80%] rounded-lg bg-white/10"></div>
+              <div class="mt-3 h-5 w-[60%] rounded-lg bg-white/8"></div>
+
+              <div class="mt-8 h-14 w-[52%] rounded-2xl bg-gradient-to-r from-[#2fe6d3]/85 to-[#2fe6d3]/55"></div>
+
+              <div class="mt-10 grid grid-cols-3 gap-4">
+                <div class="h-36 rounded-2xl border border-white/10 bg-white/5"></div>
+                <div class="h-36 rounded-2xl border border-white/10 bg-white/5"></div>
+                <div class="h-36 rounded-2xl border border-white/10 bg-white/5"></div>
+              </div>
+
+              <div class="mt-7 flex items-center gap-4">
+                <div class="h-12 w-12 rounded-full bg-gradient-to-br from-[#d9aa73]/80 via-[#bfe9d9]/80 to-[#2fe6d3]/80"></div>
+                <div class="flex-1">
+                  <div class="h-3 w-[70%] rounded bg-white/10"></div>
+                  <div class="mt-2 h-3 w-[55%] rounded bg-white/8"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- subtle border glow -->
+        <div class="pointer-events-none absolute inset-0 -z-10 rounded-[32px] blur-2xl"
+          style="background: radial-gradient(600px 360px at 50% 45%, rgba(46, 230, 211, 0.16), transparent 60%);"
+        ></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- PROOF STRIP -->
+<section class="relative">
+  <div class="mx-auto max-w-6xl px-6 pb-16 pt-10 md:pb-20">
+    <!-- top feature row -->
+    <div class="mx-auto flex max-w-4xl items-center justify-center gap-10 md:gap-14">
+      <!-- item -->
+      <div class="flex items-center gap-3">
+        <span class="grid h-10 w-10 place-items-center rounded-xl border border-white/12 bg-white/5 shadow-[0_18px_60px_rgba(0,0,0,0.35)]">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-[#2fe6d3]">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="text-sm font-medium text-white/75">Ultra-fast builds</span>
+      </div>
+
+      <!-- separator -->
+      <div class="hidden h-8 w-px bg-white/12 md:block"></div>
+
+      <!-- item -->
+      <div class="flex items-center gap-3">
+        <span class="grid h-10 w-10 place-items-center rounded-xl border border-white/12 bg-white/5 shadow-[0_18px_60px_rgba(0,0,0,0.35)]">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-[#2fe6d3]">
+            <path d="M4 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M4 19H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M7 15l4-4 3 3 5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="text-sm font-medium text-white/75">Clean SEO</span>
+      </div>
+
+      <!-- separator -->
+      <div class="hidden h-8 w-px bg-white/12 md:block"></div>
+
+      <!-- item -->
+      <div class="flex items-center gap-3">
+        <span class="grid h-10 w-10 place-items-center rounded-xl border border-white/12 bg-white/5 shadow-[0_18px_60px_rgba(0,0,0,0.35)]">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-[#2fe6d3]">
+            <path d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6l7-4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M9 12l2 2 4-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="text-sm font-medium text-white/75">Real conversions</span>
+      </div>
+    </div>
+
+    <!-- thin divider line -->
+    <div class="mx-auto mt-10 h-px w-full max-w-5xl bg-white/10"></div>
+
+    <!-- trust line -->
+    <p class="mt-10 text-center text-xs font-medium tracking-wide text-white/35">
+      Trusted by local businesses across Dorset
+    </p>
+
+    <!-- logo pills -->
+    <div class="mx-auto mt-6 grid w-full max-w-5xl grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
+      {["Business 1", "Business 2", "Business 3", "Business 4", "Business 5"].map((b) => (
+        <div class="flex h-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-xs text-white/20 backdrop-blur">
+          {b}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+<!-- WHAT WE BUILD (section header) -->
+<section id="services" class="relative">
+  <div class="mx-auto max-w-6xl px-6 py-20 md:py-28">
+    <div class="mx-auto max-w-3xl text-center">
+      <!-- pill -->
+      <span class="inline-flex items-center rounded-full border border-[#2fe6d3]/25 bg-[#2fe6d3]/10 px-4 py-2 text-sm font-semibold text-[#2fe6d3] shadow-[0_18px_70px_rgba(0,0,0,0.35)]">
+        What we build
+      </span>
+
+      <!-- title -->
+      <h2 class="mt-8 text-balance text-[44px] font-semibold leading-[1.05] tracking-tight text-white/85 md:text-[56px]">
+        Sites that work as
+        <br />
+        <span class="text-white/85">
+          <span class="text-[#d9aa73]">hard</span>
+          <span class="text-white/85"> as </span>
+          <span class="text-[#2fe6d3]">you do</span>
+        </span>
+      </h2>
+
+      <!-- subcopy -->
+      <p class="mt-6 text-base leading-relaxed text-white/55">
+        From brochure sites to booking engines, we craft digital tools that
+        <br class="hidden sm:block" />
+        drive real business results.
+      </p>
+    </div>
+  </div>
+  <!-- services cards -->
+<div class="mx-auto mt-14 max-w-6xl">
+  <div class="grid gap-6 md:grid-cols-3">
+    {[
+      {
+        title: "Business Websites",
+        desc: "Sharp, fast websites that turn visitors into customers. Built for trade, service, and retail.",
+        icon: "globe",
+        tags: ["5-page setup", "Contact forms", "Google Maps"],
+      },
+      {
+        title: "Local SEO Sites",
+        desc: "Get found in Bournemouth, Poole, and beyond. Optimized from day one for search rankings.",
+        icon: "search",
+        tags: ["Schema markup", "Speed optimized", "Analytics"],
+      },
+      {
+        title: "Booking & E-commerce",
+        desc: "Take payments, manage bookings, sell products. Whatever you need to get paid online.",
+        icon: "cart",
+        tags: ["Stripe ready", "Calendars", "Inventory"],
+      },
+      {
+        title: "Mobile-First Design",
+        desc: "60% of traffic is mobile. We design phone-first, then scale up to desktop beautifully.",
+        icon: "mobile",
+        tags: ["Touch-friendly", "Fast loading", "App-like feel"],
+      },
+      {
+        title: "Custom Development",
+        desc: "Need something unique? We build bespoke features, integrations, and web applications.",
+        icon: "code",
+        tags: ["APIs", "Portals", "Dashboards"],
+      },
+      {
+        title: "Website Rescue",
+        desc: "Slow site? Poor rankings? We audit, rebuild, and relaunch with modern web tech.",
+        icon: "bolt",
+        tags: ["Audit included", "Migration", "Training"],
+        featured: true,
+      },
+    ].map((c) => (
+      <article
+        class:list={[
+          "relative overflow-hidden rounded-[28px] border p-8 md:p-9",
+          c.featured
+            ? "border-[#2fe6d3]/35 bg-white/[0.04] shadow-[0_28px_120px_rgba(0,0,0,0.55)]"
+            : "border-white/10 bg-white/[0.04] shadow-[0_28px_120px_rgba(0,0,0,0.45)]",
+        ]}
+      >
+        {/* subtle top highlight */}
+        <div
+          class:list={[
+            "pointer-events-none absolute inset-0 opacity-70",
+            c.featured ? "opacity-100" : "opacity-60",
+          ]}
+          style={c.featured
+            ? "background: radial-gradient(800px 420px at 70% 30%, rgba(46,230,211,0.18), transparent 60%), radial-gradient(700px 360px at 30% 0%, rgba(217,170,115,0.10), transparent 62%);"
+            : "background: radial-gradient(700px 360px at 40% 0%, rgba(255,255,255,0.06), transparent 60%);"}
+        />
+
+        <div class="relative">
+          {/* icon */}
+          <div
+            class:list={[
+              "grid h-12 w-12 place-items-center rounded-2xl border bg-white/5",
+              c.featured ? "border-[#2fe6d3]/25" : "border-white/12",
+            ]}
+          >
+            {c.icon === "globe" && (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-[#2fe6d3]">
+                <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" stroke="currentColor" stroke-width="2"/>
+                <path d="M2 12h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M12 2c2.8 2.6 4.5 6.2 4.5 10S14.8 19.4 12 22C9.2 19.4 7.5 15.8 7.5 12S9.2 4.6 12 2Z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            )}
+            {c.icon === "search" && (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-[#2fe6d3]">
+                <path d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z" stroke="currentColor" stroke-width="2"/>
+                <path d="M21 21l-4.2-4.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            )}
+            {c.icon === "cart" && (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-[#2fe6d3]">
+                <path d="M6 6h15l-2 9H7L6 6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M6 6l-1-3H2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M9 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM17 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" fill="currentColor"/>
+              </svg>
+            )}
+            {c.icon === "mobile" && (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-[#2fe6d3]">
+                <path d="M8 2h8a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2"/>
+                <path d="M10 19h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            )}
+            {c.icon === "code" && (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-[#2fe6d3]">
+                <path d="M9 18 3 12l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M15 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            )}
+            {c.icon === "bolt" && (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-[#2fe6d3]">
+                <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              </svg>
+            )}
+          </div>
+
+          <h3 class:list={["mt-6 text-xl font-semibold tracking-tight", c.featured ? "text-[#2fe6d3]" : "text-white/90"]}>
+            {c.title}
+          </h3>
+
+          <p class="mt-3 text-sm leading-relaxed text-white/55">
+            {c.desc}
+          </p>
+
+          <div class="mt-8 flex flex-wrap gap-2">
+            {c.tags.map((t) => (
+              <span class="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/55">
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+      </article>
+    ))}
+  </div>
+</div>
+</section>
+<!-- MINI CTA -->
+<section class="relative">
+  <div class="mx-auto max-w-6xl px-6 py-24 md:py-28">
+    <div class="mx-auto max-w-xl text-center">
+      <p class="text-sm font-medium text-white/45">
+        Not sure what you need?
+      </p>
+
+      <a
+        href="#contact"
+        class="mt-5 inline-flex items-center justify-center rounded-2xl border border-white/12 bg-white/5 px-7 py-3 text-sm font-semibold text-white/85 shadow-[0_22px_90px_rgba(0,0,0,0.45)] backdrop-blur hover:bg-white/10"
+      >
+        Let&apos;s talk about your project
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process" class="relative">
+  <div class="mx-auto max-w-6xl px-6 py-24 md:py-28">
+    <!-- header -->
+    <div class="mx-auto max-w-3xl text-center">
+      <span class="inline-flex items-center rounded-full border border-[#d9aa73]/25 bg-[#d9aa73]/10 px-4 py-2 text-sm font-semibold text-[#d9aa73] shadow-[0_18px_70px_rgba(0,0,0,0.35)]">
+        How it works
+      </span>
+
+      <h2 class="mt-8 text-balance text-[44px] font-semibold leading-[1.05] tracking-tight text-white/85 md:text-[56px]">
+        From idea to <span class="text-white/55">live</span>
+        <br />
+        <span class="text-white/85">in </span>
+        <span class="bg-gradient-to-r from-[#d9aa73] via-[#bfe9d9] to-[#2fe6d3] bg-clip-text text-transparent">
+          7 days
+        </span>
+      </h2>
+
+      <p class="mt-6 text-base leading-relaxed text-white/55">
+        No long waits. No hidden steps. Just a clear path from brief to launch.
+      </p>
+    </div>
+
+    <!-- cards -->
+    <div class="relative mt-14">
+      <!-- connecting hairline -->
+      <div class="pointer-events-none absolute left-0 right-0 top-[86px] mx-auto h-px max-w-6xl bg-white/10"></div>
+
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-5 lg:gap-6">
+        {[
+          {
+            n: "01",
+            title: "Discovery call",
+            desc: "We talk goals, audience, and what success looks like. No jargon, just clarity.",
+            dur: "30 mins",
+            icon: "chat",
+            offset: "lg:translate-y-4",
+          },
+          {
+            n: "02",
+            title: "Design & wireframes",
+            desc: "You approve the layout, brand, and structure before we write a single line of code.",
+            dur: "2–3 days",
+            icon: "palette",
+            offset: "lg:translate-y-8",
+          },
+          {
+            n: "03",
+            title: "Build & test",
+            desc: "We craft your site using modern tech. Fast, clean, mobile-perfect. Then we test everything.",
+            dur: "3–5 days",
+            icon: "code",
+            offset: "lg:translate-y-6",
+          },
+          {
+            n: "04",
+            title: "Launch",
+            desc: "We connect your domain, set up hosting, and flip the switch. You're live.",
+            dur: "1 day",
+            icon: "rocket",
+            offset: "lg:translate-y-8",
+          },
+          {
+            n: "05",
+            title: "Support & grow",
+            desc: "Monthly care keeps your site secure, fast, and updated. We're always here.",
+            dur: "Ongoing",
+            icon: "gear",
+            featured: true,
+            offset: "lg:translate-y-4",
+          },
+        ].map((s) => (
+          <article
+            class:list={[
+              "relative overflow-hidden rounded-[26px] border bg-white/[0.04] p-6 shadow-[0_28px_120px_rgba(0,0,0,0.5)] backdrop-blur",
+              s.featured ? "border-[#d9aa73]/25" : "border-white/10",
+              s.offset,
+            ]}
+          >
+            {/* soft inner glow */}
+            <div
+              class:list={[
+                "pointer-events-none absolute inset-0 opacity-70",
+                s.featured ? "opacity-100" : "opacity-65",
+              ]}
+              style={s.featured
+                ? "background: radial-gradient(900px 520px at 60% 0%, rgba(217,170,115,0.14), transparent 60%), radial-gradient(700px 420px at 20% 70%, rgba(46,230,211,0.10), transparent 62%);"
+                : "background: radial-gradient(700px 420px at 50% 0%, rgba(255,255,255,0.06), transparent 60%);"}
+            />
+
+            <div class="relative">
+              <!-- top row -->
+              <div class="flex items-start justify-between">
+                <div class="grid h-14 w-14 place-items-center rounded-2xl border border-white/12 bg-white/5">
+                  {s.icon === "chat" && (
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-[#d9aa73]">
+                      <path d="M7 8h10M7 12h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M20 15a4 4 0 0 1-4 4H9l-4 3v-3a4 4 0 0 1-1-3V7a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    </svg>
+                  )}
+                  {s.icon === "palette" && (
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-[#d9aa73]">
+                      <path d="M12 3a9 9 0 1 0 0 18h1a3 3 0 0 0 0-6h-1a1.5 1.5 0 0 1 0-3h3a4.5 4.5 0 0 0 0-9h-3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                      <path d="M8.5 10.5h.01M15.5 10.5h.01M9.5 7.5h.01M14.5 7.5h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                  )}
+                  {s.icon === "code" && (
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-[#d9aa73]">
+                      <path d="M9 18 3 12l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M15 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  )}
+                  {s.icon === "rocket" && (
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-[#d9aa73]">
+                      <path d="M14 4c3 1 6 4 6 7-3 0-6-3-7-6l1-1Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                      <path d="M10 6c-3 1-6 4-6 7 3 0 6-3 7-6l-1-1Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                      <path d="M12 22c3-2 5-6 5-10 0-4-2-7-5-10-3 3-5 6-5 10 0 4 2 8 5 10Z" stroke="currentColor" stroke-width="2"/>
+                      <path d="M10 14l-2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M14 14l2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                  )}
+                  {s.icon === "gear" && (
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-[#d9aa73]">
+                      <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" stroke="currentColor" stroke-width="2"/>
+                      <path d="M19.4 15a7.9 7.9 0 0 0 .1-1l2-1.2-2-3.4-2.2.6a7.7 7.7 0 0 0-.8-.6l-.3-2.3H9.8l-.3 2.3c-.3.2-.6.4-.8.6l-2.2-.6-2 3.4L6.5 14c0 .3 0 .7.1 1l-2 1.2 2 3.4 2.2-.6c.2.2.5.4.8.6l.3 2.3h4.4l.3-2.3c.3-.2.6-.4.8-.6l2.2.6 2-3.4-2-1.1Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    </svg>
+                  )}
+                </div>
+
+                <div class="text-[40px] font-extrabold tracking-tight text-white/10">
+                  {s.n}
+                </div>
+              </div>
+
+              <h3 class="mt-6 text-base font-semibold tracking-tight text-white/90">
+                {s.featured ? <span class="text-[#d9aa73]">{s.title}</span> : s.title}
+              </h3>
+
+              <p class="mt-3 text-sm leading-relaxed text-white/55">
+                {s.desc}
+              </p>
+
+              <div class="mt-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/65">
+                <span class="h-2 w-2 rounded-full bg-[#2fe6d3]"></span>
+                {s.dur}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+
+    <!-- bottom CTA bar -->
+    <div class="mt-14 flex justify-center">
+      <a
+        href="#contact"
+        class="inline-flex items-center gap-4 rounded-2xl border border-white/12 bg-white/5 px-6 py-4 text-left shadow-[0_22px_90px_rgba(0,0,0,0.45)] backdrop-blur hover:bg-white/10"
+      >
+        <span class="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-[#d9aa73] via-[#bfe9d9] to-[#2fe6d3] text-neutral-950">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <div>
+          <div class="text-sm font-semibold text-white/90">Ready to start?</div>
+          <div class="text-sm text-white/55">Book a free discovery call this week</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+<!-- FEATURED DEMOS -->
+<section id="demos" class="relative">
+  <div class="mx-auto max-w-6xl px-6 py-24 md:py-28">
+    <!-- header -->
+    <div class="mx-auto max-w-3xl text-center">
+      <span class="inline-flex items-center rounded-full border border-[#2fe6d3]/25 bg-[#2fe6d3]/10 px-4 py-2 text-sm font-semibold text-[#2fe6d3] shadow-[0_18px_70px_rgba(0,0,0,0.35)]">
+        Featured demos
+      </span>
+
+      <h2 class="mt-8 text-balance text-[44px] font-semibold leading-[1.05] tracking-tight text-white/85 md:text-[56px]">
+        See what&apos;s
+        <br />
+        <span class="bg-gradient-to-r from-[#d9aa73] to-[#d9aa73] bg-clip-text text-transparent">
+          possible
+        </span>
+      </h2>
+
+      <p class="mt-6 text-base leading-relaxed text-white/55">
+        Real designs. Real results. Built for Bournemouth businesses.
+      </p>
+    </div>
+
+    <!-- cards -->
+    <div class="mt-14 grid gap-6 md:grid-cols-3">
+      {[
+        {
+          href: "/projects/local-barber-booking-site",
+          label: "More bookings",
+          title: "Barber",
+          desc: "Online scheduling, gallery, instant quote forms. Built for trade businesses.",
+          icon: "scissors",
+          active: false,
+        },
+        {
+          href: "#",
+          label: "More covers",
+          title: "Restaurant",
+          desc: "Menu display, reservations, Google reviews integration. Mobile-first dining.",
+          icon: "utensils",
+          active: true, // middle highlighted
+        },
+        {
+          href: "#",
+          label: "More calls",
+          title: "Handyman",
+          desc: "Service areas, before/after gallery, click-to-call. Convert visitors instantly.",
+          icon: "wrench",
+          active: false,
+        },
+      ].map((d) => (
+        <a
+          href={d.href}
+          aria-disabled={d.href === "#"}
+          class:list={[
+            "group relative overflow-hidden rounded-[28px] border bg-white/[0.04] shadow-[0_28px_120px_rgba(0,0,0,0.5)] backdrop-blur transition",
+            d.active ? "border-[#2fe6d3]/35" : "border-white/10",
+            d.href === "#" ? "cursor-not-allowed opacity-90" : "hover:bg-white/[0.06]",
+          ]}
+        >
+          {/* top glow */}
+          <div
+            class:list={[
+              "pointer-events-none absolute inset-0 opacity-70",
+              d.active ? "opacity-100" : "opacity-70",
+            ]}
+            style={d.active
+              ? "background: radial-gradient(900px 520px at 60% 0%, rgba(46,230,211,0.16), transparent 62%), radial-gradient(700px 420px at 10% 70%, rgba(217,170,115,0.10), transparent 62%);"
+              : "background: radial-gradient(700px 420px at 50% 0%, rgba(255,255,255,0.06), transparent 60%);"}
+          />
+
+          {/* image / preview area */}
+          <div class="relative p-5">
+            <div class="relative h-[240px] overflow-hidden rounded-2xl border border-white/10 bg-[#0b0f16]/60">
+              {/* badge top-right */}
+              <div class="absolute right-4 top-4 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[12px] text-white/55">
+                Astro + Tailwind
+              </div>
+
+              {/* center icon */}
+              <div class="absolute inset-0 grid place-items-center">
+                {d.icon === "scissors" && (
+                  <svg width="86" height="86" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-white/12">
+                    <path d="M7 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M17 11a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M9 11l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M9 13l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                )}
+
+                {d.icon === "utensils" && (
+                  <svg width="86" height="86" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-white/12">
+                    <path d="M3 3l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M9 3L3 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M14 3v8a3 3 0 0 0 3 3h1V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M17 14v7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                )}
+
+                {d.icon === "wrench" && (
+                  <svg width="86" height="86" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-white/12">
+                    <path d="M20 7a5 5 0 0 1-7 4L6 18l-2-2 7-7a5 5 0 0 1 4-7l-2 4 4 4 3-3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  </svg>
+                )}
+              </div>
+
+              {/* bottom-left label */}
+              <div class="absolute bottom-4 left-4 inline-flex items-center rounded-xl bg-[#2fe6d3] px-4 py-2 text-sm font-semibold text-neutral-950 shadow-[0_18px_70px_rgba(0,0,0,0.35)]">
+                {d.label}
+              </div>
+            </div>
+          </div>
+
+          {/* content */}
+          <div class="relative border-t border-white/10 px-6 py-6">
+            <div class="flex items-center justify-between">
+              <h3 class:list={["text-xl font-semibold tracking-tight", d.active ? "text-[#2fe6d3]" : "text-white/90"]}>
+                {d.title}
+              </h3>
+
+              <span class:list={["transition", d.active ? "text-[#2fe6d3]" : "text-white/40 group-hover:text-white/65"]}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M7 17L17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </span>
+            </div>
+
+            <p class="mt-3 text-sm leading-relaxed text-white/55">
+              {d.desc}
+            </p>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <!-- bottom button -->
+<div class="mt-12 flex justify-center">
+  <a
+    href="/demos"
+    class="inline-flex items-center gap-3 rounded-2xl border border-white/12 bg-white/5 px-6 py-3 text-sm font-semibold text-white/85 shadow-[0_22px_90px_rgba(0,0,0,0.45)] backdrop-blur hover:bg-white/10"
+  >
+    View all demos
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M7 17L17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </a>
+</div>
+
+  </div>
+</section>
+<!-- PRICING -->
+<section id="pricing" class="relative">
+  <div class="mx-auto max-w-6xl px-6 py-24 md:py-28">
+    <!-- header -->
+    <div class="mx-auto max-w-3xl text-center">
+      <span class="inline-flex items-center rounded-full border border-[#d9aa73]/25 bg-[#d9aa73]/10 px-4 py-2 text-sm font-semibold text-[#d9aa73] shadow-[0_18px_70px_rgba(0,0,0,0.35)]">
+        Pricing
+      </span>
+
+      <h2 class="mt-8 text-balance text-[44px] font-semibold leading-[1.05] tracking-tight text-white/85 md:text-[56px]">
+        Transparent <span class="text-white/55">pricing</span>.
+        <br />
+        <span class="bg-gradient-to-r from-[#d9aa73] via-[#bfe9d9] to-[#2fe6d3] bg-clip-text text-transparent">
+          No surprises.
+        </span>
+      </h2>
+
+      <p class="mt-6 text-base leading-relaxed text-white/55">
+        One-time build fee. Optional monthly care from £99/month.
+      </p>
+    </div>
+
+    <!-- cards -->
+    <div class="mt-14 grid gap-7 md:grid-cols-3">
+      <!-- Starter -->
+      <article class="relative overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.04] p-8 shadow-[0_28px_120px_rgba(0,0,0,0.5)] backdrop-blur">
+        <div class="pointer-events-none absolute inset-0 opacity-65"
+          style="background: radial-gradient(800px 420px at 50% 0%, rgba(255,255,255,0.06), transparent 62%);"
+        ></div>
+
+        <div class="relative">
+          <h3 class="text-2xl font-semibold tracking-tight text-white/90">Starter</h3>
+          <p class="mt-2 text-sm text-white/55">Perfect for small businesses getting online</p>
+
+          <div class="mt-8 flex items-end gap-3">
+            <div class="text-5xl font-semibold tracking-tight text-white/80">£1,295</div>
+            <div class="pb-2 text-sm text-white/45">one-time</div>
+          </div>
+
+          <ul class="mt-8 space-y-4 text-sm text-white/65">
+            {[
+              "5-page website",
+              "Mobile-responsive design",
+              "Contact form & Google Maps",
+              "Basic SEO setup",
+              "Free domain (1 year)",
+            ].map((t) => (
+              <li class="flex items-start gap-3">
+                <span class="mt-0.5 grid h-6 w-6 place-items-center rounded-full border border-white/12 bg-white/5">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-[#2fe6d3]">
+                    <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span>{t}</span>
+              </li>
+            ))}
+          </ul>
+
+          <a
+            href="#contact"
+            class="mt-10 inline-flex w-full items-center justify-center gap-3 rounded-2xl border border-white/12 bg-white/5 px-6 py-4 text-sm font-semibold text-white/85 shadow-[0_22px_90px_rgba(0,0,0,0.45)] backdrop-blur hover:bg-white/10"
+          >
+            Get started
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 17L17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Growth (most popular) -->
+      <article class="relative overflow-hidden rounded-[28px] border border-[#d9aa73]/35 bg-white/[0.04] p-8 shadow-[0_32px_140px_rgba(0,0,0,0.6)] backdrop-blur">
+        <!-- top badge -->
+        <div class="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2">
+          <span class="inline-flex items-center gap-2 rounded-full bg-[#d9aa73] px-4 py-2 text-sm font-semibold text-neutral-950 shadow-[0_18px_70px_rgba(0,0,0,0.35)]">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2l2.4 6.2 6.6.4-5.1 4.1 1.8 6.4L12 15.8 6.3 19.1l1.8-6.4L3 8.6l6.6-.4L12 2Z" fill="currentColor"/>
+            </svg>
+            Most popular
+          </span>
+        </div>
+
+        <div class="pointer-events-none absolute inset-0 opacity-95"
+          style="background:
+            radial-gradient(900px 520px at 50% 0%, rgba(217,170,115,0.14), transparent 62%),
+            radial-gradient(800px 480px at 30% 75%, rgba(46,230,211,0.08), transparent 62%);"
+        ></div>
+
+        <div class="relative">
+          <h3 class="text-2xl font-semibold tracking-tight text-[#d9aa73]">Growth</h3>
+          <p class="mt-2 text-sm text-white/55">For businesses ready to scale online</p>
+
+          <div class="mt-8 flex items-end gap-3">
+            <div class="text-5xl font-semibold tracking-tight text-white/80">£2,495</div>
+            <div class="pb-2 text-sm text-white/45">one-time</div>
+          </div>
+
+          <ul class="mt-8 space-y-4 text-sm text-white/65">
+            {[
+              "10-page website",
+              "Advanced SEO & local search",
+              "Booking/calendar integration",
+              "Content management system",
+              "Analytics & conversion tracking",
+            ].map((t) => (
+              <li class="flex items-start gap-3">
+                <span class="mt-0.5 grid h-6 w-6 place-items-center rounded-full border border-[#d9aa73]/35 bg-white/5">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-[#d9aa73]">
+                    <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span>{t}</span>
+              </li>
+            ))}
+          </ul>
+
+          <a
+            href="#contact"
+            class="mt-10 inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[#d9aa73] px-6 py-4 text-sm font-semibold text-neutral-950 shadow-[0_22px_90px_rgba(0,0,0,0.45)] hover:brightness-95"
+          >
+            Most popular
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 17L17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Domination -->
+      <article class="relative overflow-hidden rounded-[28px] border border-[#2fe6d3]/30 bg-white/[0.04] p-8 shadow-[0_28px_120px_rgba(0,0,0,0.5)] backdrop-blur">
+        <div class="pointer-events-none absolute inset-0 opacity-90"
+          style="background: radial-gradient(900px 520px at 55% 0%, rgba(46,230,211,0.12), transparent 62%);"
+        ></div>
+
+        <div class="relative">
+          <h3 class="text-2xl font-semibold tracking-tight text-white/90">Domination</h3>
+          <p class="mt-2 text-sm text-white/55">Full e-commerce or custom web application</p>
+
+          <div class="mt-8 flex items-end gap-3">
+            <div class="text-5xl font-semibold tracking-tight text-white/80">£4,995</div>
+            <div class="pb-2 text-sm text-white/45">one-time</div>
+          </div>
+
+          <ul class="mt-8 space-y-4 text-sm text-white/65">
+            {[
+              "Unlimited pages",
+              "E-commerce or booking engine",
+              "Payment processing (Stripe)",
+              "Custom features & integrations",
+              "Priority support & training",
+            ].map((t) => (
+              <li class="flex items-start gap-3">
+                <span class="mt-0.5 grid h-6 w-6 place-items-center rounded-full border border-[#2fe6d3]/30 bg-white/5">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-[#2fe6d3]">
+                    <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span>{t}</span>
+              </li>
+            ))}
+          </ul>
+
+          <a
+            href="#contact"
+            class="mt-10 inline-flex w-full items-center justify-center gap-3 rounded-2xl border border-white/12 bg-white/5 px-6 py-4 text-sm font-semibold text-white/85 shadow-[0_22px_90px_rgba(0,0,0,0.45)] backdrop-blur hover:bg-white/10"
+          >
+            Go premium
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 17L17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+    
+    <!-- PORTFOLIO -->
+    <section id="portfolio" class="bg-neutral-950">
+      <div class="mx-auto max-w-6xl px-4 py-16 md:py-20">
+        <header class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/60">Our portfolio</p>
+            <h2 class="mt-2 text-3xl font-semibold tracking-tight">Take a look.</h2>
+          </div>
+          <p class="max-w-xl text-sm leading-relaxed text-white/70">
+            Each demo is fully self-contained (its own layout + CSS theme). Same brain, different costumes.
+          </p>
+        </header>
+
+        <div class="mt-10 grid gap-4 md:grid-cols-3">
+          <!-- Barber demo -->
+          <a
+            href="/projects/local-barber-booking-site"
+            class="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-5 transition hover:bg-white/10"
+          >
+            <div
+              class="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+              style="background:
+                radial-gradient(900px 360px at 20% 0%, rgba(245,158,11,0.25), transparent 55%),
+                radial-gradient(700px 300px at 90% 20%, rgba(244,63,94,0.20), transparent 60%);"
+            ></div>
+
+            <div class="relative">
+              <div class="flex items-center justify-between">
+                <span class="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[11px] text-white/70">
+                  Live demo
+                </span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="text-white/70">
+                  <path d="M7 17L17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+
+              <h3 class="mt-4 text-lg font-semibold tracking-tight">Local Barber Booking</h3>
+              <p class="mt-2 text-sm text-white/70">
+                Bold, luxe, booking-first. A demo that looks like it charges more than it does.
+              </p>
+
+              <div class="mt-5 flex flex-wrap gap-2 text-[11px] text-white/65">
+                <span class="rounded-full border border-white/10 bg-white/5 px-2 py-1">Astro</span>
+                <span class="rounded-full border border-white/10 bg-white/5 px-2 py-1">Tailwind</span>
+                <span class="rounded-full border border-white/10 bg-white/5 px-2 py-1">Self-contained</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Placeholders -->
+          <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
+            <div class="flex items-center justify-between">
+              <span class="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[11px] text-white/70">Coming next</span>
+              <span class="text-xs text-white/45">Restaurant</span>
+            </div>
+            <h3 class="mt-4 text-lg font-semibold tracking-tight">Local Restaurant</h3>
+            <p class="mt-2 text-sm text-white/70">Menu-first, reservation CTA, tasty motion.</p>
+            <div class="mt-5 text-[11px] text-white/50">Add when the demo exists.</div>
+          </div>
+
+          <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
+            <div class="flex items-center justify-between">
+              <span class="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[11px] text-white/70">Coming next</span>
+              <span class="text-xs text-white/45">Handyman</span>
+            </div>
+            <h3 class="mt-4 text-lg font-semibold tracking-tight">Local Handyman</h3>
+            <p class="mt-2 text-sm text-white/70">Trust-heavy layout, reviews, quote flow.</p>
+            <div class="mt-5 text-[11px] text-white/50">Add when the demo exists.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="border-y border-white/10 bg-neutral-950/40">
+      <div class="mx-auto max-w-6xl px-4 py-16 md:py-20">
+        <header class="max-w-2xl">
+          <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/60">Services</p>
+          <h2 class="mt-2 text-3xl font-semibold tracking-tight">What we build</h2>
+          <p class="mt-3 text-sm leading-relaxed text-white/70">
+            Focused pages with a clear job: get calls, bookings, or leads. Everything else is decoration.
+          </p>
+        </header>
+
+        <div class="mt-10 grid gap-4 md:grid-cols-3">
+          <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
+            <div class="flex items-start gap-3">
+              <span class="grid h-10 w-10 place-items-center rounded-2xl border border-white/10 bg-white/5">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M4 7h16M7 4v6M17 4v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M6 10h12v10H6V10Z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </span>
+              <div>
+                <div class="text-base font-semibold">Landing pages</div>
+                <div class="mt-1 text-sm text-white/70">Fast, focused, CTA-driven. Made to convert.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
+            <div class="flex items-start gap-3">
+              <span class="grid h-10 w-10 place-items-center rounded-2xl border border-white/10 bg-white/5">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M12 3a7 7 0 0 1 7 7c0 2.2-1.2 3.8-2.5 5.2-.9 1-1.5 2-1.5 3.3H9c0-1.3-.6-2.3-1.5-3.3C6.2 13.8 5 12.2 5 10a7 7 0 0 1 7-7Z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </span>
+              <div>
+                <div class="text-base font-semibold">Brand websites</div>
+                <div class="mt-1 text-sm text-white/70">A clean home for your business online.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
+            <div class="flex items-start gap-3">
+              <span class="grid h-10 w-10 place-items-center rounded-2xl border border-white/10 bg-white/5">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M4 6h16v12H4V6Z" stroke="currentColor" stroke-width="2"/>
+                  <path d="M7 16h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M14 16h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <div>
+                <div class="text-base font-semibold">Demo concepts</div>
+                <div class="mt-1 text-sm text-white/70">Industry-specific designs to win clients.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section id="process" class="bg-neutral-950">
+      <div class="mx-auto max-w-6xl px-4 py-16 md:py-20">
+        <header class="max-w-2xl">
+          <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/60">Process</p>
+          <h2 class="mt-2 text-3xl font-semibold tracking-tight">How it works</h2>
+          <p class="mt-3 text-sm leading-relaxed text-white/70">
+            Simple steps. No mystery meat. You’ll always know what’s happening and what’s next.
+          </p>
+        </header>
+
+        <div class="mt-10 grid gap-4 md:grid-cols-4">
+          {[
+            { n: "01", t: "Quick brief", d: "Goals, content, examples. 20 minutes." },
+            { n: "02", t: "Design + copy", d: "Layout, vibe, messaging. Tight & clear." },
+            { n: "03", t: "Build", d: "Astro + Tailwind. Fast, clean, responsive." },
+            { n: "04", t: "Launch", d: "Deploy + handover. Then iterate if needed." },
+          ].map((s) => (
+            <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
+              <div class="text-xs font-semibold text-white/55">{s.n}</div>
+              <div class="mt-2 text-base font-semibold">{s.t}</div>
+              <div class="mt-1 text-sm text-white/70">{s.d}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT / CTA -->
+    <section id="contact" class="border-t border-white/10 bg-neutral-950/40">
+      <div class="mx-auto max-w-6xl px-4 py-16 md:py-20">
+        <div class="grid gap-6 rounded-3xl border border-white/10 bg-white/5 p-6 md:grid-cols-[1.2fr_0.8fr] md:p-10">
+          <div>
+            <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/60">Let’s build</p>
+            <h2 class="mt-2 text-3xl font-semibold tracking-tight">Ready to look premium online?</h2>
+            <p class="mt-3 max-w-xl text-sm leading-relaxed text-white/70">
+              Send your business name + what you need. I’ll reply with a simple plan and a price.
+              No sales circus. Just straight answers.
+            </p>
+
+            <div class="mt-6 flex flex-wrap gap-3">
+              <a
+                href="mailto:hello@bourneweb.co.uk?subject=BourneWeb%20Website%20Enquiry"
+                class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-neutral-950 hover:bg-white/90"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M4 6h16v12H4V6Z" stroke="currentColor" stroke-width="2"/>
+                  <path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Email us
+              </a>
+
+              <a
+                href="#portfolio"
+                class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10"
+              >
+                See demos again
+              </a>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-white/10 bg-neutral-950/40 p-5">
+            <div class="text-xs font-semibold uppercase tracking-[0.2em] text-white/60">Quick checklist</div>
+            <ul class="mt-4 space-y-3 text-sm text-white/75">
+              <li class="flex gap-2">
+                <span class="mt-2 h-1.5 w-1.5 rounded-full bg-amber-300"></span>
+                Your business name + location
+              </li>
+              <li class="flex gap-2">
+                <span class="mt-2 h-1.5 w-1.5 rounded-full bg-sky-300"></span>
+                What the website should achieve (calls / bookings / leads)
+              </li>
+              <li class="flex gap-2">
+                <span class="mt-2 h-1.5 w-1.5 rounded-full bg-rose-300"></span>
+                1–2 example sites you like (optional)
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 bg-neutral-950">
+      <div class="mx-auto max-w-6xl px-4 py-10">
+        <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div class="text-sm text-white/60">© {year} BourneWeb. Built with Astro.</div>
+          <div class="text-xs text-white/45">
+            If your old site is a fossil… we’ll give it a jetpack.
+          </div>
+        </div>
+      </div>
+    </footer>
+  </main>
+</BaseLayout>

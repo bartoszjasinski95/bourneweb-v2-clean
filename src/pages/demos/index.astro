@@ -1,0 +1,56 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { demos } from "../../data/demos";
+---
+
+<BaseLayout title="BourneWeb · Demos" description="All demo sites">
+  <main class="min-h-screen bg-neutral-950 text-white">
+    <section class="mx-auto max-w-6xl px-6 pb-20 pt-14 md:pt-20">
+      <h1 class="text-balance text-[44px] font-semibold leading-[1.05] tracking-tight text-white/90 md:text-[56px]">
+        Demos
+        <span class="text-white/55"> built to sell.</span>
+      </h1>
+
+      <p class="mt-4 max-w-2xl text-base leading-relaxed text-white/55">
+        Pick a demo to see the breakdown and preview it in a device frame.
+      </p>
+
+      <div class="mt-10 grid gap-6 md:grid-cols-2">
+        {demos.map((demo) => (
+          <a
+            href={`/demos/${demo.slug}`}
+            class="group rounded-[28px] border border-white/10 bg-white/[0.04] p-7 shadow-[0_28px_120px_rgba(0,0,0,0.55)] backdrop-blur transition hover:border-white/20 hover:bg-white/[0.055]"
+          >
+            <div class="flex items-center justify-between gap-4">
+              <div class="text-sm font-semibold text-white/80">{demo.title}</div>
+              <span class:list={[
+                "rounded-full px-3 py-1 text-[12px] font-semibold",
+                demo.active ? "border border-[#2fe6d3]/25 bg-[#2fe6d3]/10 text-[#2fe6d3]" : "border border-white/12 bg-white/5 text-white/55"
+              ]}>
+                {demo.active ? "Live" : "Coming soon"}
+              </span>
+            </div>
+
+            <div class="mt-2 text-sm text-white/55">{demo.summary}</div>
+
+            <div class="mt-5 flex flex-wrap gap-2">
+              {demo.highlights.map((t) => (
+                <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[12px] text-white/60">
+                  {t}
+                </span>
+              ))}
+            </div>
+
+            <div class="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-[#d9aa73]">
+              View details
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 17L17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  </main>
+</BaseLayout>
