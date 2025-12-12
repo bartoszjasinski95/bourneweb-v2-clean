@@ -22,4 +22,16 @@ export const demos: Demo[] = [
     active: true,
     demoHref: "/projects/local-barber-booking-site",
   },
+  {
+  slug: "local-restaurant-dining-site",
+  title: "Harbour & Hearth",
+  industry: "Restaurant",
+  summary: "Menu, reservations, reviews — a warm dining demo with a totally different design system.",
+  highlights: ["Reservations", "Menu", "Reviews", "Local vibe"],
+  stack: "Astro + Tailwind",
+  goal: "More covers",
+  active: true,
+  demoHref: "/projects/local-restaurant-dining-site",
+}
+
 ];

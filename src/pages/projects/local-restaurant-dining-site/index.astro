@@ -1,0 +1,463 @@
+---
+import Layout from "./Layout.astro";
+---
+
+<Layout
+  title="Ember & Olive · Restaurant Demo"
+  description="Fire-kissed Mediterranean restaurant demo (self-contained)."
+>
+  <main>
+    <!-- TOP NAV -->
+<!-- TOP NAV (only) -->
+<header class="ro-topnav">
+  <div class="ro-container ro-topnav__inner">
+    <!-- LEFT: brand -->
+    <a href="#" class="ro-brand" aria-label="Ember & Olive home">
+      <svg class="ro-brand__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path
+          d="M12 22s7-2.5 7-9c0-4-3-6.5-5-9-1 3-3 4.5-5 6-1.5 1.1-3 2.7-3 5 0 6.5 6 7 6 7Z"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M12 22c2-1 3-2.7 3-4.7 0-2.3-1.7-3.6-3-5.1-1 1.8-3 2.6-3 5 0 2.1 1 3.8 3 4.8Z"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linejoin="round"
+          opacity=".7"
+        />
+      </svg>
+
+      <span class="ro-brand__text">EMBER &amp; OLIVE</span>
+    </a>
+
+    <!-- CENTER: nav -->
+    <nav class="ro-navlinks" aria-label="Primary">
+      <a href="#menu">Menu</a>
+      <a href="#about">About</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#visit">Visit</a>
+    </nav>
+
+    <!-- RIGHT: CTA -->
+    <a class="ro-cta" href="#reserve">Reserve a table</a>
+  </div>
+</header>
+
+
+    <!-- HERO -->
+<section class="ro-hero" id="top">
+  <div class="ro-container ro-hero__inner">
+    <!-- LEFT -->
+    <div class="ro-hero__copy">
+      <h1 class="ro-hero__title">
+        Fire-kissed<br />
+        Mediterranean.<br />
+        Zero fuss. All<br />
+        flavour.
+      </h1>
+
+      <p class="ro-hero__lede">
+        Modern Mediterranean grill in the heart of Bournemouth. Seasonal plates, bold flavours,
+        and a wine list that means business.
+      </p>
+
+      <div class="ro-hero__actions">
+        <a class="ro-btn ro-btn--primary" href="#reserve">Reserve a table</a>
+        <a class="ro-btn ro-btn--ghost" href="#menu">View menu</a>
+      </div>
+
+      <div class="ro-hero__chips" aria-label="Highlights">
+        <span class="ro-chip">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M7 13c3-6 7-9 10-10-1 3-4 7-10 10Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M6 14c0 4 2 6 6 6 4 0 6-2 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".65"/>
+          </svg>
+          Vegetarian friendly
+        </span>
+
+        <span class="ro-chip">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 21V8a2 2 0 0 1 4 0v13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M7 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+          </svg>
+          Cocktails
+        </span>
+
+        <span class="ro-chip">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M4 20a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Walk-ins welcome
+        </span>
+      </div>
+
+      <div class="ro-hero__open" role="status" aria-label="Opening hours">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 8v5l3 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <span>Open today · 12:00–22:30</span>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="ro-hero__media">
+      <figure class="ro-shot ro-shot--big">
+        <img
+          src="https://images.unsplash.com/photo-1555992336-03a23c6b5a9a?auto=format&fit=crop&w=1200&q=80"
+          alt="Hero dish"
+          loading="lazy"
+        />
+        <figcaption class="ro-shot__tag">Hero dish</figcaption>
+      </figure>
+
+      <figure class="ro-shot ro-shot--small">
+        <img
+          src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80"
+          alt="Interior"
+          loading="lazy"
+        />
+        <figcaption class="ro-shot__tag">Interior</figcaption>
+      </figure>
+
+      <figure class="ro-shot ro-shot--small">
+        <img
+          src="https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=900&q=80"
+          alt="Cocktails"
+          loading="lazy"
+        />
+        <figcaption class="ro-shot__tag">Cocktails</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+<!-- TRUST STRIP -->
+<section class="ro-trust" aria-label="Trust indicators">
+  <div class="ro-container ro-trust__inner">
+    <div class="ro-trust__item">
+      <span class="ro-trust__icon ro-trust__icon--star" aria-hidden="true">★</span>
+      <span class="ro-trust__text">
+        <strong>4.8</strong> <span class="ro-dim">(Google)</span> · <strong>200+</strong> reviews
+      </span>
+    </div>
+
+    <div class="ro-trust__item ro-trust__item--center">
+      <span class="ro-trust__quote">"Top spot in Bournemouth for date nights"</span>
+    </div>
+
+    <div class="ro-trust__item ro-trust__item--right">
+      <svg class="ro-trust__svg" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M4 7h16v10H4V7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M4 10h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span class="ro-trust__text">Card &amp; Contactless</span>
+    </div>
+
+    <div class="ro-trust__item ro-trust__item--ghost" aria-hidden="true"></div>
+  </div>
+</section>
+<section class="eo-sig">
+  <div class="eo-wrap">
+    <header class="eo-head">
+      <h2 class="eo-title">Signature Dishes</h2>
+      <p class="eo-sub">Fire, flavour, and a little finesse. Our grill does the talking.</p>
+    </header>
+
+    <div class="eo-grid">
+      <!-- Card 1 -->
+      <article class="eo-card">
+        <div class="eo-img">
+          <img
+            src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1400&q=80"
+            alt="Charred Octopus"
+            loading="lazy"
+          />
+          <span class="eo-pill">CHEF'S PICK</span>
+        </div>
+
+        <div class="eo-body">
+          <div class="eo-top">
+            <h3 class="eo-name">Charred Octopus</h3>
+            <span class="eo-price">£16</span>
+          </div>
+
+          <p class="eo-desc">
+            Tender tentacles, smoked paprika aioli, crispy capers, lemon
+          </p>
+
+          <div class="eo-tags">
+            <span class="eo-tag">GF</span>
+          </div>
+
+          <span class="eo-underline" aria-hidden="true"></span>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="eo-card">
+        <div class="eo-img">
+          <img
+            src="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=1400&q=80"
+            alt="Lamb Cutlets"
+            loading="lazy"
+          />
+        </div>
+
+        <div class="eo-body">
+          <div class="eo-top">
+            <h3 class="eo-name">Lamb Cutlets</h3>
+            <span class="eo-price">£24</span>
+          </div>
+
+          <p class="eo-desc">
+            Dorset lamb, mint chimichurri, grilled baby gem, burnt lemon
+          </p>
+
+          <div class="eo-tags">
+            <span class="eo-tag">GF</span>
+          </div>
+
+          <span class="eo-underline" aria-hidden="true"></span>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="eo-card">
+        <div class="eo-img">
+          <img
+            src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=1400&q=80"
+            alt="Whipped Hummus"
+            loading="lazy"
+          />
+        </div>
+
+        <div class="eo-body">
+          <div class="eo-top">
+            <h3 class="eo-name">Whipped Hummus</h3>
+            <span class="eo-price">£8</span>
+          </div>
+
+          <p class="eo-desc">
+            Chickpea, tahini, olive oil, warm flatbread, za'atar
+          </p>
+
+          <div class="eo-tags">
+            <span class="eo-tag">V</span>
+            <span class="eo-tag">VG</span>
+          </div>
+
+          <span class="eo-underline" aria-hidden="true"></span>
+        </div>
+      </article>
+      <!-- Card 4 -->
+<article class="eo-card">
+  <div class="eo-img">
+    <img
+      src="https://images.unsplash.com/photo-1541519227354-08fa5d50c44d?auto=format&fit=crop&w=1400&q=80"
+      alt="Mezze Platter"
+      loading="lazy"
+    />
+  </div>
+
+  <div class="eo-body">
+    <div class="eo-top">
+      <h3 class="eo-name">Mezze Platter</h3>
+      <span class="eo-price">£18</span>
+    </div>
+
+    <p class="eo-desc">
+      Selection of small plates, perfect for sharing
+    </p>
+
+    <div class="eo-tags">
+      <span class="eo-tag">V</span>
+    </div>
+
+    <span class="eo-underline" aria-hidden="true"></span>
+  </div>
+</article>
+
+<!-- Card 5 -->
+<article class="eo-card">
+  <div class="eo-img">
+    <img
+      src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=1400&q=80"
+      alt="Grilled Halloumi Salad"
+      loading="lazy"
+    />
+  </div>
+
+  <div class="eo-body">
+    <div class="eo-top">
+      <h3 class="eo-name">Grilled Halloumi Salad</h3>
+      <span class="eo-price">£14</span>
+    </div>
+
+    <p class="eo-desc">
+      Char-grilled cheese, heritage tomatoes, rocket, pomegranate
+    </p>
+
+    <div class="eo-tags">
+      <span class="eo-tag">V</span>
+      <span class="eo-tag">GF</span>
+    </div>
+
+    <span class="eo-underline" aria-hidden="true"></span>
+  </div>
+</article>
+
+<!-- Card 6 -->
+<article class="eo-card">
+  <div class="eo-img">
+    <img
+      src="https://images.unsplash.com/photo-1609621838510-5ad474b7d25d?auto=format&fit=crop&w=1400&q=80"
+      alt="Pistachio Baklava"
+      loading="lazy"
+    />
+  </div>
+
+  <div class="eo-body">
+    <div class="eo-top">
+      <h3 class="eo-name">Pistachio Baklava</h3>
+      <span class="eo-price">£7</span>
+    </div>
+
+    <p class="eo-desc">
+      Layers of filo, honey syrup, crushed pistachios, vanilla ice cream
+    </p>
+
+    <div class="eo-tags">
+      <span class="eo-tag">V</span>
+    </div>
+
+    <span class="eo-underline" aria-hidden="true"></span>
+  </div>
+</article>
+
+    </div>
+  </div>
+</section>
+<!-- ATMOSPHERE -->
+<section id="atmosphere" class="eo-atmo">
+  <div class="eo-wrap">
+    <header class="eo-head">
+      <h2 class="eo-title">Atmosphere</h2>
+      <p class="eo-sub">Warm lighting, good company, even better food.</p>
+    </header>
+
+    <div class="eo-atmo__grid">
+      <!-- LEFT: big image -->
+      <figure class="eo-atmo__left">
+        <img src="/images/restaurant/atmo-left.jpg" alt="Restaurant exterior at night" loading="lazy" />
+      </figure>
+
+      <!-- RIGHT: 2-up + labels + wide -->
+      <div class="eo-atmo__right">
+        <figure class="eo-atmo__tile eo-atmo__tile--small">
+          <img src="/images/restaurant/atmo-grill.jpg" alt="The grill" loading="lazy" />
+          <figcaption>The grill</figcaption>
+        </figure>
+
+        <figure class="eo-atmo__tile eo-atmo__tile--small">
+          <img src="/images/restaurant/atmo-wine.jpg" alt="Wine selection" loading="lazy" />
+          <figcaption>Wine selection</figcaption>
+        </figure>
+
+        <figure class="eo-atmo__tile eo-atmo__tile--wide">
+          <img src="/images/restaurant/atmo-interior.jpg" alt="Interior" loading="lazy" />
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- BOOK YOUR TABLE -->
+<section id="book" class="eo-book">
+  <div class="eo-wrap">
+    <div class="eo-book__inner">
+      <!-- LEFT -->
+      <div class="eo-book__copy">
+        <h2 class="eo-book__title ro-display">Book your table</h2>
+
+        <p class="eo-book__lede">
+          Reserve ahead for weekends. Walk-ins welcome on weekdays.
+        </p>
+
+        <div class="eo-book__call">
+          <span class="eo-book__callIcon" aria-hidden="true">
+            <!-- phone -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M8 3l3 6-2 2c1.5 3 3.5 5 6.5 6.5l2-2 6 3-2 4c-1 1-3 1-4.5.5C9.5 21 3 14.5 1.5 7.5 1 6 1 4 2 3l6 0Z"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+
+          <div class="eo-book__callText">
+            <div class="eo-book__callSmall">Prefer to call? We&apos;re quick.</div>
+            <a class="eo-book__callNum" href="tel:+441202123456">01202 123 456</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="eo-book__card" role="region" aria-label="Reservation form">
+        <form class="eo-book__form" onsubmit="event.preventDefault()">
+          <div class="eo-field">
+            <label class="eo-label" for="party">Party size</label>
+            <select id="party" class="eo-input eo-select">
+              <option>2 people</option>
+              <option>3 people</option>
+              <option>4 people</option>
+              <option>5 people</option>
+              <option>6 people</option>
+            </select>
+          </div>
+
+          <div class="eo-row">
+            <div class="eo-field">
+              <label class="eo-label" for="date">Date</label>
+              <div class="eo-inputWrap">
+                <input id="date" class="eo-input" type="text" placeholder="dd / mm / yyyy" />
+                <span class="eo-inputIcon" aria-hidden="true">
+                  <!-- calendar -->
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M7 3v3M17 3v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M4 7h16v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M4 10h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </span>
+              </div>
+            </div>
+
+            <div class="eo-field">
+              <label class="eo-label" for="time">Time</label>
+              <select id="time" class="eo-input eo-select">
+                <option>18:00</option>
+                <option>18:30</option>
+                <option>19:00</option>
+                <option>19:30</option>
+                <option>20:00</option>
+                <option>20:30</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="eo-book__btn" type="submit">
+            Check availability
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  </main>
+</Layout>
