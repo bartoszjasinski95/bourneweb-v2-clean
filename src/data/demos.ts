@@ -33,6 +33,17 @@ export const demos: Demo[] = [
   active: true,
   demoHref: "/projects/clinic-appointment-site",
   },
+  {
+    slug: "electrical-emergency-site",
+    title: "SparkForge Electrical",
+    industry: "Electrical",
+    summary: "Neon, zero ściemy — emergency call-outs + EV chargers + pricing, demo z pazurem na konwersję.",
+    highlights: ["Call 24/7", "EV chargers", "Service areas", "Get quote"],
+    stack: "Astro + CSS",
+    goal: "More quotes",
+    active: true,
+    demoHref: "/projects/electrical-emergency-site",
+  },
 
   {
   slug: "local-restaurant-dining-site",
@@ -44,6 +55,7 @@ export const demos: Demo[] = [
   goal: "More covers",
   active: true,
   demoHref: "/projects/local-restaurant-dining-site",
-}
+},
+
 
 ];
