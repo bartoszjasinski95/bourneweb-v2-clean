@@ -1,0 +1,1046 @@
+---
+import Layout from "./Layout.astro";
+---
+
+<Layout title="Lumen Clinic · Appointment Demo" description="Clinic appointment booking demo (self-contained).">
+  <main class="cl-root">
+    <!-- OFFER STRIP -->
+    <div class="cl-offer">
+      <div class="cl-container cl-offer__inner">
+        <strong>New patient offer:</strong> Free consultation this month
+      </div>
+    </div>
+
+    <!-- TOP NAV -->
+    <header class="cl-nav">
+      <div class="cl-container cl-nav__inner">
+        <!-- Brand -->
+        <a class="cl-brand" href="#">
+          <span class="cl-mark" aria-hidden="true">L</span>
+          <span class="cl-name">Lumen Clinic</span>
+        </a>
+
+        <!-- Links -->
+        <nav class="cl-links" aria-label="Primary">
+          <a href="#treatments">Treatments</a>
+          <a href="#prices">Prices</a>
+          <a href="#about">About</a>
+          <a href="#results">Results</a>
+          <a href="#reviews">Reviews</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <!-- Right -->
+        <div class="cl-right">
+          <a class="cl-phone" href="tel:02012345678" aria-label="Call 020 1234 5678">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M8 3l3 6-2 2c1.5 3 3.5 5 6.5 6.5l2-2 6 3-2 4c-1 1-3 1-4.5.5C9.5 21 3 14.5 1.5 7.5 1 6 1 4 2 3l6 0Z"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linejoin="round"
+              />
+            </svg>
+            020 1234 5678
+          </a>
+
+          <a class="cl-cta" href="#book">Book now</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="cl-hero">
+      <div class="cl-container cl-hero__inner">
+        <!-- Left -->
+        <div class="cl-hero__copy">
+          <h1 class="cl-h1 cl-display">
+            A brighter smile.<br />
+            A calmer you.
+          </h1>
+
+          <p class="cl-lede">
+            Experience premium dental and aesthetic care in a calm, welcoming environment.
+            Our expert team is dedicated to helping you achieve the smile you've always wanted.
+          </p>
+
+          <div class="cl-hero__actions">
+            <a class="cl-btn cl-btn--primary" href="#book">Book consultation</a>
+            <a class="cl-btn cl-btn--secondary" href="#treatments">View treatments</a>
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div class="cl-hero__media">
+          <div class="cl-frame">
+            <!-- wrzuć obrazek do: /public/projects/clinic-appointment-site/hero.jpg -->
+            <img
+              class="cl-frame__img"
+              src="/projects/clinic-appointment-site/hero.jpg"
+              alt="Happy patient at Lumen Clinic"
+              loading="lazy"
+            />
+
+            <div class="cl-rating" aria-label="Rating 4.9 out of 5, 500+ reviews">
+              <div class="cl-stars" aria-hidden="true">
+                <span class="cl-star">★</span>
+                <span class="cl-star">★</span>
+                <span class="cl-star">★</span>
+              </div>
+              <div class="cl-rating__text">
+                <div class="cl-rating__top"><strong>4.9/5</strong></div>
+                <div class="cl-rating__sub">500+ reviews</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+        <!-- TRUST STRIP -->
+    <section class="cl-trust">
+      <div class="cl-container cl-trust__inner">
+        <div class="cl-trust__item">
+          <span class="cl-trust__icon" aria-hidden="true">
+            <!-- shield -->
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 2l8 4v6c0 5-3.5 9.4-8 10-4.5-.6-8-5-8-10V6l8-4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <div class="cl-trust__label">CQC Regulated</div>
+        </div>
+
+        <div class="cl-trust__item">
+          <span class="cl-trust__icon" aria-hidden="true">
+            <!-- star badge -->
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 2l2.2 4.6 5 .7-3.6 3.5.9 4.9L12 13.9 7.5 15.7l.9-4.9L4.8 7.3l5-.7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <div class="cl-trust__label">500+ 5-Star Reviews</div>
+        </div>
+
+        <div class="cl-trust__item">
+          <span class="cl-trust__icon" aria-hidden="true">
+            <!-- award -->
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 14a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z" stroke="currentColor" stroke-width="2"/>
+              <path d="M9 13l-1 9 4-2 4 2-1-9" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <div class="cl-trust__label">Modern Equipment</div>
+        </div>
+
+        <div class="cl-trust__item">
+          <span class="cl-trust__icon" aria-hidden="true">
+            <!-- card -->
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M3 7h18v10H3V7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M7 14h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <div class="cl-trust__label">Flexible Finance</div>
+        </div>
+      </div>
+    </section>
+        <!-- TREATMENTS -->
+<section class="cl-treatments" id="treatments">
+  <div class="cl-container">
+    <header class="cl-sec-head">
+      <h2 class="cl-sec-title cl-display">Our Treatments</h2>
+      <p class="cl-sec-sub">
+        From cosmetic enhancements to essential care, we offer a comprehensive<br />
+        range of dental and aesthetic treatments
+      </p>
+    </header>
+
+    <div class="cl-treatments__grid">
+      <!-- 1 -->
+      <article class="cl-card">
+        <div class="cl-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 2l1.2 4.2L17 7.5l-3.8 1.3L12 13l-1.2-4.2L7 7.5l3.8-1.3L12 2Z"/>
+            <path d="M19 10l.7 2.3L22 13l-2.3.7L19 16l-.7-2.3L16 13l2.3-.7L19 10Z"/>
+          </svg>
+        </div>
+        <h3 class="cl-card__title cl-display">Teeth Whitening</h3>
+        <p class="cl-card__desc">Professional whitening for a brighter, more confident smile</p>
+        <div class="cl-card__meta">
+          <span>£295</span><span class="cl-dot" aria-hidden="true">•</span><span>1 hour</span>
+        </div>
+        <a class="cl-card__link" href="#">
+          Learn more <span aria-hidden="true">→</span>
+        </a>
+      </article>
+
+      <!-- 2 -->
+      <article class="cl-card">
+        <div class="cl-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z"/>
+            <path d="M8 12l2.5 2.5L16.5 8.5"/>
+          </svg>
+        </div>
+        <h3 class="cl-card__title cl-display">Invisalign</h3>
+        <p class="cl-card__desc">Discreet teeth straightening with clear aligners</p>
+        <div class="cl-card__meta">
+          <span>From £2,500</span><span class="cl-dot" aria-hidden="true">•</span><span>12-18 months</span>
+        </div>
+        <a class="cl-card__link" href="#">
+          Learn more <span aria-hidden="true">→</span>
+        </a>
+      </article>
+
+      <!-- 3 -->
+      <article class="cl-card">
+        <div class="cl-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 2l2.2 4.6 5 .7-3.6 3.5.9 4.9L12 13.9 7.5 15.7l.9-4.9L4.8 7.3l5-.7L12 2Z"/>
+          </svg>
+        </div>
+        <h3 class="cl-card__title cl-display">Composite Bonding</h3>
+        <p class="cl-card__desc">Transform your smile with natural-looking composite</p>
+        <div class="cl-card__meta">
+          <span>From £195</span><span class="cl-dot" aria-hidden="true">•</span><span>1-2 hours</span>
+        </div>
+        <a class="cl-card__link" href="#">
+          Learn more <span aria-hidden="true">→</span>
+        </a>
+      </article>
+
+      <!-- 4 -->
+      <article class="cl-card">
+        <div class="cl-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 2l1.2 4.2L17 7.5l-3.8 1.3L12 13l-1.2-4.2L7 7.5l3.8-1.3L12 2Z"/>
+            <path d="M19 10l.7 2.3L22 13l-2.3.7L19 16l-.7-2.3L16 13l2.3-.7L19 10Z"/>
+          </svg>
+        </div>
+        <h3 class="cl-card__title cl-display">Facial Aesthetics</h3>
+        <p class="cl-card__desc">Anti-wrinkle and dermal filler treatments</p>
+        <div class="cl-card__meta">
+          <span>From £150</span><span class="cl-dot" aria-hidden="true">•</span><span>30-45 mins</span>
+        </div>
+        <a class="cl-card__link" href="#">
+          Learn more <span aria-hidden="true">→</span>
+        </a>
+      </article>
+
+      <!-- 5 -->
+      <article class="cl-card">
+        <div class="cl-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 2l8 4v6c0 5-3.5 9.4-8 10-4.5-.6-8-5-8-10V6l8-4Z"/>
+          </svg>
+        </div>
+        <h3 class="cl-card__title cl-display">Hygiene &amp; Prevention</h3>
+        <p class="cl-card__desc">Professional cleaning and oral health maintenance</p>
+        <div class="cl-card__meta">
+          <span>From £85</span><span class="cl-dot" aria-hidden="true">•</span><span>45 mins</span>
+        </div>
+        <a class="cl-card__link" href="#">
+          Learn more <span aria-hidden="true">→</span>
+        </a>
+      </article>
+
+      <!-- 6 -->
+      <article class="cl-card">
+        <div class="cl-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 14a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z"/>
+            <path d="M9 13l-2 9 5-3 5 3-2-9"/>
+          </svg>
+        </div>
+        <h3 class="cl-card__title cl-display">Emergency Care</h3>
+        <p class="cl-card__desc">Same-day appointments for dental emergencies</p>
+        <div class="cl-card__meta">
+          <span>From £120</span><span class="cl-dot" aria-hidden="true">•</span><span>30 mins</span>
+        </div>
+        <a class="cl-card__link" href="#">
+          Learn more <span aria-hidden="true">→</span>
+        </a>
+      </article>
+    </div>
+  </div>
+</section>
+<!-- FLOATING CTA (shows after TRUST STRIP hits) -->
+<aside class="cl-float" data-cl-float aria-label="Quick booking">
+  <button class="cl-float__close" type="button" aria-label="Close" data-cl-float-close>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </button>
+
+  <div class="cl-float__top">
+    <div class="cl-float__icon" aria-hidden="true">
+      <!-- calendar icon -->
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M7 3v3M17 3v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M4 7h16v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M4 10h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <div class="cl-float__copy">
+      <div class="cl-float__title cl-display">Ready to start?</div>
+      <div class="cl-float__sub">Book your free consultation today</div>
+    </div>
+  </div>
+
+  <a class="cl-float__cta" href="#contact">Book consultation</a>
+</aside>
+
+<script is:inline>
+(() => {
+  const bubble = document.querySelector("[data-cl-float]");
+  if (!bubble) return;
+
+  const closeBtn = bubble.querySelector("[data-cl-float-close]");
+  const KEY = "cl_float_dismissed";
+
+  const show = () => {
+    if (sessionStorage.getItem(KEY) === "1") return;
+    bubble.classList.add("is-visible");
+  };
+
+  const hide = () => bubble.classList.remove("is-visible");
+
+  closeBtn?.addEventListener("click", () => {
+    sessionStorage.setItem(KEY, "1");
+    hide();
+  });
+
+  // Trigger: when TRUST STRIP appears (exactly what you asked)
+  const trust = document.querySelector(".cl-trust");
+  if (!trust) { show(); return; }
+
+  const io = new IntersectionObserver((entries) => {
+    if (entries.some((e) => e.isIntersecting)) {
+      show();
+      io.disconnect(); // show once, then chill
+    }
+  }, { threshold: 0.15 });
+
+  io.observe(trust);
+})();
+</script>
+<!-- REAL RESULTS -->
+<section class="cl-results" id="results">
+  <div class="cl-container">
+    <header class="cl-results__head">
+      <h2 class="cl-display cl-results__title">Real Results</h2>
+      <p class="cl-results__sub">See the transformations we've achieved for our patients</p>
+    </header>
+
+    <div class="cl-results__grid">
+      <!-- Card 1 -->
+      <article class="cl-results__card">
+        <div class="cl-compare" data-compare>
+          <div class="cl-compare__frame">
+            <!-- BEFORE -->
+            <img
+              class="cl-compare__img cl-compare__img--before"
+              src="/images/clinic/results/whitening-before.jpg"
+              alt="Before teeth whitening"
+              loading="lazy"
+            />
+
+            <!-- AFTER (masked by width) -->
+            <div class="cl-compare__after">
+              <img
+                class="cl-compare__img cl-compare__img--after"
+                src="/images/clinic/results/whitening-after.jpg"
+                alt="After teeth whitening"
+                loading="lazy"
+              />
+            </div>
+
+            <!-- labels -->
+            <span class="cl-compare__badge cl-compare__badge--before">Before</span>
+            <span class="cl-compare__badge cl-compare__badge--after">After</span>
+
+            <!-- range on top (drag + keyboard) -->
+            <input
+              class="cl-compare__range"
+              type="range"
+              min="0"
+              max="100"
+              value="50"
+              aria-label="Before and after slider"
+            />
+
+            <!-- visual handle -->
+            <div class="cl-compare__handle" aria-hidden="true">
+              <span class="cl-compare__grip"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cl-results__caption">Teeth Whitening Treatment</div>
+        <div class="cl-results__note">Results may vary. Individual results are not guaranteed.</div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="cl-results__card">
+        <div class="cl-compare" data-compare>
+          <div class="cl-compare__frame">
+            <img
+              class="cl-compare__img cl-compare__img--before"
+              src="/images/clinic/results/bonding-before.jpg"
+              alt="Before composite bonding"
+              loading="lazy"
+            />
+
+            <div class="cl-compare__after">
+              <img
+                class="cl-compare__img cl-compare__img--after"
+                src="/images/clinic/results/bonding-after.jpg"
+                alt="After composite bonding"
+                loading="lazy"
+              />
+            </div>
+
+            <span class="cl-compare__badge cl-compare__badge--before">Before</span>
+            <span class="cl-compare__badge cl-compare__badge--after">After</span>
+
+            <input
+              class="cl-compare__range"
+              type="range"
+              min="0"
+              max="100"
+              value="50"
+              aria-label="Before and after slider"
+            />
+
+            <div class="cl-compare__handle" aria-hidden="true">
+              <span class="cl-compare__grip"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cl-results__caption">Composite Bonding</div>
+        <div class="cl-results__note">Results may vary. Individual results are not guaranteed.</div>
+      </article>
+    </div>
+  </div>
+
+  <script is:inline>
+    (() => {
+      const comps = document.querySelectorAll("[data-compare]");
+      comps.forEach((wrap) => {
+        const frame = wrap.querySelector(".cl-compare__frame");
+        const range = wrap.querySelector(".cl-compare__range");
+        const apply = () => frame?.style.setProperty("--pos", `${range.value}%`);
+        apply();
+        range.addEventListener("input", apply);
+      });
+    })();
+  </script>
+</section>
+<!-- MEET THE DOCTOR -->
+<section class="cl-doctor" id="about">
+  <div class="cl-container">
+    <div class="cl-doctor__grid">
+      <!-- LEFT: image -->
+      <div class="cl-doctor__media">
+        <img
+          src="/images/clinic/doctor-1.jpg"
+          alt="Dentist during treatment"
+          loading="lazy"
+        />
+      </div>
+
+      <!-- RIGHT: content -->
+      <div class="cl-doctor__content">
+        <h2 class="cl-display cl-doctor__title">Meet Dr. Sarah Williams</h2>
+
+        <p class="cl-doctor__lede">
+          With over 15 years of experience in cosmetic and restorative dentistry, Dr. Williams
+          leads our clinical team with a focus on patient comfort and exceptional results.
+        </p>
+
+        <ul class="cl-doctor__list" role="list">
+          <li class="cl-doctor__item">
+            <span class="cl-doctor__tick" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span>BDS (Hons), MSc Aesthetic Dentistry</span>
+          </li>
+
+          <li class="cl-doctor__item">
+            <span class="cl-doctor__tick" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span>GDC Registered Specialist</span>
+          </li>
+
+          <li class="cl-doctor__item">
+            <span class="cl-doctor__tick" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span>Member of British Academy of Cosmetic Dentistry</span>
+          </li>
+
+          <li class="cl-doctor__item">
+            <span class="cl-doctor__tick" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span>Advanced training in facial aesthetics</span>
+          </li>
+        </ul>
+
+        <a class="cl-doctor__cta" href="#book">Book with Dr. Williams</a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- PATIENT REVIEWS -->
+<section class="cl-reviews" id="reviews">
+  <div class="cl-container">
+    <header class="cl-reviews__head">
+      <h2 class="cl-display cl-reviews__title">Patient Reviews</h2>
+      <p class="cl-reviews__sub">
+        Don't just take our word for it - hear from our satisfied patients
+      </p>
+    </header>
+
+    <div class="cl-reviews__grid">
+      <!-- card 1 -->
+      <article class="cl-review">
+        <div class="cl-review__stars" aria-label="5 out of 5 stars">
+          <span aria-hidden="true">★★★★★</span>
+        </div>
+        <p class="cl-review__text">
+          Absolutely delighted with my teeth whitening results. The team made me feel so comfortable
+          and the results exceeded my expectations.
+        </p>
+        <div class="cl-review__who">
+          <div class="cl-review__name">Sarah Mitchell</div>
+          <div class="cl-review__meta">Teeth Whitening</div>
+        </div>
+      </article>
+
+      <!-- card 2 -->
+      <article class="cl-review">
+        <div class="cl-review__stars" aria-label="5 out of 5 stars">
+          <span aria-hidden="true">★★★★★</span>
+        </div>
+        <p class="cl-review__text">
+          After 14 months of Invisalign treatment, I finally have the smile I've always wanted.
+          Thank you Lumen Clinic!
+        </p>
+        <div class="cl-review__who">
+          <div class="cl-review__name">James Thompson</div>
+          <div class="cl-review__meta">Invisalign</div>
+        </div>
+      </article>
+
+      <!-- card 3 -->
+      <article class="cl-review">
+        <div class="cl-review__stars" aria-label="5 out of 5 stars">
+          <span aria-hidden="true">★★★★★</span>
+        </div>
+        <p class="cl-review__text">
+          The composite bonding has completely transformed my smile. Professional service from start to finish.
+        </p>
+        <div class="cl-review__who">
+          <div class="cl-review__name">Emma Richardson</div>
+          <div class="cl-review__meta">Composite Bonding</div>
+        </div>
+      </article>
+
+      <!-- card 4 -->
+      <article class="cl-review">
+        <div class="cl-review__stars" aria-label="5 out of 5 stars">
+          <span aria-hidden="true">★★★★★</span>
+        </div>
+        <p class="cl-review__text">
+          Subtle, natural results with their aesthetic treatments. Very pleased with the outcome and aftercare.
+        </p>
+        <div class="cl-review__who">
+          <div class="cl-review__name">David Chen</div>
+          <div class="cl-review__meta">Facial Aesthetics</div>
+        </div>
+      </article>
+
+      <!-- card 5 -->
+      <article class="cl-review">
+        <div class="cl-review__stars" aria-label="5 out of 5 stars">
+          <span aria-hidden="true">★★★★★</span>
+        </div>
+        <p class="cl-review__text">
+          Regular hygiene appointments here have improved my oral health significantly. Highly recommend!
+        </p>
+        <div class="cl-review__who">
+          <div class="cl-review__name">Lisa Anderson</div>
+          <div class="cl-review__meta">Hygiene Appointment</div>
+        </div>
+      </article>
+
+      <!-- card 6 -->
+      <article class="cl-review">
+        <div class="cl-review__stars" aria-label="5 out of 5 stars">
+          <span aria-hidden="true">★★★★★</span>
+        </div>
+        <p class="cl-review__text">
+          Fantastic emergency service. Got me in the same day and fixed my issue with minimal discomfort.
+        </p>
+        <div class="cl-review__who">
+          <div class="cl-review__name">Michael Brown</div>
+          <div class="cl-review__meta">Emergency Treatment</div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+<!-- TRANSPARENT PRICING -->
+<section class="cl-pricing" id="prices">
+  <div class="cl-container">
+    <header class="cl-pricing__head">
+      <h2 class="cl-display cl-pricing__title">Transparent Pricing</h2>
+      <p class="cl-pricing__sub">
+        No hidden costs. Clear, honest pricing with flexible payment options
+      </p>
+    </header>
+
+    <div class="cl-pricing__grid">
+      <!-- LEFT -->
+      <article class="cl-price">
+        <header class="cl-price__top">
+          <h3 class="cl-display cl-price__name">Initial Consultation</h3>
+          <p class="cl-price__kicker">Comprehensive assessment</p>
+
+          <div class="cl-price__value">
+            <span class="cl-price__big">Free</span>
+          </div>
+        </header>
+
+        <ul class="cl-price__list">
+          <li><span class="cl-check">✓</span> Full oral health examination</li>
+          <li><span class="cl-check">✓</span> Digital X-rays if needed</li>
+          <li><span class="cl-check">✓</span> Personalized treatment plan</li>
+          <li><span class="cl-check">✓</span> No obligation</li>
+          <li><span class="cl-check">✓</span> Expert advice</li>
+        </ul>
+
+        <a class="cl-price__cta cl-btn cl-btn--sand" href="#contact">Book consultation</a>
+      </article>
+
+      <!-- MIDDLE (POPULAR) -->
+      <article class="cl-price cl-price--popular" aria-label="Most popular plan">
+        <div class="cl-price__badge">Most Popular</div>
+
+        <header class="cl-price__top">
+          <h3 class="cl-display cl-price__name">Essential Care</h3>
+          <p class="cl-price__kicker">Per treatment</p>
+
+          <div class="cl-price__value">
+            <span class="cl-price__money">£295</span>
+            <span class="cl-price__unit">/ treatment</span>
+          </div>
+        </header>
+
+        <ul class="cl-price__list">
+          <li><span class="cl-check">✓</span> Professional teeth cleaning</li>
+          <li><span class="cl-check">✓</span> Scale and polish</li>
+          <li><span class="cl-check">✓</span> Oral health guidance</li>
+          <li><span class="cl-check">✓</span> Stain removal</li>
+          <li><span class="cl-check">✓</span> 6-month recall</li>
+        </ul>
+
+        <a class="cl-price__cta cl-btn cl-btn--teal" href="#contact">Book consultation</a>
+      </article>
+
+      <!-- RIGHT -->
+      <article class="cl-price">
+        <header class="cl-price__top">
+          <h3 class="cl-display cl-price__name">Complete Smile</h3>
+          <p class="cl-price__kicker">Full smile makeover</p>
+
+          <div class="cl-price__value">
+            <span class="cl-price__from">From</span>
+            <span class="cl-price__money">£2,500</span>
+            <span class="cl-price__unit">/ treatment</span>
+          </div>
+        </header>
+
+        <ul class="cl-price__list">
+          <li><span class="cl-check">✓</span> Comprehensive treatment plan</li>
+          <li><span class="cl-check">✓</span> Multiple treatments</li>
+          <li><span class="cl-check">✓</span> Finance available</li>
+          <li><span class="cl-check">✓</span> Priority appointments</li>
+          <li><span class="cl-check">✓</span> Extended aftercare</li>
+        </ul>
+
+        <a class="cl-price__cta cl-btn cl-btn--sand" href="#contact">Book consultation</a>
+      </article>
+    </div>
+
+    <div class="cl-pricing__foot">
+      <a class="cl-btn cl-btn--sand cl-pricing__more" href="/#contact">View full pricing</a>
+    </div>
+  </div>
+</section>
+<!-- FAQ -->
+<section class="cl-faq" id="faq">
+  <div class="cl-container">
+    <header class="cl-faq__head">
+      <h2 class="cl-display cl-faq__title">Frequently Asked Questions</h2>
+      <p class="cl-faq__sub">Everything you need to know about our treatments and services</p>
+    </header>
+
+    <div class="cl-faq__wrap" data-faq>
+      <!-- item 1 (open) -->
+      <article class="cl-faq__item is-open">
+        <button class="cl-faq__btn" type="button" aria-expanded="true">
+          <span class="cl-faq__q">Do you accept NHS patients?</span>
+          <span class="cl-faq__toggle" aria-hidden="true">
+            <span class="cl-faq__icon cl-faq__icon--minus"></span>
+          </span>
+        </button>
+
+        <div class="cl-faq__panel" role="region">
+          <p class="cl-faq__a">
+            We are a private practice offering premium dental and aesthetic treatments. This allows us to
+            provide longer appointment times and the latest treatments and technology.
+          </p>
+        </div>
+      </article>
+
+      <!-- item 2 -->
+      <article class="cl-faq__item">
+        <button class="cl-faq__btn" type="button" aria-expanded="false">
+          <span class="cl-faq__q">What payment options do you offer?</span>
+          <span class="cl-faq__toggle" aria-hidden="true">
+            <span class="cl-faq__icon cl-faq__icon--plus"></span>
+          </span>
+        </button>
+        <div class="cl-faq__panel" role="region" hidden>
+          <p class="cl-faq__a">
+            We accept card and contactless payments, and we offer flexible finance options for eligible treatments.
+          </p>
+        </div>
+      </article>
+
+      <!-- item 3 -->
+      <article class="cl-faq__item">
+        <button class="cl-faq__btn" type="button" aria-expanded="false">
+          <span class="cl-faq__q">How long is a typical consultation?</span>
+          <span class="cl-faq__toggle" aria-hidden="true">
+            <span class="cl-faq__icon cl-faq__icon--plus"></span>
+          </span>
+        </button>
+        <div class="cl-faq__panel" role="region" hidden>
+          <p class="cl-faq__a">
+            Most consultations take 30–45 minutes, depending on your goals and whether diagnostics are needed.
+          </p>
+        </div>
+      </article>
+
+      <!-- item 4 -->
+      <article class="cl-faq__item">
+        <button class="cl-faq__btn" type="button" aria-expanded="false">
+          <span class="cl-faq__q">Are your clinicians qualified and registered?</span>
+          <span class="cl-faq__toggle" aria-hidden="true">
+            <span class="cl-faq__icon cl-faq__icon--plus"></span>
+          </span>
+        </button>
+        <div class="cl-faq__panel" role="region" hidden>
+          <p class="cl-faq__a">
+            Yes — our clinicians are fully qualified, insured, and registered with the appropriate UK bodies.
+          </p>
+        </div>
+      </article>
+
+      <!-- item 5 -->
+      <article class="cl-faq__item">
+        <button class="cl-faq__btn" type="button" aria-expanded="false">
+          <span class="cl-faq__q">Do you offer emergency appointments?</span>
+          <span class="cl-faq__toggle" aria-hidden="true">
+            <span class="cl-faq__icon cl-faq__icon--plus"></span>
+          </span>
+        </button>
+        <div class="cl-faq__panel" role="region" hidden>
+          <p class="cl-faq__a">
+            We do — where possible we offer same-day or next-day appointments for urgent dental issues.
+          </p>
+        </div>
+      </article>
+
+      <!-- item 6 -->
+      <article class="cl-faq__item">
+        <button class="cl-faq__btn" type="button" aria-expanded="false">
+          <span class="cl-faq__q">What COVID-19 safety measures are in place?</span>
+          <span class="cl-faq__toggle" aria-hidden="true">
+            <span class="cl-faq__icon cl-faq__icon--plus"></span>
+          </span>
+        </button>
+        <div class="cl-faq__panel" role="region" hidden>
+          <p class="cl-faq__a">
+            We follow current UK infection-control guidance, with enhanced cleaning protocols and sterilisation.
+          </p>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <script is:inline>
+    (() => {
+      const root = document.querySelector("[data-faq]");
+      if (!root) return;
+
+      const items = Array.from(root.querySelectorAll(".cl-faq__item"));
+
+      function setOpen(item, open) {
+        const btn = item.querySelector(".cl-faq__btn");
+        const panel = item.querySelector(".cl-faq__panel");
+        const icon = item.querySelector(".cl-faq__icon");
+
+        item.classList.toggle("is-open", open);
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+
+        if (open) panel.removeAttribute("hidden");
+        else panel.setAttribute("hidden", "");
+
+        // swap icon
+        icon.classList.toggle("cl-faq__icon--plus", !open);
+        icon.classList.toggle("cl-faq__icon--minus", open);
+      }
+
+      // ensure only one open initially
+      let hasOpen = false;
+      items.forEach((it) => {
+        const open = it.classList.contains("is-open") && !hasOpen;
+        hasOpen ||= open;
+        setOpen(it, open);
+      });
+
+      root.addEventListener("click", (e) => {
+        const btn = e.target.closest(".cl-faq__btn");
+        if (!btn) return;
+
+        const item = btn.closest(".cl-faq__item");
+        const isOpen = item.classList.contains("is-open");
+
+        items.forEach((it) => setOpen(it, false));
+        setOpen(item, !isOpen);
+      });
+    })();
+  </script>
+</section>
+<!-- BOOKING FORM -->
+<section class="cl-book" id="contact">
+  <div class="cl-container">
+    <header class="cl-book__head">
+      <h2 class="cl-display cl-book__title">Book Your Consultation</h2>
+      <p class="cl-book__sub">
+        Start your journey to a brighter smile today. Fill out the form below and we&apos;ll be in touch
+      </p>
+    </header>
+
+    <div class="cl-book__card">
+      <form class="cl-form" action="#" method="post">
+        <div class="cl-form__grid2">
+          <label class="cl-field">
+            <span class="cl-field__label">First Name</span>
+            <input class="cl-input" type="text" name="firstName" placeholder="John" autocomplete="given-name" required />
+          </label>
+
+          <label class="cl-field">
+            <span class="cl-field__label">Last Name</span>
+            <input class="cl-input" type="text" name="lastName" placeholder="Smith" autocomplete="family-name" required />
+          </label>
+        </div>
+
+        <label class="cl-field">
+          <span class="cl-field__label">Email</span>
+          <input class="cl-input" type="email" name="email" placeholder="john.smith@example.com" autocomplete="email" required />
+        </label>
+
+        <label class="cl-field">
+          <span class="cl-field__label">Phone</span>
+          <input class="cl-input" type="tel" name="phone" placeholder="020 1234 5678" autocomplete="tel" />
+        </label>
+
+        <label class="cl-field">
+          <span class="cl-field__label">Treatment Interest</span>
+          <div class="cl-select">
+            <select class="cl-input cl-input--select" name="treatment">
+              <option value="" selected>Select a treatment</option>
+              <option>Teeth Whitening</option>
+              <option>Invisalign</option>
+              <option>Composite Bonding</option>
+              <option>Facial Aesthetics</option>
+              <option>Hygiene &amp; Prevention</option>
+              <option>Emergency Care</option>
+            </select>
+          </div>
+        </label>
+
+        <label class="cl-field">
+          <span class="cl-field__label">Preferred Date</span>
+          <input class="cl-input" type="date" name="date" />
+        </label>
+
+        <label class="cl-field">
+          <span class="cl-field__label">Message</span>
+          <textarea class="cl-input cl-input--area" name="message" rows="5" placeholder="Tell us about your concerns or questions..."></textarea>
+        </label>
+
+        <label class="cl-consent">
+          <input class="cl-check" type="checkbox" name="consent" />
+          <span class="cl-consent__text">
+            I consent to Lumen Clinic storing my data and contacting me about my enquiry.
+            <span class="cl-consent__link">View our privacy policy for more information.</span>
+          </span>
+        </label>
+
+        <button class="cl-book__submit" type="submit">Submit Enquiry</button>
+      </form>
+    </div>
+  </div>
+</section>
+<!-- FOOTER -->
+<footer class="cl-footer">
+  <div class="cl-container">
+    <div class="cl-footer__grid">
+      <!-- Brand -->
+      <div class="cl-footer__brand">
+        <div class="cl-footbrand">
+          <div class="cl-footbrand__mark">L</div>
+          <div class="cl-footbrand__name">Lumen Clinic</div>
+        </div>
+
+        <p class="cl-footer__desc">
+          Premium dental and aesthetic treatments in the
+          heart of London. Your smile, our passion.
+        </p>
+
+        <div class="cl-social">
+          <a class="cl-social__btn" href="#" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+              <path d="M14 8h2V5h-2c-2.2 0-4 1.8-4 4v2H8v3h2v6h3v-6h2.2l.8-3H13V9c0-.6.4-1 1-1Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a class="cl-social__btn" href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+              <path d="M7 7h10v10H7V7Z" stroke="currentColor" stroke-width="1.8" />
+              <path d="M16.2 7.8h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="1.8"/>
+            </svg>
+          </a>
+          <a class="cl-social__btn" href="#" aria-label="X / Twitter">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+              <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Opening -->
+      <div class="cl-footer__col">
+        <h3 class="cl-footer__title">Opening Hours</h3>
+
+        <ul class="cl-footlist">
+          <li class="cl-footrow">
+            <span class="cl-footicon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+                <path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" stroke="currentColor" stroke-width="1.8"/>
+              </svg>
+            </span>
+            <span class="cl-footdim">Monday - Friday: 9:00 - 18:00</span>
+          </li>
+          <li class="cl-footrow">
+            <span class="cl-footicon cl-footicon--ghost" aria-hidden="true"></span>
+            <span class="cl-footdim">Saturday: 10:00 - 16:00</span>
+          </li>
+          <li class="cl-footrow">
+            <span class="cl-footicon cl-footicon--ghost" aria-hidden="true"></span>
+            <span class="cl-footdim">Sunday: Closed</span>
+          </li>
+        </ul>
+
+        <div class="cl-footnote">Emergency appointments available</div>
+      </div>
+
+      <!-- Contact -->
+      <div class="cl-footer__col">
+        <h3 class="cl-footer__title">Contact Us</h3>
+
+        <ul class="cl-footlist">
+          <li class="cl-footrow">
+            <span class="cl-footicon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+                <path d="M7 3h4l1 5-2 1c1 3 4 6 7 7l1-2 5 1v4c0 1-1 2-2 2C11 21 3 13 3 5c0-1 1-2 2-2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <a class="cl-footlink" href="tel:+442012345678">020 1234 5678</a>
+          </li>
+
+          <li class="cl-footrow">
+            <span class="cl-footicon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+                <path d="M4 7h16v10H4V7Z" stroke="currentColor" stroke-width="1.8"/>
+                <path d="m4 8 8 6 8-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <a class="cl-footlink" href="mailto:hello@lumenclinic.co.uk">hello@lumenclinic.co.uk</a>
+          </li>
+
+          <li class="cl-footrow">
+            <span class="cl-footicon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+                <path d="M12 22s7-5 7-12a7 7 0 1 0-14 0c0 7 7 12 7 12Z" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M12 10.5a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4Z" stroke="currentColor" stroke-width="1.8"/>
+              </svg>
+            </span>
+            <span class="cl-footdim">
+              123 Harley Street<br />
+              Marylebone<br />
+              London W1G 7JU
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Quick links -->
+      <div class="cl-footer__col">
+        <h3 class="cl-footer__title">Quick Links</h3>
+        <ul class="cl-quick">
+          <li><a class="cl-quick__a" href="#treatments">Our Treatments</a></li>
+          <li><a class="cl-quick__a" href="#pricing">Pricing</a></li>
+          <li><a class="cl-quick__a" href="#contact">Book Appointment</a></li>
+          <li><a class="cl-quick__a" href="#about">About Us</a></li>
+          <li><a class="cl-quick__a" href="#reviews">Patient Reviews</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cl-footer__rule"></div>
+
+    <div class="cl-footer__bottom">
+      <div class="cl-footer__copy">
+        © 2025 Lumen Clinic. All rights reserved.
+        <span class="cl-footer__micro">CQC Registered | GDC Registered Professionals | Flexible Finance Available</span>
+      </div>
+
+      <div class="cl-footer__policies">
+        <a href="#" class="cl-pol">Privacy Policy</a>
+        <a href="#" class="cl-pol">Terms of Service</a>
+        <a href="#" class="cl-pol">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  </main>
+</Layout>
