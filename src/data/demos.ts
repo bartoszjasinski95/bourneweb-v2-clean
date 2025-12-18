@@ -44,6 +44,17 @@ export const demos: Demo[] = [
     active: true,
     demoHref: "/projects/electrical-emergency-site",
   },
+  {
+  slug: "local-dental-implant-site",
+  title: "Implant Dentistry",
+  industry: "Dental",
+  summary: "Clean, gallery-grid hero + soft cards — implant-focused demo built to push bookings without shouting.",
+  highlights: ["Implants", "Book online", "Process cards", "Consultation"],
+  stack: "Astro + CSS",
+  goal: "More bookings",
+  active: true,
+  demoHref: "/projects/local-dental-implant-site",
+},
 
   {
   slug: "local-restaurant-dining-site",

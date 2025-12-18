@@ -1,0 +1,258 @@
+---
+import Layout from "./Layout.astro";
+---
+
+<Layout title="Implant Dentistry · Demo">
+  <main class="dn-page">
+    <!-- TOP NAV -->
+<header class="dn-nav" role="banner">
+  <div class="dn-shell">
+    <div class="dn-nav__bar">
+      <!-- Brand -->
+      <a class="dn-brand" href="#">
+        <span class="dn-brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
+            <path d="M12 3c3 0 5 2.1 5 5.2 0 4.3-2.2 9.2-5 12.8-2.8-3.6-5-8.5-5-12.8C7 5.1 9 3 12 3Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M10 10c.8-.7 3.2-.7 4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="dn-brand__text">
+          <span class="dn-brand__name">Harbour Smile</span>
+          <span class="dn-brand__sub">Implant Dentistry</span>
+        </span>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="dn-links" aria-label="Primary">
+        <a href="#services">Services</a>
+        <a href="#implants">Implants</a>
+        <a href="#process">Process</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <!-- Actions -->
+      <div class="dn-actions">
+        <a class="dn-action dn-action--ghost" href="tel:01202555000" aria-label="Call clinic">
+          <span class="dn-action__ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+              <path d="M7 3h4l1 5-2 1c1 3 4 6 7 7l1-2 5 1v4c0 1-1 2-2 2C11 21 3 13 3 5c0-1 1-2 2-2Z"
+                stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          Call
+        </a>
+
+        <a class="dn-action dn-action--solid" href="#book">Book Online</a>
+
+        <!-- Mobile menu -->
+        <details class="dn-menu">
+          <summary class="dn-menu__btn" aria-label="Open menu">
+            <span aria-hidden="true" class="dn-burger"></span>
+          </summary>
+
+          <div class="dn-menu__panel" role="menu">
+            <a role="menuitem" href="#services">Services</a>
+            <a role="menuitem" href="#implants">Implants</a>
+            <a role="menuitem" href="#process">Process</a>
+            <a role="menuitem" href="#reviews">Reviews</a>
+            <a role="menuitem" href="#contact">Contact</a>
+            <div class="dn-menu__divider" aria-hidden="true"></div>
+            <a role="menuitem" class="dn-menu__cta" href="#book">Book Online</a>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</header>
+
+    <section class="dn-hero" aria-label="Implant Dentistry Hero">
+      <div class="dn-shell">
+        <div class="dn-grid">
+          <!-- LEFT COLUMN -->
+          <div class="dn-left">
+            <header class="dn-panel dn-head">
+              <h1 class="dn-h1">
+                <span>Implant</span><br />
+                <span>Dentistry</span>
+              </h1>
+              <p class="dn-sub">Restore Missing Teeth</p>
+            </header>
+
+            <div class="dn-two">
+              <figure class="dn-tile dn-tile--img" aria-label="Implant visual 1">
+                <img
+                  src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=1200&q=60"
+                  alt="Dental implant illustration"
+                  loading="lazy"
+                />
+              </figure>
+
+              <figure class="dn-tile dn-tile--img" aria-label="Implant visual 2">
+                <img
+                  src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=1200&q=60"
+                  alt="Dental implant close-up"
+                  loading="lazy"
+                />
+              </figure>
+            </div>
+
+            <section class="dn-panel dn-service" aria-label="Services card">
+              <div class="dn-kicker">Consultation</div>
+              <div class="dn-service__row">
+                <h2 class="dn-h2">
+                  Dental<br />
+                  Restoration<br />
+                  Services
+                </h2>
+
+                <a class="dn-pill" href="#book">Book Online</a>
+              </div>
+            </section>
+          </div>
+
+          <!-- RIGHT COLUMN -->
+          <div class="dn-right">
+            <div class="dn-photoWrap">
+              <img
+                class="dn-photo"
+                src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1600&q=60"
+                alt="Smiling patient"
+                loading="lazy"
+              />
+
+              <div class="dn-cards" aria-label="Education cards">
+                <article class="dn-card dn-card--light">
+                  <h3 class="dn-card__title">
+                    The Process<br />
+                    of Installing<br />
+                    Implants
+                  </h3>
+                  <a class="dn-circle" href="#process" aria-label="Open process">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
+                      <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                </article>
+
+                <article class="dn-card dn-card--warm">
+                  <h3 class="dn-card__title dn-card__title--invert">
+                    Caring<br />
+                    for Dental<br />
+                    Implants
+                  </h3>
+                  <a class="dn-circle dn-circle--invert" href="#care" aria-label="Open care">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
+                      <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                </article>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+    <!-- STACKING CARDS -->
+<section class="dn-stack" aria-label="Implant highlights">
+  <div class="dn-shell">
+    <div class="dn-stack__stage">
+      <article class="dn-stackCard" style="--i:0;">
+        <div class="dn-stackCard__top">
+          <p class="dn-tag">Why implants</p>
+          <h2 class="dn-stackCard__title">Natural feel.<br/>Strong bite.<br/>Confident smile.</h2>
+        </div>
+        <div class="dn-stackCard__body">
+          <p class="dn-stackCard__text">
+            Implants replace missing teeth without relying on adjacent teeth. Designed for comfort, stability and everyday life.
+          </p>
+          <div class="dn-pills">
+            <span class="dn-pillMini">Long-lasting</span>
+            <span class="dn-pillMini">Looks natural</span>
+            <span class="dn-pillMini">Secure fit</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="dn-stackCard" style="--i:1;">
+        <div class="dn-stackCard__top">
+          <p class="dn-tag">The process</p>
+          <h2 class="dn-stackCard__title">Plan. Place.<br/>Restore.<br/>Done right.</h2>
+        </div>
+        <div class="dn-stackCard__body">
+          <p class="dn-stackCard__text">
+            We guide you through consultation, 3D planning, placement and final restoration — with calm clarity at every step.
+          </p>
+          <div class="dn-pills">
+            <span class="dn-pillMini">Consultation</span>
+            <span class="dn-pillMini">3D planning</span>
+            <span class="dn-pillMini">Aftercare</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="dn-stackCard" style="--i:2;">
+        <div class="dn-stackCard__top">
+          <p class="dn-tag">Care & comfort</p>
+          <h2 class="dn-stackCard__title">Simple care.<br/>Clear guidance.<br/>Peace of mind.</h2>
+        </div>
+        <div class="dn-stackCard__body">
+          <p class="dn-stackCard__text">
+            A small routine makes a big difference. We’ll show you how to keep implants healthy with easy, realistic habits.
+          </p>
+          <div class="dn-pills">
+            <span class="dn-pillMini">Hygiene plan</span>
+            <span class="dn-pillMini">Check-ups</span>
+            <span class="dn-pillMini">Support</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+    <!-- BOOK ONLINE -->
+<section class="dn-book" aria-label="Book Online">
+  <div class="dn-shell">
+    <div class="dn-book__panel">
+      <h2 class="dn-book__title">Book Online</h2>
+      <p class="dn-book__sub">Book Your Appointment Today!</p>
+
+      <form class="dn-book__form" action="#" method="post">
+        <label class="dn-field">
+          <span class="sr-only">Your Name</span>
+          <input type="text" name="name" placeholder="Your Name" autocomplete="name" />
+        </label>
+
+        <label class="dn-field">
+          <span class="sr-only">Phone number</span>
+          <input type="tel" name="phone" placeholder="Phone number" autocomplete="tel" />
+        </label>
+
+        <label class="dn-field dn-field--select">
+          <span class="sr-only">Date</span>
+          <select name="date" aria-label="Date">
+            <option>25 Oct</option>
+            <option>26 Oct</option>
+            <option>27 Oct</option>
+          </select>
+        </label>
+
+        <label class="dn-field dn-field--select">
+          <span class="sr-only">Time</span>
+          <select name="time" aria-label="Time">
+            <option>15:30</option>
+            <option>16:00</option>
+            <option>16:30</option>
+          </select>
+        </label>
+
+        <button class="dn-book__btn" type="submit">Book Now</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+  </main>
+</Layout>
