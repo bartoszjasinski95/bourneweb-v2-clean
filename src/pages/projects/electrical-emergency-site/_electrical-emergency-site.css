@@ -13,6 +13,110 @@
   --sf-border: rgba(255,255,255,.10);
   --sf-cut: 12px; /* size of the cut corners */
 }
+:root{
+  /* podmień ścieżkę na swoją */
+  --sf-ai-img: url("/projects/sparkforge/hero-watercolor.png");
+}
+
+/* ważne: blendy nie uciekają poza stronę */
+.el-root{
+  position: relative;
+  min-height: 100%;
+  overflow-x: hidden;
+  isolation: isolate;
+}
+
+/* wszystko co jest “contentem” ma być nad tłem */
+.el-root > :not(.sf-ai-bg):not(.sf-ai-glow):not(.sf-ai-noise){
+  position: relative;
+  z-index: 2;
+}
+
+/* 1) WARSTWA: Twój obraz – powolny drift */
+.sf-ai-bg{
+  position: fixed;
+  inset: -14vh -14vw;
+  z-index: 0;
+  pointer-events: none;
+
+  background-image: var(--sf-ai-img);
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+
+  /* “AI grading” – delikatnie */
+  filter: saturate(1.06) contrast(1.03) brightness(.92);
+  transform: translate3d(0,0,0) scale(1.12);
+  opacity: .55;
+
+  animation: sf_ai_drift 26s ease-in-out infinite alternate;
+}
+
+/* 2) WARSTWA: świetlne plamy – jak żywy model diffusion */
+.sf-ai-glow{
+  position: fixed;
+  inset: -22vh -22vw;
+  z-index: 1;
+  pointer-events: none;
+
+  background:
+    radial-gradient(900px 620px at 18% 22%, rgba(216,255,0,.10), transparent 60%),
+    radial-gradient(980px 680px at 82% 18%, rgba(0,229,255,.10), transparent 62%),
+    radial-gradient(1100px 760px at 60% 86%, rgba(255,122,0,.08), transparent 62%),
+    radial-gradient(1200px 820px at 50% 50%, rgba(255,255,255,.05), transparent 70%),
+    linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.78));
+
+  filter: blur(22px) saturate(1.25);
+  mix-blend-mode: soft-light;
+  opacity: .85;
+
+  animation: sf_ai_glow 18s ease-in-out infinite alternate;
+}
+
+/* 3) WARSTWA: ziarno/noise – “AI film grain” */
+.sf-ai-noise{
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+
+  opacity: .09;
+  mix-blend-mode: overlay;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+
+  animation: sf_ai_noise 1.8s steps(2) infinite;
+}
+
+/* Animki: powolne, organiczne, “nie da się złapać” */
+@keyframes sf_ai_drift{
+  0%   { transform: translate3d(-1.2%, -0.8%, 0) scale(1.12) rotate(-.15deg); }
+  55%  { transform: translate3d( 1.1%,  0.6%, 0) scale(1.16) rotate(.18deg); }
+  100% { transform: translate3d(-0.6%,  1.0%, 0) scale(1.14) rotate(-.10deg); }
+}
+
+@keyframes sf_ai_glow{
+  0%   { transform: translate3d(-1.6%, .8%, 0) scale(1.02); }
+  50%  { transform: translate3d( 1.2%,-1.0%, 0) scale(1.06); }
+  100% { transform: translate3d(-0.8%, 1.4%, 0) scale(1.03); }
+}
+
+@keyframes sf_ai_noise{
+  0%   { transform: translate3d(0,0,0); }
+  25%  { transform: translate3d(-1%, 1%,0); }
+  50%  { transform: translate3d( 1%,-1%,0); }
+  75%  { transform: translate3d(-1%,-1%,0); }
+  100% { transform: translate3d(1%,1%,0); }
+}
+
+/* Szanujemy “reduce motion” */
+@media (prefers-reduced-motion: reduce){
+  .sf-ai-bg, .sf-ai-glow, .sf-ai-noise{ animation: none !important; }
+}
+.sf-hero{
+  background: transparent !important;
+}
 
 *{ box-sizing: border-box; }
 html,body{ height:100%; }

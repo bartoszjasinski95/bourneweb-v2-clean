@@ -1,0 +1,159 @@
+---
+const { id = "services" } = Astro.props;
+---
+
+<section class="bm-services" id={id} aria-label="Prices & Services">
+  <div class="bm-services__bg" aria-hidden="true">
+    <div class="bm-services__bgWord bm-leftWord" data-bg-left>GROOMING</div>
+    <div class="bm-services__bgWord bm-centerWord" data-bg-center>BARBERING</div>
+    <div class="bm-services__bgWord bm-rightWord" data-bg-right>SPA & MASSAGE</div>
+  </div>
+
+  <div class="bm-services__inner">
+    <div class="bm-services__top">
+      <div class="bm-services__kicker">PRICES & SERVICES</div>
+    </div>
+
+    <div class="bm-services__stage">
+      <button class="bm-arrow" type="button" aria-label="Previous category" data-svc-prev>
+        <span aria-hidden="true">←</span>
+      </button>
+
+      <div class="bm-circle" role="img" aria-label="Service preview image" data-svc-circle></div>
+
+      <button class="bm-arrow" type="button" aria-label="Next category" data-svc-next>
+        <span aria-hidden="true">→</span>
+      </button>
+    </div>
+
+    <div class="bm-services__bottom">
+      <div class="bm-services__copy">
+        <h2 class="bm-services__headline">We know our job<br/>perfectly</h2>
+
+        <div class="bm-services__mini">
+          <div class="bm-mini__badge">+10%</div>
+          <p class="bm-mini__text">
+            Most of our first-time clients book again within 30 days.
+            Clean fades. Sharp beards. Zero drama.
+          </p>
+        </div>
+      </div>
+
+      <div class="bm-services__prices" aria-label="Service price list">
+        <div class="bm-priceGrid" data-svc-list>
+          <!-- JS fills list -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    (function () {
+      const data = [
+        {
+          key: "barbering",
+          left: "GROOMING",
+          center: "BARBERING",
+          right: "SPA & MASSAGE",
+          img: "https://images.unsplash.com/photo-1599351431618-3174d19c93a5?auto=format&fit=crop&w=1400&q=80",
+          items: [
+            ["Men’s haircut", "£22"],
+            ["Men’s haircut “Admiral”", "£26"],
+            ["Haircut + beard", "£30"],
+            ["Skin fade", "£28"],
+            ["Children’s haircut", "£17"],
+            ["Beard care (shape)", "£7"],
+            ["Beard colouring", "£15"],
+            ["Shaving (regular)", "£12"],
+            ["Hair treatments", "£7–£15"],
+          ],
+        },
+        {
+          key: "grooming",
+          left: "BARBERING",
+          center: "GROOMING",
+          right: "SPA & MASSAGE",
+          img: "https://images.unsplash.com/photo-1517832606299-7ae9b720a186?auto=format&fit=crop&w=1400&q=80",
+          items: [
+            ["Beard trim", "£14"],
+            ["Hot towel shave", "£18"],
+            ["Beard sculpt + line-up", "£16"],
+            ["Eyebrows", "£6"],
+            ["Nose wax", "£8"],
+            ["Face cleanse", "£10"],
+            ["Black mask", "£12"],
+            ["Head massage", "£10"],
+            ["Hair wash + style", "£8"],
+          ],
+        },
+        {
+          key: "spa",
+          left: "GROOMING",
+          center: "SPA & MASSAGE",
+          right: "BARBERING",
+          img: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1400&q=80",
+          items: [
+            ["Neck & shoulders (15m)", "£15"],
+            ["Relax massage (30m)", "£28"],
+            ["Full face treatment", "£22"],
+            ["Steam towel finish", "£8"],
+            ["Scalp detox", "£16"],
+            ["Beard spa ritual", "£20"],
+            ["Premium combo", "£42"],
+            ["Student discount", "–10%"],
+            ["Gift card", "from £25"],
+          ],
+        },
+      ];
+
+      let i = 0;
+
+      const leftEl = document.querySelector("[data-bg-left]");
+      const centerEl = document.querySelector("[data-bg-center]");
+      const rightEl = document.querySelector("[data-bg-right]");
+      const circleEl = document.querySelector("[data-svc-circle]");
+      const listEl = document.querySelector("[data-svc-list]");
+      const prev = document.querySelector("[data-svc-prev]");
+      const next = document.querySelector("[data-svc-next]");
+
+      function render(idx) {
+        const d = data[idx];
+        if (leftEl) leftEl.textContent = d.left;
+        if (centerEl) centerEl.textContent = d.center;
+        if (rightEl) rightEl.textContent = d.right;
+
+        if (circleEl) {
+          circleEl.style.backgroundImage =
+            `radial-gradient(700px 520px at 35% 30%, rgba(199,162,106,.18), transparent 60%),
+             url("${d.img}")`;
+        }
+
+        if (listEl) {
+          listEl.innerHTML = "";
+          d.items.forEach(([name, price]) => {
+            const row = document.createElement("div");
+            row.className = "bm-priceRow";
+            row.innerHTML = `
+              <span class="bm-priceRow__name">${name}</span>
+              <span class="bm-priceRow__dots" aria-hidden="true"></span>
+              <span class="bm-priceRow__price">${price}</span>
+            `;
+            listEl.appendChild(row);
+          });
+        }
+      }
+
+      function step(dir) {
+        i = (i + dir + data.length) % data.length;
+        document.documentElement.style.setProperty("--bm-svc-flash", "1");
+        render(i);
+        setTimeout(() => document.documentElement.style.setProperty("--bm-svc-flash", "0"), 140);
+      }
+
+      prev?.addEventListener("click", () => step(-1));
+      next?.addEventListener("click", () => step(1));
+
+      render(i);
+    })();
+  </script>
+</section>

@@ -1,0 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+:root{
+  --bm-bg: #0b0b0c;
+  --bm-panel: #0f0f10;
+
+  --bm-text: rgba(255,255,255,.90);
+  --bm-dim: rgba(255,255,255,.70);
+  --bm-faint: rgba(255,255,255,.55);
+
+  --bm-gold: #c7a26a;
+  --bm-gold-2: #b68f56;
+
+  --bm-border: rgba(255,255,255,.10);
+  --bm-shadow: 0 30px 90px rgba(0,0,0,.60);
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+
+body.bm-root{
+  margin:0;
+  background: var(--bm-bg);
+  color: var(--bm-text);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  overflow-x:hidden;
+}
+
+a{ color:inherit; text-decoration:none; }
+button{ font: inherit; color: inherit; }

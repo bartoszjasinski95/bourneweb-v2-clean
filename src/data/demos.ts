@@ -23,6 +23,18 @@ export const demos: Demo[] = [
     demoHref: "/projects/local-barber-booking-site",
   },
   {
+  title: "Neo Gentleman Barber Site",
+  industry: "Barber",
+  slug: "local-barber-neo-gentleman-site",
+  summary: "Premium barber demo — booking-first, bold typography, and a sleek Neo-Gentleman vibe.",
+  highlights: ["Booking launcher", "Price teaser", "Video cards", "Mobile floating Book CTA"],
+  stack: "Astro · Tailwind · Local CSS",
+  goal: "More bookings",
+  active: true,
+  demoHref: "/projects/local-barber-neo-gentleman-site",
+  },
+
+  {
   title: "Clinic Appointment Site",
   industry: "Clinic",
   slug: "clinic-appointment-site",
