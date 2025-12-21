@@ -1,66 +1,77 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+/* ===== Base / global reset for this demo ===== */
 
 :root{
-  --bm-bg: #0b0b0c;
-  --bm-panel: #0f0f10;
-
-  --bm-text: rgba(255,255,255,.90);
-  --bm-dim: rgba(255,255,255,.70);
-  --bm-faint: rgba(255,255,255,.55);
-
-  --bm-gold: #c7a26a;
-  --bm-gold-2: #b68f56;
-
-  --bm-border: rgba(255,255,255,.10);
-  --bm-shadow: 0 30px 90px rgba(0,0,0,.60);
+  color-scheme: dark;
 }
 
-*{ box-sizing:border-box; }
-html,body{ height:100%; }
-
-body.bm-root{
-  margin:0;
-  background: var(--bm-bg);
-  color: var(--bm-text);
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  overflow-x:hidden;
-}
-
-a{ color:inherit; text-decoration:none; }
-button{ font: inherit; color: inherit; }
-/* ===== GLOBAL: one black canvas for all sections + golden top-left light (fixed) ===== */
-
-.bm-root{
+/* Flat black everywhere */
+html, body{
   background: #050505;
   color: rgba(255,255,255,.88);
 }
 
-/* Make sure sections don't fight the background */
-.bm-root main,
-.bm-root section,
-.bm-root header,
-.bm-root footer{
-  background: transparent;
+*{ box-sizing: border-box; }
+
+img, svg, video{
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
-/* Golden light pinned to viewport (follows the view) */
-*.bm-root::before{
-  content:"";
-  position: fixed;
-  inset: -40vh -40vw;
-  z-index: 0;
-  pointer-events:none;
+a{ color: inherit; }
 
-  /* “falling” light from top-left */
-  background:
-    radial-gradient(900px 620px at 22% 10%, rgba(210,170,110,.20), transparent 60%),
-    radial-gradient(720px 520px at 18% 18%, rgba(255,230,185,.06), transparent 62%),
-    linear-gradient(180deg, rgba(210,170,110,.04), transparent 55%);
-
-  filter: blur(18px);
-  opacity: .95;
-  mix-blend-mode: screen;
+.bm-root{
+  min-height: 100vh;
+  background: #050505;
+  color: rgba(255,255,255,.88);
 }
 
-/* keep content above the light */
-.bm-site{ position: relative; z-index: 1; }
+/* Keep site content above any potential background layers */
+.bm-site{
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Kill “bands” between sections (common cause: gradients/shadows/pseudo layers) ===== */
+
+/* Don’t let top-level wrappers paint their own background */
+.bm-site > header,
+.bm-site > main,
+.bm-site > section,
+.bm-site > footer{
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove separator pseudo-elements often used as “lights” */
+.bm-site > header::before,
+.bm-site > header::after,
+.bm-site > main::before,
+.bm-site > main::after,
+.bm-site > section::before,
+.bm-site > section::after,
+.bm-site > footer::before,
+.bm-site > footer::after{
+  content: none !important;
+}
+
+/* If your sections use common wrappers, keep them flat too */
+.bm-hero,
+.bm-gallery,
+.bm-services,
+.bm-products,
+.bm-book{
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* ===== Utilities ===== */
+.bm-noScroll{ overflow: hidden !important; }
+
+/* Optional: reduce subtle “line” artifacts from subpixel */
+body{
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
