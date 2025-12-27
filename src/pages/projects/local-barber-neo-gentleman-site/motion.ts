@@ -1,16 +1,33 @@
-// src/pages/projects/local-barber-neo-gentleman-site/motion.ts
-import Lenis from "@studio-freight/lenis";
-import gsap from "gsap";
+// motion.ts — shared tiny helpers for the demo (Lenis + reduced motion safe)
 
-export function bootMotion() {
-  const lenis = new Lenis({ smoothWheel: true });
+export const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  typeof window.matchMedia === "function" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  function raf(time: number) {
-    lenis.raf(time);
+/**
+ * Initialize Lenis once (browser-only).
+ * Package renamed from "@studio-freight/lenis" -> "lenis".
+ */
+export async function initLenis() {
+  if (typeof window === "undefined") return null;
+
+  const w = window as any;
+  if (w.__bw_lenis) return w.__bw_lenis;
+
+  const { default: Lenis } = await import("lenis");
+  const lenis = new Lenis({
+    smoothWheel: true,
+    smoothTouch: false,
+  });
+
+  w.__bw_lenis = lenis;
+
+  const raf = (t: number) => {
+    lenis.raf(t);
     requestAnimationFrame(raf);
-  }
+  };
   requestAnimationFrame(raf);
 
-  // przykładowy “premium szept”:
-  gsap.from("[data-anim='fadeUp']", { y: 16, opacity: 0, duration: 0.6, ease: "power2.out", stagger: 0.06 });
+  return lenis;
 }
