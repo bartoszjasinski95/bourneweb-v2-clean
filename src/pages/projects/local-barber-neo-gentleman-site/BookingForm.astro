@@ -3,14 +3,15 @@ import "./_booking.css";
 import BookingWidget from "./BookingWidget.tsx";
 ---
 
-<section class="bm-book3" id="book" aria-label="Booking">
-  <div class="bm-book3__wrap">
-    <header class="bm-book3__head">
-      <p class="bm-book3__kicker">BOOK ONLINE</p>
-      <h2 class="bm-book3__title">Book fast. Look sharp.</h2>
-      <p class="bm-book3__sub">Pay at the shop. We’ll text to confirm — no marketing.</p>
+<section class="bm-book" id="book" aria-label="Booking">
+  <div class="bm-book__wrap">
+    <header class="bm-book__head">
+      <p class="bm-book__kicker">BOOK ONLINE</p>
+      <h2 class="bm-book__title">Book fast. Look sharp.</h2>
+      <p class="bm-book__sub">Pay at the shop. We’ll text to confirm — no marketing.</p>
     </header>
 
-    <BookingWidget client:load />
+    <!-- React widget: client-only = zero SSR pain on Vercel -->
+    <BookingWidget client:only="react" />
   </div>
 </section>
