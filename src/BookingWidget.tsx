@@ -49,7 +49,6 @@ function prettyDayLong(d: Date) {
   return new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "2-digit", month: "short" }).format(d);
 }
 function prettyDayShort(d: Date) {
-  // Mon 29
   return new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "2-digit" }).format(d);
 }
 function prettyMonth(d: Date) {
@@ -310,8 +309,9 @@ export default function BookingWidget() {
     return "Pick a time";
   }, [step]);
 
-  /* ======= SUMMARY: compact vs full (this fixes the width bug) ======= */
+  /* ======= SUMMARY: compact vs full ======= */
   const summaryFull = useMemo(() => {
+    // Full can keep duration if you want (not in the footer width-critical line)
     const s = service ? `${service.name} · £${service.price} · ${service.mins}m` : "—";
     const b = barber ? ` · ${barber.name}` : " · No preference";
     const d = step >= 2 ? ` · ${prettyDayLong(date)}` : "";
@@ -320,15 +320,14 @@ export default function BookingWidget() {
   }, [service, barber, step, date, time, endTime]);
 
   const summaryCompact = useMemo(() => {
-    // Designed to be short ALWAYS.
-    // Step 1: "Skin fade · £28 · 50m"
+    // Footer line: NO duration (50m/60m/30m removed)
+    // Step 1: "Skin fade · £28"
     // Step 2: add "Mon 29"
     // Step 3: add "18:45–19:35"
     if (!service) return "—";
-    const base = `${service.name} · £${service.price} · ${service.mins}m`;
+    const base = `${service.name} · £${service.price}`;
     const d = step >= 2 ? ` · ${prettyDayShort(date)}` : "";
     const t = step >= 3 && time ? ` · ${time}${endTime ? `–${endTime}` : ""}` : "";
-    // barber name is the first thing we drop on mobile
     return `${base}${d}${t}`;
   }, [service, step, date, time, endTime]);
 
@@ -694,7 +693,6 @@ export default function BookingWidget() {
             Back
           </button>
 
-          {/* summary is a clamped button, never pushes width; tap = full details */}
           <button
             type="button"
             className="bmw__summaryBtn"
@@ -735,7 +733,11 @@ export default function BookingWidget() {
             <div className="bmw__sheet" role="dialog" aria-modal="true" aria-label="Details">
               <div className="bmw__sheetTop">
                 <div className="bmw__sheetTitle">
-                  {sheetMode === "service" && infoService ? infoService.name : sheetMode === "summary" ? "Summary" : "Add details"}
+                  {sheetMode === "service" && infoService
+                    ? infoService.name
+                    : sheetMode === "summary"
+                      ? "Summary"
+                      : "Add details"}
                 </div>
                 <button
                   ref={sheetCloseRef}
@@ -764,7 +766,9 @@ export default function BookingWidget() {
                 ) : (
                   <>
                     <label className="bmw__field">
-                      <span style={{ display: "block", fontSize: 12, color: "rgba(255,255,255,.60)", marginBottom: 6 }}>Name</span>
+                      <span style={{ display: "block", fontSize: 12, color: "rgba(255,255,255,.60)", marginBottom: 6 }}>
+                        Name
+                      </span>
                       <input
                         className="bmw__input"
                         value={name}
@@ -781,7 +785,9 @@ export default function BookingWidget() {
                           key={c}
                           type="button"
                           className="bmw__noteChip"
-                          onClick={() => setNotes((prev) => (prev ? `${prev}${prev.trim().endsWith(".") ? "" : "."} ${c}` : c))}
+                          onClick={() =>
+                            setNotes((prev) => (prev ? `${prev}${prev.trim().endsWith(".") ? "" : "."} ${c}` : c))
+                          }
                           role="listitem"
                           aria-label={`Add note ${c}`}
                         >
@@ -791,7 +797,9 @@ export default function BookingWidget() {
                     </div>
 
                     <label className="bmw__field">
-                      <span style={{ display: "block", fontSize: 12, color: "rgba(255,255,255,.60)", marginBottom: 6 }}>Notes</span>
+                      <span style={{ display: "block", fontSize: 12, color: "rgba(255,255,255,.60)", marginBottom: 6 }}>
+                        Notes
+                      </span>
                       <textarea
                         className="bmw__input bmw__textarea"
                         value={notes}
