@@ -29,8 +29,6 @@
   /* calendar sizing */
   --cal-gap: 10px;
   --cal-pad: 10px;
-  --cal-cell-min: 44px;
-  --cal-cell-max: 64px;
 }
 
 .bmw{ width: 100%; }
@@ -79,11 +77,9 @@
 
     --gap: 10px;
 
-    /* calendar: make it fit, no clipping */
+    /* calendar: tighter */
     --cal-gap: 6px;
     --cal-pad: 8px;
-    --cal-cell-min: 38px;
-    --cal-cell-max: 54px;
   }
 
   .bmw__card{
@@ -163,72 +159,21 @@
   color: rgba(255,255,255,.42);
 }
 
-/* ========= STEP 1: FASTEST ========= */
-.bmw__fastestRow{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 12px;
-  padding: 12px 12px;
-  border-radius: var(--r-ui);
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(255,255,255,.02);
-}
-@media (max-width: 560px){
-  .bmw__fastestRow{ padding: 10px 10px; }
-}
-
-.bmw__fastestTitle{ font-weight: 950; font-size: var(--fs-md); }
-.bmw__fastestSub{ margin-top: 2px; font-size: var(--fs-xs); color: rgba(255,255,255,.52); }
-
-.bmw__switch{
-  width: 66px;
-  height: var(--tap);
-  border-radius: var(--pill);
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.04);
-  padding: 3px;
-  cursor: pointer;
-  display:flex;
-  align-items:center;
-  justify-content:flex-start;
-}
-@media (max-width: 560px){
-  .bmw__switch{ width: 60px; height: 40px; }
-}
-
-.bmw__switch.is-on{
-  background: rgba(255,255,255,.11);
-  border-color: rgba(255,255,255,.18);
-  justify-content:flex-end;
-}
-.bmw__switchKnob{
-  width: calc(var(--tap) - 6px);
-  height: calc(var(--tap) - 6px);
-  border-radius: var(--pill);
-  background: rgba(255,255,255,.88);
-}
-@media (max-width: 560px){
-  .bmw__switchKnob{ width: 34px; height: 34px; }
-}
-
-/* ========= STEP 1: BARBER CAROUSEL ========= */
-.bmw__barberRail{
-  display:flex;
+/* ========= STEP 1: BARBERS (GRID, no carousel) ========= */
+.bmw__barberGrid{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
 }
-.bmw__barberRail::-webkit-scrollbar{ display:none; }
+@media (max-width: 560px){
+  .bmw__barberGrid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+}
 
 .bmw__barberTile{
-  scroll-snap-align: start;
-  flex: 0 0 auto;
-  width: 280px;
-  max-width: 84vw;
-
+  width: 100%;
   height: 92px;
 
   border-radius: var(--r-ui);
@@ -244,8 +189,7 @@
 }
 @media (max-width: 560px){
   .bmw__barberTile{
-    width: 232px;
-    height: 78px;
+    height: 80px;
     padding: 10px 10px;
     gap: 10px;
   }
@@ -261,6 +205,33 @@
   border-color: rgba(255,255,255,.22);
 }
 
+/* Fastest card sits INSIDE barber grid */
+.bmw__barberTile--fastest{
+  grid-column: 1 / -1;
+  height: 64px;
+  align-items:center;
+  justify-content:space-between;
+}
+@media (max-width: 560px){
+  .bmw__barberTile--fastest{ height: 56px; }
+}
+.bmw__fastTxt{ display:flex; flex-direction:column; gap: 2px; min-width: 0; }
+.bmw__fastTitle{ font-weight: 950; font-size: var(--fs-md); }
+.bmw__fastSub{ font-size: var(--fs-xs); color: rgba(255,255,255,.52); }
+.bmw__fastPill{
+  height: 34px;
+  padding: 0 12px;
+  border-radius: var(--pill);
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  color: rgba(255,255,255,.70);
+  font-size: var(--fs-xs);
+  white-space: nowrap;
+}
+@media (max-width: 560px){
+  .bmw__fastPill{ height: 32px; }
+}
+
 .bmw__avatar{
   width: var(--tap);
   height: var(--tap);
@@ -270,11 +241,11 @@
   background: rgba(255,255,255,.04);
   display:grid;
   place-items:center;
+  flex: 0 0 auto;
 }
 @media (max-width: 560px){
   .bmw__avatar{ width: 40px; height: 40px; }
 }
-
 .bmw__avatar img{ width: 100%; height: 100%; display:block; }
 
 .bmw__barberTxt{ min-width: 0; display:flex; flex-direction:column; gap: 2px; }
@@ -301,16 +272,6 @@
 .bmw__metaRating{ color: rgba(var(--gold), .95); font-weight: 950; }
 .bmw__metaDot{ opacity:.6; }
 .bmw__metaNext{ font-variant-numeric: tabular-nums; }
-
-/* Hint */
-.bmw__hintCard{
-  padding: 10px 12px;
-  border-radius: var(--r-ui);
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(255,255,255,.02);
-  color: rgba(255,255,255,.62);
-  font-size: var(--fs-sm);
-}
 
 /* ========= STEP 1: SERVICES (SMART CHIPS) ========= */
 .bmw__serviceGrid{
@@ -395,7 +356,7 @@
 .bmw__chipInfo:hover{ background: rgba(255,255,255,.03); border-color: rgba(255,255,255,.14); }
 .bmw__chipInfo:active{ transform: translateY(calc(-50% + 1px)); }
 
-/* ========= STEP 2: MONTH CALENDAR ========= */
+/* ========= STEP 2: MONTH CALENDAR (always 6 rows) ========= */
 .bmw__panelMonth{ gap: 10px; }
 
 .bmw__monthTop{
@@ -404,12 +365,16 @@
   justify-content:space-between;
   gap: 10px;
 }
+@media (max-width: 560px){
+  .bmw__monthTop{ gap: 8px; }
+}
 
 .bmw__monthTitle{
   font-weight: 950;
   letter-spacing: -0.02em;
   font-size: var(--fs-lg);
   color: rgba(255,255,255,.90);
+  text-align:center;
 }
 
 .bmw__iconBtn{
@@ -426,7 +391,6 @@
 @media (max-width: 560px){
   .bmw__iconBtn{ width: 40px; height: 40px; font-size: 18px; }
 }
-
 .bmw__iconBtn:hover{ background: rgba(255,255,255,.03); border-color: rgba(255,255,255,.14); }
 .bmw__iconBtn:active{ transform: translateY(1px); }
 
@@ -442,14 +406,16 @@
   flex-direction: column;
 }
 
+/* IMPORTANT: week header and grid must share the same gap + no weird padding */
 .bmw__weekRow{
   display:grid;
   grid-template-columns: repeat(7, 1fr);
   gap: var(--cal-gap);
-  padding: 2px 2px 8px;
+  padding: 0;
+  margin-bottom: 8px;
 }
 @media (max-width: 560px){
-  .bmw__weekRow{ padding: 0 0 6px; }
+  .bmw__weekRow{ margin-bottom: 6px; }
 }
 .bmw__weekDay{
   font-size: var(--fs-xxs);
@@ -465,13 +431,8 @@
 
   display:grid;
   grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, minmax(0, 1fr));
   gap: var(--cal-gap);
-
-  grid-auto-rows: minmax(var(--cal-cell-min), var(--cal-cell-max));
-}
-@media (max-width: 560px){
-  /* mobile: perfect squares, but within the container */
-  .bmw__calGridFull{ grid-auto-rows: 1fr; }
 }
 
 .bmw__calEmptyFull{
@@ -488,15 +449,12 @@
   display:grid;
   place-items:center;
   transition: transform .12s ease, background .12s ease, border-color .12s ease, opacity .12s ease;
-  min-height: var(--cal-cell-min);
+  min-width: 0;
+  min-height: 0;
   color: rgba(255,255,255,.92);
 }
 @media (max-width: 560px){
-  .bmw__dayFull{
-    aspect-ratio: 1 / 1;
-    border-radius: 12px;
-    min-height: 0;
-  }
+  .bmw__dayFull{ border-radius: 12px; }
 }
 
 .bmw__dayFull:hover{
@@ -539,7 +497,7 @@
   pointer-events:none;
 }
 
-/* ========= STEP 3 ========= */
+/* ========= STEP 3 (fit + only slots scroll) ========= */
 .bmw__panelTime{ gap: 10px; }
 
 .bmw__contextCard{
@@ -569,7 +527,7 @@
 .bmw__slotsHead{
   font-size: var(--fs-xs);
   color: rgba(255,255,255,.58);
-  padding: 0 2px 10px;
+  padding: 0 2px 8px;
 }
 
 /* ONLY scrollable area */
@@ -586,6 +544,9 @@
   display:grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
+}
+@media (max-width: 560px){
+  .bmw__timesGrid{ gap: 8px; }
 }
 @media (min-width: 720px){
   .bmw__timesGrid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -604,6 +565,13 @@
   padding: 10px 12px;
   transition: transform .12s ease, background .12s ease, border-color .12s ease;
   color: rgba(255,255,255,.92);
+}
+@media (max-width: 560px){
+  .bmw__timeTile2{
+    height: 44px;
+    padding: 9px 10px;
+    border-radius: 12px;
+  }
 }
 .bmw__timeTile2:hover{
   background: rgba(255,255,255,.03);
@@ -637,24 +605,36 @@
   line-height: 1;
 }
 
-/* Phone */
-.bmw__phoneCard{
-  padding: 10px 12px;
-  border-radius: var(--r-ui);
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(255,255,255,.02);
+/* compact after-pick row INSIDE slots card (no extra tall card) */
+.bmw__afterPick{
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  display:flex;
+  flex-direction: column;
+  gap: 10px;
 }
 @media (max-width: 560px){
-  .bmw__phoneCard{ padding: 10px 10px; }
+  .bmw__afterPick{ margin-top: 8px; padding-top: 8px; gap: 8px; }
 }
 
-.bmw__field{ display:block; margin-bottom: 10px; }
-.bmw__hint{ display:block; margin-top: 8px; font-size: var(--fs-xs); color: rgba(255,255,255,.52); }
-.bmw__softErr{ display:block; margin-top: 6px; font-size: var(--fs-xs); color: rgba(255,255,255,.60); }
+.bmw__phoneRow{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+}
+.bmw__phoneLabel{
+  font-size: var(--fs-xs);
+  color: rgba(255,255,255,.60);
+  width: 60px;
+}
+@media (max-width: 560px){
+  .bmw__phoneLabel{ width: 52px; }
+}
 
 .bmw__input{
   width: 100%;
-  height: 46px;
+  height: 44px;
   border-radius: 14px;
   border: 1px solid rgba(255,255,255,.10);
   background: rgba(255,255,255,.02);
@@ -671,54 +651,34 @@
   border-color: rgba(255,255,255,.14);
   box-shadow: 0 0 0 3px rgba(255,255,255,.06);
 }
-.bmw__textarea{
-  height: auto;
-  padding: 10px 12px;
-  resize: vertical;
+
+.bmw__miniHint{
+  font-size: var(--fs-xs);
+  color: rgba(255,255,255,.50);
+  line-height: 1.35;
 }
 
-/* Accordion */
-.bmw__accordionBtn{
-  width: 100%;
-  height: 44px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.02);
-  padding: 0 12px;
-  cursor:pointer;
+.bmw__miniActions{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  font-weight: 950;
-  font-size: var(--fs-md);
-  color: rgba(255,255,255,.88);
+  gap: 10px;
 }
-.bmw__chev{ color: rgba(255,255,255,.58); }
-.bmw__accordionBody{ margin-top: 10px; }
-
-.bmw__noteChips{
-  display:flex;
-  flex-wrap:wrap;
-  gap: 8px;
-  margin: 10px 0;
-}
-.bmw__noteChip{
-  height: 34px;
+.bmw__linkBtn{
+  height: 40px;
   padding: 0 12px;
   border-radius: var(--pill);
   border: 1px solid rgba(255,255,255,.10);
   background: rgba(255,255,255,.02);
   cursor:pointer;
-  font-size: var(--fs-xs);
   color: rgba(255,255,255,.84);
-}
-.bmw__noteChip:hover{ background: rgba(255,255,255,.03); }
-
-/* Empty */
-.bmw__emptyLite{
-  padding: 10px 12px;
-  color: rgba(255,255,255,.60);
+  font-weight: 900;
   font-size: var(--fs-sm);
+}
+.bmw__linkBtn:hover{ background: rgba(255,255,255,.03); border-color: rgba(255,255,255,.14); }
+.bmw__softErr{
+  font-size: var(--fs-xs);
+  color: rgba(255,255,255,.55);
 }
 
 /* ========= FOOTER ========= */
@@ -820,3 +780,28 @@
   line-height: 1.55;
   font-size: var(--fs-sm);
 }
+
+/* details sheet fields */
+.bmw__field{ display:block; margin-bottom: 10px; }
+.bmw__textarea{
+  height: auto;
+  padding: 10px 12px;
+  resize: vertical;
+}
+.bmw__noteChips{
+  display:flex;
+  flex-wrap:wrap;
+  gap: 8px;
+  margin: 10px 0;
+}
+.bmw__noteChip{
+  height: 34px;
+  padding: 0 12px;
+  border-radius: var(--pill);
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.02);
+  cursor:pointer;
+  font-size: var(--fs-xs);
+  color: rgba(255,255,255,.84);
+}
+.bmw__noteChip:hover{ background: rgba(255,255,255,.03); }
