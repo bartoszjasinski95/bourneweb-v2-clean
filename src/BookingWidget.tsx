@@ -123,7 +123,7 @@ function formatUKPhone(raw: string) {
 }
 
 function avatarDataURI(seed: string, accent: string) {
-  const initial = seed.trim().slice(0, 1).toUpperCase();
+  const initial = seed.trim().slice(0, 2).toUpperCase();
   const svg = `
   <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
     <defs>
@@ -146,10 +146,12 @@ function avatarDataURI(seed: string, accent: string) {
 }
 
 const BARBERS = [
-  { key: "mason", name: "Mason", role: "Senior Barber", rating: "★ 4.9", photo: avatarDataURI("Mason", "#d2aa6e") },
-  { key: "oliver", name: "Oliver", role: "Skin Fade Specialist", rating: "★ 4.9", photo: avatarDataURI("Oliver", "#c8a46a") },
-  { key: "theo", name: "Theo", role: "Classic Cuts", rating: "★ 4.9", photo: avatarDataURI("Theo", "#b99254") },
+  { key: "mason", name: "Mason", role: "Senior Barber", rating: "★ 4.9", photo: avatarDataURI("M", "#d2aa6e") },
+  { key: "oliver", name: "Oliver", role: "Skin Fade Specialist", rating: "★ 4.9", photo: avatarDataURI("O", "#c8a46a") },
+  { key: "theo", name: "Theo", role: "Classic Cuts", rating: "★ 4.9", photo: avatarDataURI("T", "#b99254") },
 ] as const satisfies readonly Barber[];
+
+const ANY_BARBER_PHOTO = avatarDataURI("NP", "#a78a5a");
 
 const SERVICES: Service[] = [
   {
@@ -178,7 +180,7 @@ const SERVICES: Service[] = [
   },
 ];
 
-/** Always build 42 cells (6 rows) so the calendar never “bloats” on 5-week months. */
+/** Always build 42 cells (6 rows) so the calendar never changes height. */
 function getMonthGrid(view: Date) {
   const y = view.getFullYear();
   const m = view.getMonth();
@@ -221,7 +223,7 @@ function useRovingRadio<T extends string>(
 export default function BookingWidget() {
   const [step, setStep] = useState<Step>(1);
 
-  const [fastest, setFastest] = useState(false);
+  // barberKey === null => No preference (system picks best)
   const [barberKey, setBarberKey] = useState<BarberKey | null>("mason");
   const [serviceKey, setServiceKey] = useState<ServiceKey | null>("skinfade");
 
@@ -262,10 +264,6 @@ export default function BookingWidget() {
   }, []);
 
   useEffect(() => {
-    if (fastest) setBarberKey(null);
-  }, [fastest]);
-
-  useEffect(() => {
     if (time) requestAnimationFrame(() => phoneRef.current?.focus());
   }, [time]);
 
@@ -300,7 +298,7 @@ export default function BookingWidget() {
     setNotes("");
   };
 
-  const step1Ready = !!service && (fastest || !!barber);
+  const step1Ready = !!service; // barber can be null (no preference)
   const step2Ready = startOfDay(date) >= minDay;
   const step3Ready = !!time && phoneOk;
 
@@ -312,11 +310,11 @@ export default function BookingWidget() {
 
   const summary = useMemo(() => {
     const s = service ? `${service.name} · £${service.price} · ${service.mins}m` : "—";
-    const b = barber ? ` · ${barber.name}` : fastest ? " · Fastest" : "";
+    const b = barber ? ` · ${barber.name}` : " · No preference";
     const d = step >= 2 ? ` · ${prettyDayLong(date)}` : "";
     const t = step >= 3 && time ? ` · ${time}${endTime ? `–${endTime}` : ""}` : "";
     return `${s}${b}${d}${t}`;
-  }, [service, barber, fastest, step, date, time, endTime]);
+  }, [service, barber, step, date, time, endTime]);
 
   const [sheetOpen, setSheetOpen] = useState(false);
   const [sheetMode, setSheetMode] = useState<"service" | "details">("service");
@@ -351,11 +349,6 @@ export default function BookingWidget() {
     setSheetOpen(true);
   };
 
-  const onBack = () => {
-    if (step === 1) return;
-    setStep((prev) => (prev === 3 ? 2 : 1));
-  };
-
   const onPrimary = async () => {
     if (step === 1) {
       if (!step1Ready) return;
@@ -375,19 +368,14 @@ export default function BookingWidget() {
     alert("Booked (demo) ✅");
   };
 
-  const barberIds = ["fastest", "mason", "oliver", "theo"] as const;
-  const barberSelectedId = fastest ? "fastest" : barberKey;
+  const barberIds = ["any", "mason", "oliver", "theo"] as const;
+  const barberSelectedId = barberKey ?? "any";
   const barberRadio = useRovingRadio<(typeof barberIds)[number]>(
     barberIds as any,
-    (barberSelectedId as any) ?? "fastest",
+    barberSelectedId as any,
     (id) => {
-      if (id === "fastest") {
-        setFastest(true);
-        setBarberKey(null);
-      } else {
-        setFastest(false);
-        setBarberKey(id as BarberKey);
-      }
+      if (id === "any") setBarberKey(null);
+      else setBarberKey(id as BarberKey);
     }
   );
 
@@ -418,28 +406,33 @@ export default function BookingWidget() {
                 </div>
 
                 <div role="radiogroup" aria-label="Choose a barber" onKeyDown={barberRadio.onKeyDown} className="bmw__barberGrid">
-                  {/* Fastest option inside barber group */}
+                  {/* No preference tile (same style as barbers, NOT a wide bar) */}
                   <button
                     type="button"
                     role="radio"
-                    aria-checked={fastest}
-                    tabIndex={barberRadio.tabIndexFor("fastest" as any, 0)}
-                    className={`bmw__barberTile bmw__barberTile--fastest ${fastest ? "is-selected" : ""}`}
-                    onClick={() => {
-                      setFastest(true);
-                      setBarberKey(null);
-                    }}
-                    aria-label="Fastest available, no preference on barber"
+                    aria-checked={barberKey === null}
+                    tabIndex={barberRadio.tabIndexFor("any" as any, 0)}
+                    className={`bmw__barberTile bmw__barberTile--any ${barberKey === null ? "is-selected" : ""}`}
+                    onClick={() => setBarberKey(null)}
+                    aria-label="No preference on barber"
                   >
-                    <span className="bmw__fastTxt">
-                      <span className="bmw__fastTitle">Fastest available</span>
-                      <span className="bmw__fastSub">No preference on barber</span>
+                    <span className="bmw__avatar" aria-hidden="true">
+                      <img src={ANY_BARBER_PHOTO} alt="" loading="lazy" />
                     </span>
-                    <span className="bmw__fastPill">{nextAvailableToday() ? `Next: ${nextAvailableToday()}` : "No slots today"}</span>
+
+                    <span className="bmw__barberTxt">
+                      <span className="bmw__barberName">No preference</span>
+                      <span className="bmw__barberRole">We’ll pick the best slot</span>
+                      <span className="bmw__barberMeta">
+                        <span className="bmw__metaRating" aria-hidden="true">★</span>
+                        <span className="bmw__metaDot" aria-hidden="true">•</span>
+                        <span className="bmw__metaNext">{nextAvailableToday() ? `Next: ${nextAvailableToday()}` : "Next: —"}</span>
+                      </span>
+                    </span>
                   </button>
 
                   {BARBERS.map((b, i) => {
-                    const selected = !fastest && b.key === barberKey;
+                    const selected = b.key === barberKey;
                     return (
                       <button
                         key={b.key}
@@ -448,10 +441,7 @@ export default function BookingWidget() {
                         aria-checked={selected}
                         tabIndex={barberRadio.tabIndexFor(b.key as any, i + 1)}
                         className={`bmw__barberTile ${selected ? "is-selected" : ""}`}
-                        onClick={() => {
-                          setFastest(false);
-                          setBarberKey(b.key);
-                        }}
+                        onClick={() => setBarberKey(b.key)}
                         aria-label={`Select barber ${b.name}`}
                       >
                         <span className="bmw__avatar" aria-hidden="true">
@@ -547,39 +537,41 @@ export default function BookingWidget() {
               </div>
 
               <div className="bmw__calendarFull" aria-label="Calendar month view">
-                <div className="bmw__weekRow" aria-hidden="true">
-                  {["M", "T", "W", "T", "F", "S", "S"].map((w) => (
-                    <div key={w} className="bmw__weekDay">
-                      {w}
-                    </div>
-                  ))}
-                </div>
+                <div className="bmw__calStack">
+                  <div className="bmw__weekRow" aria-hidden="true">
+                    {["M", "T", "W", "T", "F", "S", "S"].map((w) => (
+                      <div key={w} className="bmw__weekDay">
+                        {w}
+                      </div>
+                    ))}
+                  </div>
 
-                <div className="bmw__calGridFull">
-                  {grid.cells.map((cell, idx) => {
-                    if (!cell) return <div key={idx} className="bmw__calEmptyFull" aria-hidden="true" />;
+                  <div className="bmw__calGridFull">
+                    {grid.cells.map((cell, idx) => {
+                      if (!cell) return <div key={idx} className="bmw__calEmptyFull" aria-hidden="true" />;
 
-                    const d = startOfDay(cell);
-                    const key = isoKey(d);
-                    const active = isSameDay(d, date);
-                    const level = monthAvailability.get(key) ?? 0;
-                    const disabled = d < minDay || level === 0;
+                      const d = startOfDay(cell);
+                      const key = isoKey(d);
+                      const active = isSameDay(d, date);
+                      const level = monthAvailability.get(key) ?? 0;
+                      const disabled = d < minDay || level === 0;
 
-                    return (
-                      <button
-                        key={key}
-                        type="button"
-                        className={`bmw__dayFull ${active ? "is-selected" : ""} ${level === 0 ? "is-dead" : ""}`}
-                        onClick={() => pickDate(d)}
-                        disabled={disabled}
-                        aria-label={`Select ${key}`}
-                        aria-pressed={active}
-                      >
-                        <span className="bmw__dayNum">{d.getDate()}</span>
-                        <span className={`bmw__dot ${level === 2 ? "is-strong" : level === 1 ? "is-soft" : ""}`} aria-hidden="true" />
-                      </button>
-                    );
-                  })}
+                      return (
+                        <button
+                          key={key}
+                          type="button"
+                          className={`bmw__dayFull ${active ? "is-selected" : ""} ${level === 0 ? "is-dead" : ""}`}
+                          onClick={() => pickDate(d)}
+                          disabled={disabled}
+                          aria-label={`Select ${key}`}
+                          aria-pressed={active}
+                        >
+                          <span className="bmw__dayNum">{d.getDate()}</span>
+                          <span className={`bmw__dot ${level === 2 ? "is-strong" : level === 1 ? "is-soft" : ""}`} aria-hidden="true" />
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
 
                 <input
@@ -599,7 +591,7 @@ export default function BookingWidget() {
               <div className="bmw__contextCard">
                 <div className="bmw__contextK">Date</div>
                 <div className="bmw__contextV">{prettyDayLong(date)}</div>
-                <div className="bmw__contextS">{barber ? barber.name : fastest ? "Fastest available" : "Any barber"}</div>
+                <div className="bmw__contextS">{barber ? barber.name : "No preference"}</div>
               </div>
 
               <div className="bmw__slotsCard" aria-label="Time slots">
@@ -637,7 +629,6 @@ export default function BookingWidget() {
                   )}
                 </div>
 
-                {/* After-pick (compact, no new tall card). Shows ONLY after time selection. */}
                 {time ? (
                   <div className="bmw__afterPick">
                     <div className="bmw__phoneRow">
@@ -655,7 +646,7 @@ export default function BookingWidget() {
                     </div>
 
                     <div className="bmw__miniActions">
-                      <button type="button" className="bmw__linkBtn" onClick={openDetailsSheet} aria-label="Add details">
+                      <button type="button" className="bmw__linkBtn" onClick={() => { setSheetMode("details"); setInfoService(null); setSheetOpen(true); }} aria-label="Add details">
                         Add details (optional)
                       </button>
                       {phone.length > 0 && !isPhoneValid(phone) ? (
@@ -701,7 +692,6 @@ export default function BookingWidget() {
           </button>
         </footer>
 
-        {/* Bottom-sheet for service info OR details */}
         {sheetOpen ? (
           <div className="bmw__sheetRoot" role="presentation">
             <button
