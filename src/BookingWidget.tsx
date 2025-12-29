@@ -48,6 +48,10 @@ function isoKey(d: Date) {
 function prettyDayLong(d: Date) {
   return new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "2-digit", month: "short" }).format(d);
 }
+function prettyDayShort(d: Date) {
+  // Mon 29
+  return new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "2-digit" }).format(d);
+}
 function prettyMonth(d: Date) {
   return new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric" }).format(d);
 }
@@ -180,7 +184,6 @@ const SERVICES: Service[] = [
   },
 ];
 
-/** Always build 42 cells (6 rows) so the calendar never changes height. */
 function getMonthGrid(view: Date) {
   const y = view.getFullYear();
   const m = view.getMonth();
@@ -223,7 +226,6 @@ function useRovingRadio<T extends string>(
 export default function BookingWidget() {
   const [step, setStep] = useState<Step>(1);
 
-  // barberKey === null => No preference (system picks best)
   const [barberKey, setBarberKey] = useState<BarberKey | null>("mason");
   const [serviceKey, setServiceKey] = useState<ServiceKey | null>("skinfade");
 
@@ -298,7 +300,7 @@ export default function BookingWidget() {
     setNotes("");
   };
 
-  const step1Ready = !!service; // barber can be null (no preference)
+  const step1Ready = !!service;
   const step2Ready = startOfDay(date) >= minDay;
   const step3Ready = !!time && phoneOk;
 
@@ -308,7 +310,8 @@ export default function BookingWidget() {
     return "Pick a time";
   }, [step]);
 
-  const summary = useMemo(() => {
+  /* ======= SUMMARY: compact vs full (this fixes the width bug) ======= */
+  const summaryFull = useMemo(() => {
     const s = service ? `${service.name} · £${service.price} · ${service.mins}m` : "—";
     const b = barber ? ` · ${barber.name}` : " · No preference";
     const d = step >= 2 ? ` · ${prettyDayLong(date)}` : "";
@@ -316,8 +319,21 @@ export default function BookingWidget() {
     return `${s}${b}${d}${t}`;
   }, [service, barber, step, date, time, endTime]);
 
+  const summaryCompact = useMemo(() => {
+    // Designed to be short ALWAYS.
+    // Step 1: "Skin fade · £28 · 50m"
+    // Step 2: add "Mon 29"
+    // Step 3: add "18:45–19:35"
+    if (!service) return "—";
+    const base = `${service.name} · £${service.price} · ${service.mins}m`;
+    const d = step >= 2 ? ` · ${prettyDayShort(date)}` : "";
+    const t = step >= 3 && time ? ` · ${time}${endTime ? `–${endTime}` : ""}` : "";
+    // barber name is the first thing we drop on mobile
+    return `${base}${d}${t}`;
+  }, [service, step, date, time, endTime]);
+
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [sheetMode, setSheetMode] = useState<"service" | "details">("service");
+  const [sheetMode, setSheetMode] = useState<"service" | "details" | "summary">("service");
   const [infoService, setInfoService] = useState<Service | null>(null);
   const sheetCloseRef = useRef<HTMLButtonElement | null>(null);
 
@@ -345,6 +361,12 @@ export default function BookingWidget() {
 
   const openDetailsSheet = () => {
     setSheetMode("details");
+    setInfoService(null);
+    setSheetOpen(true);
+  };
+
+  const openSummarySheet = () => {
+    setSheetMode("summary");
     setInfoService(null);
     setSheetOpen(true);
   };
@@ -406,7 +428,6 @@ export default function BookingWidget() {
                 </div>
 
                 <div role="radiogroup" aria-label="Choose a barber" onKeyDown={barberRadio.onKeyDown} className="bmw__barberGrid">
-                  {/* No preference tile (same style as barbers, NOT a wide bar) */}
                   <button
                     type="button"
                     role="radio"
@@ -646,7 +667,7 @@ export default function BookingWidget() {
                     </div>
 
                     <div className="bmw__miniActions">
-                      <button type="button" className="bmw__linkBtn" onClick={() => { setSheetMode("details"); setInfoService(null); setSheetOpen(true); }} aria-label="Add details">
+                      <button type="button" className="bmw__linkBtn" onClick={openDetailsSheet} aria-label="Add details">
                         Add details (optional)
                       </button>
                       {phone.length > 0 && !isPhoneValid(phone) ? (
@@ -673,9 +694,16 @@ export default function BookingWidget() {
             Back
           </button>
 
-          <div className="bmw__summaryLine" aria-label="Summary">
-            {summary}
-          </div>
+          {/* summary is a clamped button, never pushes width; tap = full details */}
+          <button
+            type="button"
+            className="bmw__summaryBtn"
+            onClick={openSummarySheet}
+            aria-label="Open booking summary"
+            title={summaryFull}
+          >
+            <span className="bmw__summaryLine">{summaryCompact}</span>
+          </button>
 
           <button
             type="button"
@@ -707,7 +735,7 @@ export default function BookingWidget() {
             <div className="bmw__sheet" role="dialog" aria-modal="true" aria-label="Details">
               <div className="bmw__sheetTop">
                 <div className="bmw__sheetTitle">
-                  {sheetMode === "service" && infoService ? infoService.name : "Add details"}
+                  {sheetMode === "service" && infoService ? infoService.name : sheetMode === "summary" ? "Summary" : "Add details"}
                 </div>
                 <button
                   ref={sheetCloseRef}
@@ -724,7 +752,14 @@ export default function BookingWidget() {
               </div>
 
               <div className="bmw__sheetBody">
-                {sheetMode === "service" && infoService ? (
+                {sheetMode === "summary" ? (
+                  <>
+                    <div style={{ fontWeight: 900, color: "rgba(255,255,255,.90)" }}>{summaryFull}</div>
+                    <div style={{ marginTop: 10, color: "rgba(255,255,255,.62)" }}>
+                      Tap Back to edit, or Confirm when you’re ready.
+                    </div>
+                  </>
+                ) : sheetMode === "service" && infoService ? (
                   infoService.details
                 ) : (
                   <>

@@ -15,7 +15,6 @@
 
   --shadow: 0 24px 90px rgba(0,0,0,.62);
 
-  /* TYPO + SCALE (desktop default) */
   --fs-xxs: 11px;
   --fs-xs: 12px;
   --fs-sm: 13px;
@@ -26,14 +25,12 @@
   --tap: 44px;
   --gap: 12px;
 
-  /* calendar sizing */
   --cal-gap: 10px;
   --cal-pad: 10px;
 }
 
 .bmw{ width: 100%; }
 
-/* iOS: stop random blue + remove native styling surprises */
 .bmw__card, .bmw__card * { -webkit-tap-highlight-color: transparent; }
 .bmw__card button,
 .bmw__card input,
@@ -65,7 +62,6 @@
   border: 1px solid rgba(255,255,255,.06);
 }
 
-/* MOBILE: tighter + smarter */
 @media (max-width: 560px){
   :root{
     --fs-xxs: 10px;
@@ -76,8 +72,6 @@
     --fs-xl: 17px;
 
     --gap: 10px;
-
-    /* calendar: tighter */
     --cal-gap: 6px;
     --cal-pad: 8px;
   }
@@ -124,7 +118,7 @@
   letter-spacing: -0.02em;
 }
 
-/* ========= CONTENT (critical min-height:0) ========= */
+/* ========= CONTENT ========= */
 .bmw__content{
   min-height: 0;
   overflow: hidden;
@@ -142,7 +136,6 @@
   gap: var(--gap);
 }
 
-/* Labels */
 .bmw__labelRow{
   display:flex;
   align-items:center;
@@ -159,7 +152,7 @@
   color: rgba(255,255,255,.42);
 }
 
-/* ========= STEP 1: BARBERS (GRID) ========= */
+/* ========= STEP 1: BARBERS ========= */
 .bmw__barberGrid{
   display:grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -205,14 +198,12 @@
   border-color: rgba(255,255,255,.22);
 }
 
-/* subtle “any barber” vibe (still looks like normal tile) */
 .bmw__barberTile--any{
   background:
     radial-gradient(300px 140px at 18% 20%, rgba(var(--gold),.08), transparent 55%),
     rgba(255,255,255,.02);
 }
 
-/* avatar */
 .bmw__avatar{
   width: var(--tap);
   height: var(--tap);
@@ -254,7 +245,7 @@
 .bmw__metaDot{ opacity:.6; }
 .bmw__metaNext{ font-variant-numeric: tabular-nums; }
 
-/* ========= STEP 1: SERVICES (SMART CHIPS) ========= */
+/* ========= SERVICES ========= */
 .bmw__serviceGrid{
   display:grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -278,7 +269,7 @@
   border-radius: 16px;
   border: 1px solid rgba(255,255,255,.09);
   background: rgba(255,255,255,.02);
-  padding: 0 44px 0 12px; /* space for info icon */
+  padding: 0 44px 0 12px;
   cursor:pointer;
   display:flex;
   align-items:center;
@@ -337,10 +328,9 @@
 .bmw__chipInfo:hover{ background: rgba(255,255,255,.03); border-color: rgba(255,255,255,.14); }
 .bmw__chipInfo:active{ transform: translateY(calc(-50% + 1px)); }
 
-/* ========= STEP 2: MONTH CALENDAR ========= */
+/* ========= CALENDAR ========= */
 .bmw__panelMonth{ gap: 10px; }
 
-/* FIX: perfect centering of month title (no flex space-between drift) */
 .bmw__monthTop{
   display:grid;
   grid-template-columns: var(--tap) 1fr var(--tap);
@@ -388,7 +378,6 @@
   flex-direction: column;
 }
 
-/* NEW: stable centering “stack” so it doesn’t jump after back/forward */
 .bmw__calStack{
   flex: 1;
   min-height: 0;
@@ -397,7 +386,6 @@
   justify-content: center;
 }
 
-/* week row and grid share same geometry */
 .bmw__weekRow{
   display:grid;
   grid-template-columns: repeat(7, 1fr);
@@ -416,10 +404,9 @@
   letter-spacing: .10em;
 }
 
-/* FIX: grid gets stable aspect ratio -> no “reflow wobble” */
 .bmw__calGridFull{
   width: 100%;
-  aspect-ratio: 7 / 6; /* 7 cols, 6 rows */
+  aspect-ratio: 7 / 6;
   display:grid;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(6, 1fr);
@@ -447,7 +434,6 @@
 @media (max-width: 560px){
   .bmw__dayFull{ border-radius: 12px; }
 }
-
 .bmw__dayFull:hover{
   background: rgba(255,255,255,.03);
   border-color: rgba(255,255,255,.12);
@@ -488,7 +474,7 @@
   pointer-events:none;
 }
 
-/* ========= STEP 3 (fit + only slots scroll) ========= */
+/* ========= STEP 3 ========= */
 .bmw__panelTime{ gap: 10px; }
 
 .bmw__contextCard{
@@ -521,7 +507,6 @@
   padding: 0 2px 8px;
 }
 
-/* ONLY scrollable area */
 .bmw__slotsScroll{
   flex: 1;
   min-height: 0;
@@ -596,7 +581,6 @@
   line-height: 1;
 }
 
-/* compact after-pick row INSIDE slots card (no extra tall card) */
 .bmw__afterPick{
   margin-top: 10px;
   padding-top: 10px;
@@ -680,6 +664,9 @@
   display:flex;
   align-items:center;
   gap: 12px;
+
+  /* CRITICAL: prevent child width from expanding the card */
+  min-width: 0;
 }
 @media (max-width: 560px){
   .bmw__footerLite{ padding: 10px 10px; gap: 10px; }
@@ -694,18 +681,9 @@
   cursor:pointer;
   font-weight: 950;
   color: rgba(255,255,255,.88);
+  flex: 0 0 auto;
 }
 .bmw__btnGhost:disabled{ opacity: .42; cursor:not-allowed; }
-
-.bmw__summaryLine{
-  flex: 1;
-  min-width: 0;
-  font-size: var(--fs-xs);
-  color: rgba(255,255,255,.52);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 
 .bmw__btnPrimary{
   height: 44px;
@@ -716,9 +694,43 @@
   cursor:pointer;
   font-weight: 950;
   color: rgba(255,255,255,.94);
+  flex: 0 0 auto;
 }
 .bmw__btnPrimary:disabled{ opacity: .52; cursor:not-allowed; }
 .bmw__btnPrimary:active{ transform: translateY(1px); }
+
+/* FIX: summary must be allowed to shrink (min-width:0), clamp, ellipsis */
+.bmw__summaryLine{
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  font-size: var(--fs-xs);
+  color: rgba(255,255,255,.52);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  /* make it feel “intentional”, not random truncation */
+  padding-inline: 6px;
+}
+
+/* Make summary feel tappable (for details sheet) */
+.bmw__summaryBtn{
+  all: unset;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  cursor: pointer;
+  border-radius: 12px;
+  padding: 6px 6px;
+}
+.bmw__summaryBtn:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--gold), .12);
+}
+.bmw__summaryBtn:hover{
+  background: rgba(255,255,255,.03);
+}
 
 /* ========= BOTTOM SHEET ========= */
 .bmw__sheetRoot{
@@ -772,7 +784,6 @@
   font-size: var(--fs-sm);
 }
 
-/* details sheet fields */
 .bmw__field{ display:block; margin-bottom: 10px; }
 .bmw__textarea{
   height: auto;
