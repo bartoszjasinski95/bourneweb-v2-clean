@@ -8,20 +8,24 @@ type Barber = {
   key: BarberKey;
   name: string;
   role: string;
-  rating: string;
+  rating: number;
+  reviews: number;
+  tags: Array<"fade">;
   photo: string;
 };
+
+type ServiceCategory = "popular" | "fade" | "cut" | "beard" | "shave";
 
 type Service = {
   key: ServiceKey;
   name: string;
   mins: number;
   price: number;
-  desc: string; // mini opis (1 linijka)
-  details: string; // zostawione na przyszłość (nie używamy)
+  desc: string; // 1-liner
+  details: string; // przyszłościowo
+  category: ServiceCategory;
+  badge?: "Najczęściej wybierane" | "Najlepsza wartość";
 };
-
-const NOTE_CHIPS = ["Beard trim", "Skin fade length", "Sensitive skin", "No clipper zero"] as const;
 
 const OPEN_START = 10 * 60;
 const OPEN_END = 20 * 60;
@@ -149,9 +153,33 @@ function avatarDataURI(seed: string, accent: string) {
 }
 
 const BARBERS = [
-  { key: "mason", name: "Mason", role: "Senior Barber", rating: "★ 4.9", photo: avatarDataURI("M", "#d2aa6e") },
-  { key: "oliver", name: "Oliver", role: "Skin Fade Specialist", rating: "★ 4.9", photo: avatarDataURI("O", "#c8a46a") },
-  { key: "theo", name: "Theo", role: "Classic Cuts", rating: "★ 4.9", photo: avatarDataURI("T", "#b99254") },
+  {
+    key: "mason",
+    name: "Mason",
+    role: "Senior",
+    rating: 4.9,
+    reviews: 120,
+    tags: [],
+    photo: avatarDataURI("M", "#d2aa6e"),
+  },
+  {
+    key: "oliver",
+    name: "Oliver",
+    role: "Fade Specialist",
+    rating: 4.9,
+    reviews: 120,
+    tags: ["fade"],
+    photo: avatarDataURI("O", "#c8a46a"),
+  },
+  {
+    key: "theo",
+    name: "Theo",
+    role: "Classic Cuts",
+    rating: 4.9,
+    reviews: 120,
+    tags: [],
+    photo: avatarDataURI("T", "#b99254"),
+  },
 ] as const satisfies readonly Barber[];
 
 const ANY_BARBER_PHOTO = avatarDataURI("NP", "#a78a5a");
@@ -163,7 +191,9 @@ const SERVICES: Service[] = [
     mins: 50,
     price: 28,
     desc: "Clean blend, crisp edges.",
-    details: "Clean blend, crisp edges. Includes line-up + tidy finish. Skin-safe, no harsh shave unless asked.",
+    details: "Clean blend, crisp edges. Includes line-up + tidy finish.",
+    category: "fade",
+    badge: "Najczęściej wybierane",
   },
   {
     key: "haircutbeard",
@@ -171,7 +201,9 @@ const SERVICES: Service[] = [
     mins: 60,
     price: 30,
     desc: "Full refresh, balanced shape.",
-    details: "Haircut + beard tidy. Balanced shape, clean neckline, soft finish. Add hot towel on request.",
+    details: "Haircut + beard tidy. Balanced shape, clean neckline.",
+    category: "beard",
+    badge: "Najlepsza wartość",
   },
   {
     key: "hottowel",
@@ -179,7 +211,8 @@ const SERVICES: Service[] = [
     mins: 30,
     price: 18,
     desc: "Warm towel, close finish.",
-    details: "Warm towel + close shave. Sensitive-skin friendly. Calm, precise, no rush.",
+    details: "Warm towel + close shave. Sensitive-skin friendly.",
+    category: "shave",
   },
 ];
 
@@ -225,8 +258,9 @@ function useRovingRadio<T extends string>(
 export default function BookingWidget() {
   const [step, setStep] = useState<Step>(1);
 
-  const [barberKey, setBarberKey] = useState<BarberKey | null>("mason");
-  const [serviceKey, setServiceKey] = useState<ServiceKey | null>("skinfade");
+  // ✅ killer default: Bez preferencji
+  const [barberKey, setBarberKey] = useState<BarberKey | null>(null);
+  const [serviceKey, setServiceKey] = useState<ServiceKey | null>(null);
 
   const barber = useMemo(() => BARBERS.find((b) => b.key === barberKey) || null, [barberKey]);
   const service = useMemo(() => SERVICES.find((s) => s.key === serviceKey) || null, [serviceKey]);
@@ -260,7 +294,7 @@ export default function BookingWidget() {
   const nextByBarber = useMemo(() => {
     const next = nextAvailableToday() ?? "—";
     const map = new Map<BarberKey, string>();
-    (["mason", "oliver", "theo"] as BarberKey[]).forEach((k) => map.set(k, next === "—" ? "Next: —" : `Next: ${next}`));
+    (["mason", "oliver", "theo"] as BarberKey[]).forEach((k) => map.set(k, next === "—" ? "—" : next));
     return map;
   }, []);
 
@@ -304,14 +338,73 @@ export default function BookingWidget() {
   const step3Ready = !!time && phoneOk;
 
   const title = useMemo(() => {
-    if (step === 1) return "Pick barber + service";
-    if (step === 2) return "Pick a date";
-    return "Pick a time";
+    if (step === 1) return "Wybierz usługę";
+    if (step === 2) return "Wybierz termin";
+    return "Wybierz godzinę";
   }, [step]);
 
-  /* ======= SUMMARY: compact vs full ======= */
+  const progressPct = useMemo(() => (step / 3) * 100, [step]);
+
+  // ======= STEP 1: categories + accordion barber =======
+  const [serviceCat, setServiceCat] = useState<ServiceCategory>("popular");
+  const catOptions = useMemo(
+    () =>
+      [
+        { key: "popular", label: "Najpopularniejsze" },
+        { key: "fade", label: "Fade" },
+        { key: "cut", label: "Strzyżenie" },
+        { key: "beard", label: "Broda" },
+        { key: "shave", label: "Golenie" },
+      ] as const,
+    []
+  );
+
+  const servicesFiltered = useMemo(() => {
+    if (serviceCat === "popular") return SERVICES;
+    return SERVICES.filter((s) => s.category === serviceCat);
+  }, [serviceCat]);
+
+  // Barber accordion
+  const [barberOpen, setBarberOpen] = useState(false);
+  const [barberGroup, setBarberGroup] = useState<"all" | "fade">("all");
+  const [barberSort, setBarberSort] = useState<"fast" | "top">("fast");
+
+  const barbersFiltered = useMemo(() => {
+    let list = [...BARBERS];
+    if (barberGroup === "fade") list = list.filter((b) => b.tags.includes("fade"));
+    if (barberSort === "top") list.sort((a, b) => b.rating - a.rating || b.reviews - a.reviews);
+    // fast: w demie wszystkie mają to samo, więc zostaje natural order
+    return list;
+  }, [barberGroup, barberSort]);
+
+  // Radiogroups
+  const serviceIds = ["skinfade", "haircutbeard", "hottowel"] as ServiceKey[];
+  const serviceRadio = useRovingRadio<ServiceKey>(serviceIds, serviceKey, (id) => setServiceKey(id));
+
+  const barberIds = ["any", "mason", "oliver", "theo"] as const;
+  const barberSelectedId = barberKey ?? "any";
+  const barberRadio = useRovingRadio<(typeof barberIds)[number]>(
+    barberIds as any,
+    barberSelectedId as any,
+    (id) => {
+      if (id === "any") setBarberKey(null);
+      else setBarberKey(id as BarberKey);
+    }
+  );
+
+  // ======= SUMMARY (footer) =======
+  const step1SummaryLine1 = useMemo(() => {
+    if (!service) return "Wybierz usługę";
+    return `${service.name} • ${service.mins} min`;
+  }, [service]);
+
+  const step1SummaryLine2 = useMemo(() => {
+    if (barberKey === null) return "Bez preferencji (najszybciej)";
+    return barber ? `${barber.name} • ${barber.role}` : "Bez preferencji (najszybciej)";
+  }, [barberKey, barber]);
+
   const summaryFull = useMemo(() => {
-    const s = service ? `${service.name} · £${service.price} · ${service.mins}m` : "—";
+    const s = service ? `${service.name} · £${service.price}` : "—";
     const b = barber ? ` · ${barber.name}` : " · No preference";
     const d = step >= 2 ? ` · ${prettyDayLong(date)}` : "";
     const t = step >= 3 && time ? ` · ${time}${endTime ? `–${endTime}` : ""}` : "";
@@ -319,7 +412,6 @@ export default function BookingWidget() {
   }, [service, barber, step, date, time, endTime]);
 
   const summaryCompact = useMemo(() => {
-    // Footer line: NO duration (50m/60m/30m removed)
     if (!service) return "—";
     const base = `${service.name} · £${service.price}`;
     const d = step >= 2 ? ` · ${prettyDayShort(date)}` : "";
@@ -327,6 +419,7 @@ export default function BookingWidget() {
     return `${base}${d}${t}`;
   }, [service, step, date, time, endTime]);
 
+  // Bottom sheet (step 3 details)
   const [sheetOpen, setSheetOpen] = useState(false);
   const [sheetMode, setSheetMode] = useState<"details" | "summary">("details");
   const sheetCloseRef = useRef<HTMLButtonElement | null>(null);
@@ -354,6 +447,12 @@ export default function BookingWidget() {
     setSheetOpen(true);
   };
 
+  const primaryLabel = useMemo(() => {
+    if (step === 1) return "Wybierz termin";
+    if (step === 2) return "Wybierz godzinę";
+    return sending ? "Potwierdzanie…" : "Potwierdź";
+  }, [step, sending]);
+
   const onPrimary = async () => {
     if (step === 1) {
       if (!step1Ready) return;
@@ -373,92 +472,96 @@ export default function BookingWidget() {
     alert("Booked (demo) ✅");
   };
 
-  const barberIds = ["any", "mason", "oliver", "theo"] as const;
-  const barberSelectedId = barberKey ?? "any";
-  const barberRadio = useRovingRadio<(typeof barberIds)[number]>(
-    barberIds as any,
-    barberSelectedId as any,
-    (id) => {
-      if (id === "any") setBarberKey(null);
-      else setBarberKey(id as BarberKey);
-    }
-  );
-
-  const serviceIds = ["skinfade", "haircutbeard", "hottowel"] as ServiceKey[];
-  const serviceRadio = useRovingRadio<ServiceKey>(serviceIds, serviceKey, (id) => setServiceKey(id));
-
   return (
     <div className="bmw">
       <form className="bmw__card" onSubmit={(e) => e.preventDefault()} aria-label="Book online">
+        {/* HEADER */}
         <header className="bmw__topbar">
           <div className="bmw__topbarRow">
-            <div className="bmw__stepPill" aria-label={`Step ${step} of 3`}>
-              Step {step}/3
-            </div>
             <div className="bmw__brandMark">Book online</div>
           </div>
+
           <div className="bmw__topbarRow2">
             <h2 className="bmw__title">{title}</h2>
+          </div>
+
+          {/* ✅ progress bar zamiast STEP 1/3 tekstem */}
+          <div className="bmw__progress" aria-label={`Step ${step} of 3`}>
+            <div className="bmw__progressTrack" aria-hidden="true">
+              <div className="bmw__progressFill" style={{ width: `${progressPct}%` }} />
+            </div>
+            <div className="bmw__progressMeta" aria-hidden="true">
+              {step}/3
+            </div>
           </div>
         </header>
 
         <main className="bmw__content" aria-live="polite">
+          {/* ========================= STEP 1 ========================= */}
           {step === 1 ? (
-            <section className="bmw__panelLite" aria-label="Step 1">
+            <section className="bmw__panelStep1" aria-label="Step 1">
+              {/* SERVICE FIRST */}
               <div className="bmw__block">
                 <div className="bmw__labelRow">
-                  <div className="bmw__labelSmall">Barber</div>
+                  <div className="bmw__labelSmall">Usługa (wymagana)</div>
                 </div>
 
-                <div role="radiogroup" aria-label="Choose a barber" onKeyDown={barberRadio.onKeyDown} className="bmw__barberGrid">
-                  <button
-                    type="button"
-                    role="radio"
-                    aria-checked={barberKey === null}
-                    tabIndex={barberRadio.tabIndexFor("any" as any, 0)}
-                    className={`bmw__barberTile bmw__barberTile--any ${barberKey === null ? "is-selected" : ""}`}
-                    onClick={() => setBarberKey(null)}
-                    aria-label="No preference on barber"
-                  >
-                    <span className="bmw__avatar" aria-hidden="true">
-                      <img src={ANY_BARBER_PHOTO} alt="" loading="lazy" />
-                    </span>
-
-                    <span className="bmw__barberTxt">
-                      <span className="bmw__barberName">No preference</span>
-                      <span className="bmw__barberRole">We’ll pick the best slot</span>
-                      <span className="bmw__barberMeta">
-                        <span className="bmw__metaRating" aria-hidden="true">★</span>
-                        <span className="bmw__metaDot" aria-hidden="true">•</span>
-                        <span className="bmw__metaNext">{nextAvailableToday() ? `Next: ${nextAvailableToday()}` : "Next: —"}</span>
-                      </span>
-                    </span>
-                  </button>
-
-                  {BARBERS.map((b, i) => {
-                    const selected = b.key === barberKey;
+                {/* category chips */}
+                <div className="bmw__catChips" role="tablist" aria-label="Kategorie usług">
+                  {catOptions.map((c) => {
+                    const active = c.key === serviceCat;
                     return (
                       <button
-                        key={b.key}
+                        key={c.key}
+                        type="button"
+                        role="tab"
+                        aria-selected={active}
+                        className={`bmw__catChip ${active ? "is-active" : ""}`}
+                        onClick={() => setServiceCat(c.key)}
+                      >
+                        {c.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* service list rows */}
+                <div
+                  className="bmw__serviceList"
+                  role="radiogroup"
+                  aria-label="Wybierz usługę"
+                  onKeyDown={serviceRadio.onKeyDown}
+                >
+                  {servicesFiltered.map((s) => {
+                    const selected = s.key === serviceKey;
+                    return (
+                      <button
+                        key={s.key}
                         type="button"
                         role="radio"
                         aria-checked={selected}
-                        tabIndex={barberRadio.tabIndexFor(b.key as any, i + 1)}
-                        className={`bmw__barberTile ${selected ? "is-selected" : ""}`}
-                        onClick={() => setBarberKey(b.key)}
-                        aria-label={`Select barber ${b.name}`}
+                        className={`bmw__serviceRow ${selected ? "is-selected" : ""}`}
+                        onClick={() => setServiceKey(s.key)}
                       >
-                        <span className="bmw__avatar" aria-hidden="true">
-                          <img src={b.photo} alt="" loading="lazy" />
+                        <span className="bmw__serviceMain">
+                          <span className="bmw__serviceTop">
+                            <span className="bmw__serviceName">{s.name}</span>
+                            {s.badge ? <span className="bmw__badge">{s.badge}</span> : null}
+                          </span>
+
+                          <span className="bmw__serviceDesc" title={s.desc}>
+                            {s.desc}
+                          </span>
+
+                          <span className="bmw__serviceMeta">
+                            <span className="bmw__pill">{s.mins} min</span>
+                          </span>
                         </span>
 
-                        <span className="bmw__barberTxt">
-                          <span className="bmw__barberName">{b.name}</span>
-                          <span className="bmw__barberRole">{b.role}</span>
-                          <span className="bmw__barberMeta">
-                            <span className="bmw__metaRating">{b.rating}</span>
-                            <span className="bmw__metaDot" aria-hidden="true">•</span>
-                            <span className="bmw__metaNext">{nextByBarber.get(b.key)}</span>
+                        <span className="bmw__serviceRight">
+                          <span className="bmw__price">£{s.price}</span>
+                          <span className={`bmw__check ${selected ? "is-on" : ""}`} aria-hidden="true">
+                            ✓
                           </span>
                         </span>
                       </button>
@@ -467,48 +570,156 @@ export default function BookingWidget() {
                 </div>
               </div>
 
+              {/* BARBER OPTIONAL (accordion) */}
               <div className="bmw__block">
                 <div className="bmw__labelRow">
-                  <div className="bmw__labelSmall">Service</div>
+                  <div className="bmw__labelSmall">Barber (opcjonalnie)</div>
                 </div>
 
-                <div
-                  className="bmw__serviceGrid"
-                  role="radiogroup"
-                  aria-label="Choose a service"
-                  onKeyDown={serviceRadio.onKeyDown}
+                <button
+                  type="button"
+                  className="bmw__accordionBtn"
+                  onClick={() => setBarberOpen((v) => !v)}
+                  aria-expanded={barberOpen}
+                  aria-controls="bmw-barber-panel"
                 >
-                  {SERVICES.map((s, i) => {
-                    const selected = s.key === serviceKey;
-                    return (
-                      <div key={s.key} className="bmw__serviceChipWrap">
+                  <span className="bmw__accordionLeft">
+                    <span className="bmw__avatarSm" aria-hidden="true">
+                      <img src={barberKey === null ? ANY_BARBER_PHOTO : barber?.photo || ANY_BARBER_PHOTO} alt="" loading="lazy" />
+                    </span>
+                    <span className="bmw__accordionTxt">
+                      <span className="bmw__accordionTitle">
+                        {barberKey === null ? "Bez preferencji" : barber?.name}
+                        <span className="bmw__accordionSub">
+                          {barberKey === null ? " (najszybciej)" : ` • ${barber?.role}`}
+                        </span>
+                      </span>
+                      <span className="bmw__accordionHint">Kliknij, aby wybrać konkretnego barbera</span>
+                    </span>
+                  </span>
+
+                  <span className="bmw__accordionIcon" aria-hidden="true">
+                    {barberOpen ? "–" : "+"}
+                  </span>
+                </button>
+
+                <div id="bmw-barber-panel" className={`bmw__accordionPanel ${barberOpen ? "is-open" : ""}`}>
+                  {/* controls */}
+                  <div className="bmw__barberControls" aria-label="Filtry barberów">
+                    <div className="bmw__seg">
+                      <button
+                        type="button"
+                        className={`bmw__segBtn ${barberGroup === "all" ? "is-active" : ""}`}
+                        onClick={() => setBarberGroup("all")}
+                        aria-pressed={barberGroup === "all"}
+                      >
+                        Wszyscy
+                      </button>
+                      <button
+                        type="button"
+                        className={`bmw__segBtn ${barberGroup === "fade" ? "is-active" : ""}`}
+                        onClick={() => setBarberGroup("fade")}
+                        aria-pressed={barberGroup === "fade"}
+                      >
+                        Fade
+                      </button>
+                    </div>
+
+                    <div className="bmw__seg">
+                      <button
+                        type="button"
+                        className={`bmw__segBtn ${barberSort === "fast" ? "is-active" : ""}`}
+                        onClick={() => setBarberSort("fast")}
+                        aria-pressed={barberSort === "fast"}
+                      >
+                        Najszybciej
+                      </button>
+                      <button
+                        type="button"
+                        className={`bmw__segBtn ${barberSort === "top" ? "is-active" : ""}`}
+                        onClick={() => setBarberSort("top")}
+                        aria-pressed={barberSort === "top"}
+                      >
+                        Najwyżej oceniani
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* list */}
+                  <div role="radiogroup" aria-label="Wybierz barbera" onKeyDown={barberRadio.onKeyDown} className="bmw__barberList">
+                    {/* No preference row */}
+                    <button
+                      type="button"
+                      role="radio"
+                      aria-checked={barberKey === null}
+                      className={`bmw__barberRow ${barberKey === null ? "is-selected" : ""}`}
+                      onClick={() => setBarberKey(null)}
+                    >
+                      <span className="bmw__avatarSm" aria-hidden="true">
+                        <img src={ANY_BARBER_PHOTO} alt="" loading="lazy" />
+                      </span>
+
+                      <span className="bmw__barberRowMain">
+                        <span className="bmw__barberRowTop">
+                          <span className="bmw__barberRowName">Bez preferencji</span>
+                          <span className="bmw__barberRowRole">• najszybciej</span>
+                        </span>
+
+                        <span className="bmw__barberRowMeta">
+                          <span className="bmw__ratingTiny">★</span>
+                          <span className="bmw__muted">Najbliższy termin</span>
+                          <span className="bmw__pill bmw__pill--time">{nextAvailableToday() ?? "—"}</span>
+                        </span>
+                      </span>
+
+                      <span className={`bmw__check ${barberKey === null ? "is-on" : ""}`} aria-hidden="true">
+                        ✓
+                      </span>
+                    </button>
+
+                    {barbersFiltered.map((b) => {
+                      const selected = b.key === barberKey;
+                      const next = nextByBarber.get(b.key) ?? "—";
+                      return (
                         <button
+                          key={b.key}
                           type="button"
                           role="radio"
                           aria-checked={selected}
-                          tabIndex={serviceRadio.tabIndexFor(s.key, i)}
-                          className={`bmw__chip ${selected ? "is-selected" : ""}`}
-                          onClick={() => setServiceKey(s.key)}
-                          aria-label={`Select service ${s.name}`}
+                          className={`bmw__barberRow ${selected ? "is-selected" : ""}`}
+                          onClick={() => setBarberKey(b.key)}
                         >
-                          <span className="bmw__chipLeft">
-                            <span className="bmw__chipName">{s.name}</span>
-                            {/* mini-opis: 1 linijka */}
-                            <span className="bmw__chipMeta">{s.desc}</span>
-                            {/* meta: czas + cena (może zostać w UI, nie w footerze) */}
-                            <span className="bmw__chipMeta">
-                              {s.mins}m · £{s.price}
+                          <span className="bmw__avatarSm" aria-hidden="true">
+                            <img src={b.photo} alt="" loading="lazy" />
+                          </span>
+
+                          <span className="bmw__barberRowMain">
+                            <span className="bmw__barberRowTop">
+                              <span className="bmw__barberRowName">{b.name}</span>
+                              <span className="bmw__barberRowRole">• {b.role}</span>
+                            </span>
+
+                            <span className="bmw__barberRowMeta">
+                              <span className="bmw__muted">
+                                {b.rating.toFixed(1)} ({b.reviews})
+                              </span>
+                              <span className="bmw__pill bmw__pill--time">{next}</span>
                             </span>
                           </span>
+
+                          <span className={`bmw__check ${selected ? "is-on" : ""}`} aria-hidden="true">
+                            ✓
+                          </span>
                         </button>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             </section>
           ) : null}
 
+          {/* ========================= STEP 2 ========================= */}
           {step === 2 ? (
             <section className="bmw__panelLite bmw__panelMonth" aria-label="Step 2">
               <div className="bmw__monthTop">
@@ -583,6 +794,7 @@ export default function BookingWidget() {
             </section>
           ) : null}
 
+          {/* ========================= STEP 3 ========================= */}
           {step === 3 ? (
             <section className="bmw__panelLite bmw__panelTime" aria-label="Step 3">
               <div className="bmw__contextCard">
@@ -659,26 +871,35 @@ export default function BookingWidget() {
           ) : null}
         </main>
 
+        {/* FOOTER (step 1 premium pilot) */}
         <footer className="bmw__footerLite">
           <button
             type="button"
-            className="bmw__btnGhost"
+            className="bmw__btnBack"
             onClick={() => (step === 1 ? null : setStep((prev) => (prev === 3 ? 2 : 1)))}
             disabled={step === 1}
             aria-label="Back"
           >
+            <span className="bmw__btnBackIcon" aria-hidden="true">
+              ‹
+            </span>
             Back
           </button>
 
-          <button
-            type="button"
-            className="bmw__summaryBtn"
-            onClick={openSummarySheet}
-            aria-label="Open booking summary"
-            title={summaryFull}
-          >
-            <span className="bmw__summaryLine">{summaryCompact}</span>
-          </button>
+          {/* step1: 2-liner summary */}
+          {step === 1 ? (
+            <button type="button" className="bmw__summaryBtn2" onClick={openSummarySheet} aria-label="Open booking summary">
+              <span className="bmw__summary2">
+                <span className="bmw__sumL1">{step1SummaryLine1}</span>
+                <span className="bmw__sumL2">{step1SummaryLine2}</span>
+              </span>
+              {service ? <span className="bmw__sumPrice">£{service.price}</span> : null}
+            </button>
+          ) : (
+            <button type="button" className="bmw__summaryBtn" onClick={openSummarySheet} aria-label="Open booking summary" title={summaryFull}>
+              <span className="bmw__summaryLine">{summaryCompact}</span>
+            </button>
+          )}
 
           <button
             type="button"
@@ -691,10 +912,11 @@ export default function BookingWidget() {
             }
             aria-label={step === 3 ? "Confirm booking" : "Continue"}
           >
-            {step === 3 ? (sending ? "Confirming…" : "Confirm") : "Continue"}
+            {primaryLabel}
           </button>
         </footer>
 
+        {/* SHEET */}
         {sheetOpen ? (
           <div className="bmw__sheetRoot" role="presentation">
             <button type="button" className="bmw__sheetOverlay" onClick={() => setSheetOpen(false)} aria-label="Close overlay" />
@@ -736,23 +958,6 @@ export default function BookingWidget() {
                         aria-label="Name"
                       />
                     </label>
-
-                    <div className="bmw__noteChips" role="list" aria-label="Quick notes">
-                      {NOTE_CHIPS.map((c) => (
-                        <button
-                          key={c}
-                          type="button"
-                          className="bmw__noteChip"
-                          onClick={() =>
-                            setNotes((prev) => (prev ? `${prev}${prev.trim().endsWith(".") ? "" : "."} ${c}` : c))
-                          }
-                          role="listitem"
-                          aria-label={`Add note ${c}`}
-                        >
-                          + {c}
-                        </button>
-                      ))}
-                    </div>
 
                     <label className="bmw__field">
                       <span style={{ display: "block", fontSize: 12, color: "rgba(255,255,255,.60)", marginBottom: 6 }}>
