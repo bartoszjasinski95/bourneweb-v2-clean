@@ -994,3 +994,38 @@
   box-shadow: none;
   background: transparent;
 }
+/* Put BOOK ONLINE directly above "Choose a service" */
+.bmw__topbarRow{
+  justify-content: flex-start; /* was flex-end */
+}
+
+.bmw__topbarRow2{
+  margin-top: 6px; /* tighter so it feels "directly above" */
+}
+/* allow scrolling inside bottom sheet on mobile */
+.bw-launcher__body{
+  min-height: 0;
+  overflow: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* grab handle area for swipe */
+.bw-launcher__grab{
+  height: 18px;
+  position: relative;
+  flex: 0 0 auto;
+  touch-action: none; /* so the drag is crisp */
+}
+.bw-launcher__grab::before{
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.20);
+}

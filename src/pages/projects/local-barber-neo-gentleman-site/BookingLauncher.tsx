@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useDragControls } from "framer-motion";
 
 import BookOnline from "../../../BookingWidget";
 
@@ -71,9 +71,13 @@ export default function BookingLauncher({
 }: Props) {
   const reduce = usePrefersReducedMotionSSR();
   const isDesktop = useMedia(`(min-width: ${desktopBp}px)`);
+  const isMobile = !isDesktop;
 
   const [open, setOpen] = useState(false);
   const sheetRef = useRef<HTMLDivElement | null>(null);
+
+  // mobile swipe-to-close (drag handle)
+  const dragControls = useDragControls();
 
   useEffect(() => {
     if (!open) return;
@@ -143,10 +147,11 @@ export default function BookingLauncher({
               aria-label="Online booking"
               className={`bw-launcher__sheet ${isDesktop ? "is-desktop" : "is-mobile"}`}
               layoutId={layoutId}
+              /* mobile: bottom sheet slide */
               initial={
                 isDesktop
-                  ? (reduce ? { opacity: 0, scale: 0.985 } : false) // desktop morph
-                  : { y: "100%" } // mobile bottom sheet
+                  ? (reduce ? { opacity: 0, scale: 0.985 } : false)
+                  : { y: "100%" }
               }
               animate={
                 isDesktop
@@ -158,19 +163,32 @@ export default function BookingLauncher({
                   ? (reduce ? { opacity: 0, scale: 0.985, transition: sheetTransition } : undefined)
                   : { y: "100%", transition: sheetTransition }
               }
+              /* ✅ swipe-down to close on mobile */
+              drag={isMobile ? "y" : false}
+              dragControls={dragControls}
+              dragListener={false} /* only handle triggers drag */
+              dragConstraints={{ top: 0, bottom: 0 }}
+              dragElastic={0.18}
+              onDragEnd={(_, info) => {
+                if (!isMobile) return;
+                const farEnough = info.offset.y > 120;
+                const fastEnough = info.velocity.y > 900;
+                if (farEnough || fastEnough) setOpen(false);
+              }}
             >
-              {/* ✅ no "Booking" header, no X — just the real card */}
-{!isDesktop ? <div className="bw-launcher__grab" aria-hidden="true" /> : null}
+              {/* mobile grab handle (also drag handle) */}
+              {isMobile ? (
+                <div
+                  className="bw-launcher__grab"
+                  aria-hidden="true"
+                  onPointerDown={(e) => dragControls.start(e)}
+                />
+              ) : null}
 
-<header className="bw-launcher__head" aria-label="Booking intro">
-  <p className="bw-launcher__kicker">BOOK ONLINE</p>
-  <h2 className="bw-launcher__headline">Book fast. Look sharp.</h2>
-</header>
-
-<div className="bw-launcher__body">
-  <BookOnline />
-</div>
-
+              {/* sheet content (scrollable on mobile) */}
+              <div className="bw-launcher__body">
+                <BookOnline />
+              </div>
             </motion.div>
           </div>
         )}
