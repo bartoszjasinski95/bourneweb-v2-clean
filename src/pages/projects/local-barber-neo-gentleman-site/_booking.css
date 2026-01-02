@@ -930,8 +930,31 @@
 
 /* small grab handle on mobile only */
 .bw-launcher__grab{
-  height: 18px;
+  height: 28px;              /* was ~18 */
   position: relative;
+  flex: 0 0 auto;
+  touch-action: none;        /* crisp drag */
+}
+.bw-launcher__grab::before{
+  content: "";
+  position: absolute;
+  top: 11px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 54px;               /* a bit wider */
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.22);
+}
+
+/* scroll in sheet content */
+.bw-launcher__body{
+  min-height: 0;
+  overflow: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y; /* allow scrolling, plus our "drag when at top" logic */
 }
 /* intro header (BOOK ONLINE / Book fast. Look sharp.) */
 .bw-launcher__head{
