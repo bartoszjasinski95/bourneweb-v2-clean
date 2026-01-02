@@ -49,6 +49,9 @@ const { id = "services" } = Astro.props;
 
   <script is:inline>
     (function () {
+      const root = document.currentScript?.closest(".bm-services");
+      if (!root) return;
+
       const data = [
         {
           key: "barbering",
@@ -108,19 +111,29 @@ const { id = "services" } = Astro.props;
 
       let i = 0;
 
-      const leftEl = document.querySelector("[data-bg-left]");
-      const centerEl = document.querySelector("[data-bg-center]");
-      const rightEl = document.querySelector("[data-bg-right]");
-      const circleEl = document.querySelector("[data-svc-circle]");
-      const listEl = document.querySelector("[data-svc-list]");
-      const prev = document.querySelector("[data-svc-prev]");
-      const next = document.querySelector("[data-svc-next]");
+      // Scoped queries (fix #1)
+      const leftEl = root.querySelector("[data-bg-left]");
+      const centerEl = root.querySelector("[data-bg-center]");
+      const rightEl = root.querySelector("[data-bg-right]");
+      const circleEl = root.querySelector("[data-svc-circle]");
+      const listEl = root.querySelector("[data-svc-list]");
+      const prev = root.querySelector("[data-svc-prev]");
+      const next = root.querySelector("[data-svc-next]");
+
+      function flash() {
+        // Local CSS var (fix #4)
+        root.style.setProperty("--bm-svc-flash", "1");
+        setTimeout(() => root.style.setProperty("--bm-svc-flash", "0"), 140);
+      }
 
       function render(idx) {
         const d = data[idx];
         if (leftEl) leftEl.textContent = d.left;
         if (centerEl) centerEl.textContent = d.center;
         if (rightEl) rightEl.textContent = d.right;
+
+        // Better a11y (optional but harmless)
+        if (circleEl) circleEl.setAttribute("aria-label", `Service preview: ${d.center}`);
 
         if (circleEl) {
           circleEl.style.backgroundImage =
@@ -133,11 +146,23 @@ const { id = "services" } = Astro.props;
           d.items.forEach(([name, price]) => {
             const row = document.createElement("div");
             row.className = "bm-priceRow";
-            row.innerHTML = `
-              <span class="bm-priceRow__name">${name}</span>
-              <span class="bm-priceRow__dots" aria-hidden="true"></span>
-              <span class="bm-priceRow__price">${price}</span>
-            `;
+
+            const nameEl = document.createElement("span");
+            nameEl.className = "bm-priceRow__name";
+            nameEl.textContent = name;
+
+            const dotsEl = document.createElement("span");
+            dotsEl.className = "bm-priceRow__dots";
+            dotsEl.setAttribute("aria-hidden", "true");
+
+            const priceEl = document.createElement("span");
+            priceEl.className = "bm-priceRow__price";
+            priceEl.textContent = price;
+
+            row.appendChild(nameEl);
+            row.appendChild(dotsEl);
+            row.appendChild(priceEl);
+
             listEl.appendChild(row);
           });
         }
@@ -145,44 +170,98 @@ const { id = "services" } = Astro.props;
 
       function step(dir) {
         i = (i + dir + data.length) % data.length;
-        document.documentElement.style.setProperty("--bm-svc-flash", "1");
+        flash();
         render(i);
-        setTimeout(() => document.documentElement.style.setProperty("--bm-svc-flash", "0"), 140);
       }
 
       prev?.addEventListener("click", () => step(-1));
       next?.addEventListener("click", () => step(1));
 
-      // --- SWIPE (only change): swipe on the circle ---
-      let sx = 0;
+      // Swipe: scoped + direction lock + iOS-safety (fix #2 + #3)
+      let startX = 0;
+      let startY = 0;
       let dx = 0;
+      let dy = 0;
       let dragging = false;
+      let axis = null; // "x" | "y" | null
 
-      circleEl?.addEventListener("pointerdown", (e) => {
+      const THRESH_LOCK = 8;  // when we decide axis
+      const THRESH_SWIPE = 34; // when we commit page change
+
+      function begin(x, y) {
         dragging = true;
-        sx = e.clientX;
+        axis = null;
+        startX = x;
+        startY = y;
         dx = 0;
-        circleEl.setPointerCapture?.(e.pointerId);
-      });
+        dy = 0;
+      }
 
-      circleEl?.addEventListener("pointermove", (e) => {
+      function move(x, y, ev) {
         if (!dragging) return;
-        dx = e.clientX - sx;
-      });
+        dx = x - startX;
+        dy = y - startY;
 
-      function endSwipe() {
-        if (!dragging) return;
-        dragging = false;
+        if (!axis) {
+          if (Math.hypot(dx, dy) < THRESH_LOCK) return;
+          axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+          if (axis === "x") root.classList.add("is-swipeX");
+        }
 
-        // threshold: small enough to feel snappy, big enough to avoid accidental scroll
-        if (Math.abs(dx) > 34) {
-          step(dx > 0 ? -1 : 1); // swipe right = previous, swipe left = next
+        // If we are swiping horizontally, reduce iOS weirdness
+        if (axis === "x") {
+          ev?.preventDefault?.();
         }
       }
 
-      circleEl?.addEventListener("pointerup", endSwipe);
-      circleEl?.addEventListener("pointercancel", endSwipe);
-      // --- end swipe ---
+      function end() {
+        if (!dragging) return;
+        dragging = false;
+
+        if (axis === "x") {
+          root.classList.remove("is-swipeX");
+          const horiz = Math.abs(dx);
+          const vert = Math.abs(dy);
+
+          // Direction lock: only if really horizontal
+          if (horiz > THRESH_SWIPE && horiz > vert * 1.2) {
+            step(dx > 0 ? -1 : 1); // swipe right = prev, left = next
+          }
+        }
+
+        axis = null;
+      }
+
+      if (circleEl) {
+        // Pointer events
+        circleEl.addEventListener("pointerdown", (e) => {
+          begin(e.clientX, e.clientY);
+          circleEl.setPointerCapture?.(e.pointerId);
+        });
+
+        circleEl.addEventListener("pointermove", (e) => move(e.clientX, e.clientY, e));
+        circleEl.addEventListener("pointerup", end);
+        circleEl.addEventListener("pointercancel", end);
+        circleEl.addEventListener("lostpointercapture", end);
+
+        // Touch fallback (only if PointerEvent is flaky/missing)
+        if (!("PointerEvent" in window)) {
+          circleEl.addEventListener("touchstart", (e) => {
+            const t = e.touches[0];
+            if (!t) return;
+            begin(t.clientX, t.clientY);
+          }, { passive: true });
+
+          circleEl.addEventListener("touchmove", (e) => {
+            const t = e.touches[0];
+            if (!t) return;
+            move(t.clientX, t.clientY, e);
+          }, { passive: false });
+
+          circleEl.addEventListener("touchend", end, { passive: true });
+          circleEl.addEventListener("touchcancel", end, { passive: true });
+        }
+      }
 
       render(i);
     })();

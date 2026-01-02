@@ -1,10 +1,9 @@
 /* ===== PRICES & SERVICES ===== */
-:root{
-  /* tiny flash for transitions */
-  --bm-svc-flash: 0;
-}
 
 .bm-services{
+  /* Local var (fix #4) */
+  --bm-svc-flash: 0;
+
   position: relative;
   background:
     radial-gradient(900px 700px at 50% 30%, rgba(255,255,255,.03), transparent 60%),
@@ -39,6 +38,9 @@
   inset: 0;
   z-index: 1;
   pointer-events:none;
+
+  /* perf containment (fix #8) */
+  contain: paint;
 }
 
 .bm-services__bgWord{
@@ -50,20 +52,34 @@
   text-transform: uppercase;
   color: rgba(255,255,255,.10);
   font-size: clamp(44px, 7.8vw, 112px);
-  filter: blur(.2px);
   user-select:none;
   white-space: nowrap;
+
+  /* perf: avoid heavy blur by default (fix #8) */
+  filter: none;
+
   opacity: calc(.9 - (var(--bm-svc-flash) * .3));
   transition: opacity .14s ease;
+
+  /* perf hints */
+  will-change: opacity, transform;
+  transform: translateZ(0);
 }
 
-.bm-leftWord{ left: -2vw; transform: translateY(10px); opacity: .14; }
+/* keep blur only on larger screens if you really want it (lighter jank) */
+@media (min-width: 900px){
+  .bm-services__bgWord{
+    filter: blur(.2px);
+  }
+}
+
+.bm-leftWord{ left: -2vw; transform: translateY(10px) translateZ(0); opacity: .14; }
 .bm-centerWord{
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateZ(0);
   color: rgba(255,255,255,.16);
 }
-.bm-rightWord{ right: -2vw; transform: translateY(10px); opacity: .14; }
+.bm-rightWord{ right: -2vw; transform: translateY(10px) translateZ(0); opacity: .14; }
 
 /* Stage: circle + arrows */
 .bm-services__stage{
@@ -114,8 +130,18 @@
   transition: transform .14s ease, filter .14s ease;
   filter: saturate(.98) contrast(1.06);
 
-  /* SWIPE support (only change): allow horizontal gesture, keep vertical scroll */
+  /* swipe friendliness */
   touch-action: pan-y;
+  user-select: none;
+  cursor: grab;
+
+  /* perf hints */
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.bm-services.is-swipeX .bm-circle{
+  cursor: grabbing;
 }
 
 .bm-circle::after{
@@ -239,6 +265,8 @@
   .bm-services__bgWord{
     top: 64px;
     opacity: calc(.75 - (var(--bm-svc-flash) * .25));
+    /* perf: keep it crisp on mobile (fix #8) */
+    filter: none;
   }
   .bm-leftWord{ opacity: .10; }
   .bm-rightWord{ opacity: .10; }
@@ -254,6 +282,8 @@
 
   .bm-circle{
     width: min(320px, 62vw);
+    /* perf: lighter shadow (fix #8) */
+    box-shadow: 0 18px 50px rgba(0,0,0,.50);
   }
 
   .bm-arrow{
@@ -264,8 +294,10 @@
     height: 46px;
     background: rgba(0,0,0,.30);
     border-color: rgba(255,255,255,.12);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+
+    /* perf: remove heavy blur on low-end devices (fix #8) */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
   .bm-arrow span{ font-size: 16px; }
 
