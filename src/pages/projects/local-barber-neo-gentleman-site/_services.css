@@ -120,9 +120,9 @@
   position:absolute;
   inset:0;
   background:
-    radial-gradient(700px 520px at 60% 20%, rgba(0,0,0,.22), transparent 60%),
-    radial-gradient(700px 520px at 30% 70%, rgba(0,0,0,.45), transparent 62%),
-    radial-gradient(700px 520px at 50% 50%, transparent 62%, rgba(0,0,0,.55) 100%);
+    radial-gradient(700px 520px at 60% 20%, rgba(0,0,0,.18), transparent 60%),
+    radial-gradient(700px 520px at 30% 70%, rgba(0,0,0,.38), transparent 62%),
+    radial-gradient(700px 520px at 50% 50%, transparent 62%, rgba(0,0,0,.48) 100%);
   pointer-events:none;
 }
 
@@ -183,7 +183,7 @@
 
 .bm-priceRow{
   display:grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: minmax(0, auto) 1fr auto;
   align-items:center;
   gap: 12px;
   padding: 10px 0;
@@ -209,7 +209,7 @@
   letter-spacing: .02em;
 }
 
-/* Responsive */
+/* Responsive (tablet down) */
 @media (max-width: 980px){
   .bm-services__stage{
     grid-template-columns: 56px 1fr 56px;
@@ -220,5 +220,97 @@
   }
   .bm-services__headline{
     max-width: 18ch;
+  }
+}
+
+/* Mobile: make it tight, thumb-friendly */
+@media (max-width: 640px){
+  .bm-services{
+    padding: 44px 0 66px;
+  }
+
+  .bm-services__inner{
+    width: min(1200px, calc(100% - 28px));
+  }
+
+  .bm-services__bgWord{
+    top: 64px;
+    opacity: calc(.75 - (var(--bm-svc-flash) * .25));
+  }
+  .bm-leftWord{ opacity: .10; }
+  .bm-rightWord{ opacity: .10; }
+  .bm-centerWord{ color: rgba(255,255,255,.14); }
+
+  /* Stage becomes single column; arrows float on top of the circle */
+  .bm-services__stage{
+    position: relative;
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 10px 0 14px;
+  }
+
+  .bm-circle{
+    width: min(320px, 62vw);
+  }
+
+  .bm-arrow{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 46px;
+    height: 46px;
+    background: rgba(0,0,0,.30);
+    border-color: rgba(255,255,255,.12);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .bm-arrow span{ font-size: 16px; }
+
+  .bm-arrow--prev{ left: 0; }
+  .bm-arrow--next{ right: 0; }
+
+  .bm-services__headline{
+    font-size: clamp(22px, 8.2vw, 32px);
+    letter-spacing: .01em;
+  }
+
+  .bm-services__mini{
+    grid-template-columns: 56px 1fr;
+    padding: 10px;
+    border-radius: 14px;
+  }
+
+  /* Price rows: remove dots, keep price locked right, allow name wrap */
+  .bm-priceRow{
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: start;
+  }
+
+  .bm-priceRow__dots{
+    display: none;
+  }
+
+  .bm-priceRow__name{
+    font-size: 10.5px;
+    letter-spacing: .045em;
+    line-height: 1.2;
+    padding-top: 2px;
+  }
+
+  .bm-priceRow__price{
+    font-size: 12px;
+    white-space: nowrap;
+    padding-top: 1px;
+  }
+}
+
+/* Extra small phones */
+@media (max-width: 380px){
+  .bm-circle{
+    width: min(300px, 68vw);
+  }
+  .bm-services__inner{
+    width: min(1200px, calc(100% - 22px));
   }
 }
