@@ -412,7 +412,7 @@
 /* ✅ make month panel center its content */
 .bmw__panelMonth {
   min-height: 0;
-  learn: 0;
+  min-width: 0;
   display: grid;
   grid-template-rows: auto 1fr;
   justify-items: center; /* center calendar block */
@@ -473,6 +473,8 @@
 .bmw__calStack {
   width: 100%;
   max-width: 640px;
+  margin-inline: auto;
+  justify-self: center;
   display: grid;
   gap: 10px;
   min-height: 0;
@@ -486,9 +488,10 @@
 
 .bmw__weekRow {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: var(--cal-gap);
   padding: 0 var(--cal-pad-x);
+  width: 100%;
 }
 
 .bmw__weekDay {
@@ -501,9 +504,17 @@
 
 .bmw__calGridFull {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: var(--cal-gap);
   padding: 0 var(--cal-pad-x);
+  width: 100%;
+}
+
+/* ✅ allow 7 columns to shrink on mobile (prevents "6 of 7" clipping) */
+.bmw__weekDay,
+.bmw__dayFull,
+.bmw__calEmptyFull{
+  min-width: 0;
 }
 
 .bmw__calEmptyFull {
@@ -776,11 +787,11 @@
   .bmw__calendarFull {
     max-width: min(560px, 100%);
     margin-inline: auto;
-    padding: 10px;
+    padding: 8px;
 
     /* smaller gaps to avoid clipping */
-    --cal-gap: 6px;
-    --cal-pad-x: 2px;
+    --cal-gap: 4px;
+    --cal-pad-x: 0px;
     border-radius: 18px;
   }
 
@@ -793,6 +804,8 @@
   .bmw__calEmptyFull {
     border-radius: 14px;
   }
+
+  .bmw__dayFull{ padding: 8px; }
 
   .bmw__dayNum { font-size: 15px; }
 
@@ -808,8 +821,8 @@
 /* ✅ For short viewports (iPhone landscape / small height) */
 @media (max-width: 420px) and (max-height: 760px) {
   .bmw__calendarFull {
-    padding: 8px;
-    --cal-gap: 5px;
+    padding: 7px;
+    --cal-gap: 4px;
   }
   .bmw__monthTop { padding-top: 6px; }
 }
@@ -821,10 +834,11 @@
   .bmw__badge { display: none; }
 
   .bmw__calendarFull {
-    --cal-gap: 5px;
-    --cal-pad-x: 2px;
-    padding: 8px;
+    --cal-gap: 3px;
+    --cal-pad-x: 0px;
+    padding: 7px;
   }
+  .bmw__dayFull { padding: 7px; }
   .bmw__dayNum { font-size: 14px; }
 }
 /* =========================
