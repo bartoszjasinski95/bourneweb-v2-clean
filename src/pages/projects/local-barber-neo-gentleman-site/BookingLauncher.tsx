@@ -1,43 +1,36 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import {
-  AnimatePresence,
-  LayoutGroup,
-  motion,
-  useMotionValue,
-  useReducedMotion,
-} from "framer-motion";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion, useMotionValue } from "framer-motion";
 
-// ✅ Podmień import na swój realny komponent:
-// import BookOnline from "./BookOnline";
-import BookOnline from "./BookingWidget"; // <- u Ciebie tak się nazywa teraz :contentReference[oaicite:2]{index=2}
+// ✅ podmień na swój realny komponent
+import BookOnline from "../../../BookingWidget";
+
+
 
 type Snap = "mid" | "full";
 
-type BookingLauncherProps = {
-  /** Tekst CTA (guzik który morphuje w sheet/drawer) */
+type Props = {
   ctaLabel?: string;
-
-  /** Desktop breakpoint (px) */
   desktopBp?: number;
-
-  /** Startowy snap po otwarciu */
   initialSnap?: Snap;
-
-  /** Sticky footer CTA – jeśli Twój BookOnline ma własny footer (np. .bmw__footerLite), wrapper go ukryje automatycznie. :contentReference[oaicite:3]{index=3} */
   stickyCtaLabel?: string;
-
-  /**
-   * Jeśli chcesz, żeby sticky CTA “kliknęło” Twój istniejący przycisk w środku,
-   * podaj selektor (np. ".bmw__btnPrimary"). :contentReference[oaicite:4]{index=4}
-   * Jeśli nie podasz – wrapper spróbuje znaleźć pierwszy sensowny button w środku.
-   */
   confirmSelector?: string;
-
-  /** Wymuś sticky CTA nawet jeśli wykryjemy wewnętrzny footer */
   forceStickyCta?: boolean;
 };
 
-function useMediaQuery(query: string) {
+function usePrefersReducedMotionSSR() {
+  const [reduce, setReduce] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+    if (!mq) return;
+    const set = () => setReduce(!!mq.matches);
+    set();
+    mq.addEventListener?.("change", set);
+    return () => mq.removeEventListener?.("change", set);
+  }, []);
+  return reduce;
+}
+
+function useMedia(query: string) {
   const [ok, setOk] = useState(false);
   useEffect(() => {
     const m = window.matchMedia(query);
@@ -49,17 +42,12 @@ function useMediaQuery(query: string) {
   return ok;
 }
 
-function useViewportPx() {
-  const [vh, setVh] = useState<number>(0);
-  const [vw, setVw] = useState<number>(0);
-
-  useLayoutEffect(() => {
+function useViewportH() {
+  const [vh, setVh] = useState(0);
+  useEffect(() => {
     const read = () => {
       const vv = window.visualViewport;
-      const h = vv?.height ?? window.innerHeight;
-      const w = vv?.width ?? window.innerWidth;
-      setVh(h);
-      setVw(w);
+      setVh(vv?.height ?? window.innerHeight);
     };
     read();
     window.addEventListener("resize", read);
@@ -69,18 +57,16 @@ function useViewportPx() {
       window.visualViewport?.removeEventListener("resize", read);
     };
   }, []);
-
-  return { vh, vw };
+  return vh || 800;
 }
 
-function lockScroll(locked: boolean) {
+function lockScroll(on: boolean) {
   const html = document.documentElement;
   const body = document.body;
 
-  if (!locked) {
+  if (!on) {
     const y = body.dataset.bwScrollY;
     if (y) {
-      const n = Number(y);
       body.style.position = "";
       body.style.top = "";
       body.style.left = "";
@@ -88,7 +74,7 @@ function lockScroll(locked: boolean) {
       body.style.width = "";
       html.style.overflow = "";
       body.style.overflow = "";
-      window.scrollTo(0, n);
+      window.scrollTo(0, Number(y));
       delete body.dataset.bwScrollY;
     }
     html.classList.remove("bm-noScroll");
@@ -99,11 +85,9 @@ function lockScroll(locked: boolean) {
   const scrollY = window.scrollY || 0;
   body.dataset.bwScrollY = String(scrollY);
 
-  // klasy masz już używane w projekcie (np. drawer w nav) :contentReference[oaicite:5]{index=5}
   html.classList.add("bm-noScroll");
   body.classList.add("bm-noScroll");
 
-  // twardy lock (działa wszędzie)
   body.style.position = "fixed";
   body.style.top = `-${scrollY}px`;
   body.style.left = "0";
@@ -120,10 +104,10 @@ export default function BookingLauncher({
   stickyCtaLabel = "Confirm booking",
   confirmSelector,
   forceStickyCta = false,
-}: BookingLauncherProps) {
-  const reduce = useReducedMotion();
-  const isDesktop = useMediaQuery(`(min-width: ${desktopBp}px)`);
-  const { vh } = useViewportPx();
+}: Props) {
+  const reduce = usePrefersReducedMotionSSR();
+  const isDesktop = useMedia(`(min-width: ${desktopBp}px)`);
+  const vh = useViewportH();
 
   const [open, setOpen] = useState(false);
   const [snap, setSnap] = useState<Snap>(initialSnap);
@@ -131,119 +115,59 @@ export default function BookingLauncher({
   const sheetRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
-  // motion values
   const y = useMotionValue(0);
   const x = useMotionValue(0);
 
-  // snap math (sheet ma 100vh, a widoczne snapy to 40% i 92% ekranu)
   const snapY = useMemo(() => {
-    const full = Math.round(vh * (1 - 0.92)); // 8% od góry
-    const mid = Math.round(vh * (1 - 0.40));  // 60% od góry
-    const closed = Math.round(vh + 24);       // poza ekran
+    const full = Math.round(vh * (1 - 0.92)); // 8% top
+    const mid = Math.round(vh * (1 - 0.40));  // 60% top
+    const closed = Math.round(vh + 24);
     return { full, mid, closed };
   }, [vh]);
 
-  // drawer math
-  const drawer = useMemo(() => {
-    const w = 480;
-    const closed = w + 40;
-    return { w, closed };
-  }, []);
+  const drawer = useMemo(() => ({ w: 480, closed: 520 }), []);
 
-  // scale content w desktop drawer (bez dotykania klas w środku)
-  const contentScale = useMemo(() => {
-    if (!isDesktop) return 1;
-    // BookOnline w tym demie celuje w ~720px szerokości :contentReference[oaicite:6]{index=6}
-    const base = 720;
-    const available = drawer.w - 24;
-    return Math.min(1, Math.max(0.55, available / base));
-  }, [isDesktop, drawer.w]);
-
-  // open/close helpers
-  const close = () => {
-    setOpen(false);
-  };
-  const openIt = () => {
-    setSnap(initialSnap);
-    setOpen(true);
-  };
-
-  // scroll lock
   useEffect(() => {
-    lockScroll(open);
+    if (!open) return;
+    lockScroll(true);
     return () => lockScroll(false);
   }, [open]);
 
-  // ESC closes
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (!open) return;
-      if (e.key === "Escape") close();
+      if (e.key === "Escape") setOpen(false);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  // set initial positions on open + snap changes
   useEffect(() => {
     if (!open) return;
-
     if (isDesktop) {
       x.set(0);
       y.set(0);
-      requestAnimationFrame(() => sheetRef.current?.focus());
-      return;
+    } else {
+      y.set(snap === "full" ? snapY.full : snapY.mid);
     }
-
-    const target = snap === "full" ? snapY.full : snapY.mid;
-    y.set(target);
     requestAnimationFrame(() => sheetRef.current?.focus());
-  }, [open, snap, isDesktop, snapY.full, snapY.mid, x, y]);
+  }, [open, isDesktop, snap, snapY.full, snapY.mid, x, y]);
 
-  // overlay click
-  const onOverlay = () => close();
+  const sheetTween = reduce
+    ? { type: "tween" as const, duration: 0.22 }
+    : { type: "spring" as const, stiffness: 380, damping: 36, mass: 0.9 };
 
-  // mobile: drag end -> snap/close
-  const onMobileDragEnd = (_: any, info: { velocity: { y: number }; offset: { y: number } }) => {
-    const cur = y.get();
+  const layoutId = reduce ? undefined : "booking-sheet";
 
-    const goingDownFast = info.velocity.y > 900;
-    const pastMid = cur > (snapY.mid + 40);
-
-    if (goingDownFast && cur > snapY.mid) return close();
-    if (cur > (snapY.mid + (snapY.closed - snapY.mid) * 0.45)) return close();
-
-    // snap to nearest (full vs mid)
-    const distFull = Math.abs(cur - snapY.full);
-    const distMid = Math.abs(cur - snapY.mid);
-    const next: Snap = distFull <= distMid ? "full" : "mid";
-    setSnap(next);
-
-    // animate to exact snap (tween if reduced)
-    const target = next === "full" ? snapY.full : snapY.mid;
-    y.set(target);
-  };
-
-  // desktop: drag right to close
-  const onDesktopDragEnd = (_: any, info: { velocity: { x: number } }) => {
-    const cur = x.get();
-    const fling = info.velocity.x > 900;
-    if (fling || cur > drawer.w * 0.45) return close();
-    x.set(0);
-  };
-
-  // sticky CTA detection (jeśli BookOnline ma własny footer – nie dokładamy dubla)
-  const [hasInternalFooter, setHasInternalFooter] = useState<boolean>(false);
+  const [hasInternalFooter, setHasInternalFooter] = useState(false);
   useEffect(() => {
     if (!open) return;
-    const el = contentRef.current;
-    if (!el) return;
-
-    // wykrywamy “wewnętrzny” footer, np. BookingWidget ma .bmw__footerLite :contentReference[oaicite:7]{index=7}
+    const root = contentRef.current;
+    if (!root) return;
     const found =
-      !!el.querySelector(".bmw__footerLite") ||
-      !!el.querySelector("[aria-label='Confirm booking']") ||
-      !!el.querySelector(".bmw__btnPrimary"); // :contentReference[oaicite:8]{index=8}
+      !!root.querySelector(".bmw__footerLite") ||
+      !!root.querySelector(".bmw__btnPrimary") ||
+      !!root.querySelector("button[type='submit']");
     setHasInternalFooter(found);
   }, [open]);
 
@@ -253,71 +177,68 @@ export default function BookingLauncher({
     const root = contentRef.current;
     if (!root) return;
 
-    // 1) explicit selector
     if (confirmSelector) {
-      const btn = root.querySelector(confirmSelector) as HTMLElement | null;
-      if (btn) {
-        btn.click();
-        return;
-      }
+      const el = root.querySelector(confirmSelector) as HTMLElement | null;
+      if (el) return el.click();
     }
-
-    // 2) best guess: primary / submit-ish
-    const candidates = [
-      "button[type='submit']",
-      "input[type='submit']",
-      "button[aria-label*='Confirm']",
-      "button[aria-label*='Continue']",
-      "button",
-    ];
-    for (const sel of candidates) {
-      const el = root.querySelector(sel) as HTMLElement | null;
-      if (el) {
-        el.click();
-        return;
-      }
-    }
+    const el =
+      (root.querySelector("button[type='submit']") as HTMLElement | null) ||
+      (root.querySelector(".bmw__btnPrimary") as HTMLElement | null) ||
+      (root.querySelector("button") as HTMLElement | null);
+    el?.click();
   };
 
-  // transitions: reduced motion = simple tween
-  const overlayMotion = reduce
-    ? { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.18 } }
-    : { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.22 } };
+  const onMobileDragEnd = (_: any, info: { velocity: { y: number } }) => {
+    const cur = y.get();
+    const fastDown = info.velocity.y > 900;
 
-  const sheetTween = reduce ? { type: "tween" as const, duration: 0.22 } : { type: "spring" as const, stiffness: 380, damping: 36, mass: 0.9 };
+    if (fastDown && cur > snapY.mid) return setOpen(false);
+    if (cur > snapY.mid + (snapY.closed - snapY.mid) * 0.45) return setOpen(false);
 
-  // layoutId only when not reduced (no morph when reduced)
-  const LAYOUT_ID = !reduce ? "booking-sheet" : undefined;
+    const distFull = Math.abs(cur - snapY.full);
+    const distMid = Math.abs(cur - snapY.mid);
+    setSnap(distFull <= distMid ? "full" : "mid");
+  };
+
+  const onDesktopDragEnd = (_: any, info: { velocity: { x: number } }) => {
+    const cur = x.get();
+    const fastRight = info.velocity.x > 900;
+    if (fastRight || cur > drawer.w * 0.45) return setOpen(false);
+    x.set(0);
+  };
 
   return (
-    <LayoutGroup>
-      {/* CTA (morph source) */}
-      {!open ? (
+    <>
+      {/* ✅ To jest trigger na PC (i mobile też) */}
+      {!open && (
         <motion.button
           type="button"
           className="bw-launcher__cta"
-          layoutId={LAYOUT_ID}
-          onClick={openIt}
+          layoutId={layoutId}
+          onClick={() => {
+            setSnap(initialSnap);
+            setOpen(true);
+          }}
           whileTap={reduce ? undefined : { scale: 0.985 }}
         >
           <span className="bw-launcher__ctaTxt">{ctaLabel}</span>
           <span className="bw-launcher__ctaIcon" aria-hidden="true">→</span>
         </motion.button>
-      ) : null}
+      )}
 
       <AnimatePresence>
-        {open ? (
+        {open && (
           <div className="bw-launcher__portal" role="presentation">
-            {/* overlay */}
             <motion.button
               type="button"
               className="bw-launcher__overlay"
               aria-label="Close booking"
-              onClick={onOverlay}
-              {...overlayMotion}
+              onClick={() => setOpen(false)}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, transition: { duration: 0.18 } }}
+              exit={{ opacity: 0, transition: { duration: 0.18 } }}
             />
 
-            {/* sheet/drawer (morph target) */}
             <motion.div
               ref={sheetRef}
               tabIndex={-1}
@@ -325,9 +246,15 @@ export default function BookingLauncher({
               aria-modal="true"
               aria-label="Booking"
               className={`bw-launcher__sheet ${isDesktop ? "is-desktop" : "is-mobile"}`}
-              layoutId={LAYOUT_ID}
+              layoutId={layoutId}
               style={isDesktop ? { x } : { y }}
-              initial={reduce ? (isDesktop ? { x: drawer.closed, opacity: 0 } : { y: snapY.closed, opacity: 0 }) : false}
+              initial={
+                reduce
+                  ? isDesktop
+                    ? { x: drawer.closed, opacity: 0 }
+                    : { y: snapY.closed, opacity: 0 }
+                  : false
+              }
               animate={
                 reduce
                   ? isDesktop
@@ -349,49 +276,35 @@ export default function BookingLauncher({
                 reduce
                   ? undefined
                   : isDesktop
-                  ? { left: 0, right: drawer.closed }
-                  : { top: snapY.full, bottom: snapY.closed }
+                    ? { left: 0, right: drawer.closed }
+                    : { top: snapY.full, bottom: snapY.closed }
               }
               onDragEnd={reduce ? undefined : isDesktop ? onDesktopDragEnd : onMobileDragEnd}
             >
-              {/* top chrome */}
               <div className="bw-launcher__chrome">
                 {!isDesktop ? <div className="bw-launcher__handle" aria-hidden="true" /> : null}
                 <div className="bw-launcher__title">Booking</div>
-                <button type="button" className="bw-launcher__close" onClick={close} aria-label="Close">
+                <button type="button" className="bw-launcher__close" onClick={() => setOpen(false)} aria-label="Close">
                   ×
                 </button>
               </div>
 
-              {/* body */}
               <div className="bw-launcher__body" ref={contentRef}>
-                <div
-                  className="bw-launcher__scale"
-                  style={
-                    {
-                      ["--bw-scale" as any]: String(contentScale),
-                    } as React.CSSProperties
-                  }
-                >
-                  <div className="bw-launcher__scaleInner">
-                    {/* ✅ TU: bez zmian w środku */}
-                    <BookOnline />
-                  </div>
-                </div>
+                {/* ✅ BookOnline bez zmian */}
+                <BookOnline />
               </div>
 
-              {/* sticky footer CTA (opcjonalnie, auto-hide jeśli BookOnline ma swój footer) */}
-              {shouldShowSticky ? (
+              {shouldShowSticky && (
                 <div className="bw-launcher__sticky">
                   <button type="button" className="bw-launcher__stickyBtn" onClick={triggerConfirm}>
                     {stickyCtaLabel}
                   </button>
                 </div>
-              ) : null}
+              )}
             </motion.div>
           </div>
-        ) : null}
+        )}
       </AnimatePresence>
-    </LayoutGroup>
+    </>
   );
 }
