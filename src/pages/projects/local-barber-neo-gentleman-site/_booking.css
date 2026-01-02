@@ -883,23 +883,38 @@
   grid-template-rows: auto 1fr auto;
 }
 
-/* mobile bottom sheet */
+/* mobile modal (no bottom sheet) */
 .bw-launcher__sheet.is-mobile{
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 100svh;
-  border-radius: 24px 24px 0 0;
+  left: 50%;
+  top: 50%;
+  right: auto;
+  bottom: auto;
+
+  transform: translate(-50%, -50%);
+  width: min(560px, calc(100vw - 18px));
+  height: min(92svh, 920px);
+
+  border-radius: 22px;
 }
 
+
 /* desktop right drawer */
+/* desktop centered modal (keep mobile bottom sheet unchanged) */
+/* desktop centered modal */
 .bw-launcher__sheet.is-desktop{
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: min(480px, 94vw);
-  border-radius: 24px 0 0 24px;
+  left: 50%;
+  top: 50%;
+  right: auto;
+  bottom: auto;
+
+  transform: translate(-50%, -50%);
+  width: min(560px, calc(100vw - 44px));
+  height: min(88vh, 860px);
+
+  border-radius: 24px;
 }
+
+
 
 /* top chrome */
 .bw-launcher__chrome{
@@ -926,8 +941,9 @@
 .bw-launcher__title{
   font-weight: 900;
   color: rgba(255,255,255,0.90);
-  padding-top: 10px; /* room for handle on mobile */
+  padding-top: 0;
 }
+
 
 .bw-launcher__sheet.is-desktop .bw-launcher__title{
   padding-top: 0;

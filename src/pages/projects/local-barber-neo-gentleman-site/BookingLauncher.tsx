@@ -1,17 +1,12 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion, useMotionValue } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 // ✅ podmień na swój realny komponent
 import BookOnline from "../../../BookingWidget";
 
-
-
-type Snap = "mid" | "full";
-
 type Props = {
   ctaLabel?: string;
   desktopBp?: number;
-  initialSnap?: Snap;
   stickyCtaLabel?: string;
   confirmSelector?: string;
   forceStickyCta?: boolean;
@@ -40,24 +35,6 @@ function useMedia(query: string) {
     return () => m.removeEventListener?.("change", on);
   }, [query]);
   return ok;
-}
-
-function useViewportH() {
-  const [vh, setVh] = useState(0);
-  useEffect(() => {
-    const read = () => {
-      const vv = window.visualViewport;
-      setVh(vv?.height ?? window.innerHeight);
-    };
-    read();
-    window.addEventListener("resize", read);
-    window.visualViewport?.addEventListener("resize", read);
-    return () => {
-      window.removeEventListener("resize", read);
-      window.visualViewport?.removeEventListener("resize", read);
-    };
-  }, []);
-  return vh || 800;
 }
 
 function lockScroll(on: boolean) {
@@ -100,32 +77,17 @@ function lockScroll(on: boolean) {
 export default function BookingLauncher({
   ctaLabel = "Book online",
   desktopBp = 900,
-  initialSnap = "full",
   stickyCtaLabel = "Confirm booking",
   confirmSelector,
   forceStickyCta = false,
 }: Props) {
   const reduce = usePrefersReducedMotionSSR();
   const isDesktop = useMedia(`(min-width: ${desktopBp}px)`);
-  const vh = useViewportH();
 
   const [open, setOpen] = useState(false);
-  const [snap, setSnap] = useState<Snap>(initialSnap);
 
   const sheetRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
-
-  const y = useMotionValue(0);
-  const x = useMotionValue(0);
-
-  const snapY = useMemo(() => {
-    const full = Math.round(vh * (1 - 0.92)); // 8% top
-    const mid = Math.round(vh * (1 - 0.40));  // 60% top
-    const closed = Math.round(vh + 24);
-    return { full, mid, closed };
-  }, [vh]);
-
-  const drawer = useMemo(() => ({ w: 480, closed: 520 }), []);
 
   useEffect(() => {
     if (!open) return;
@@ -144,19 +106,14 @@ export default function BookingLauncher({
 
   useEffect(() => {
     if (!open) return;
-    if (isDesktop) {
-      x.set(0);
-      y.set(0);
-    } else {
-      y.set(snap === "full" ? snapY.full : snapY.mid);
-    }
     requestAnimationFrame(() => sheetRef.current?.focus());
-  }, [open, isDesktop, snap, snapY.full, snapY.mid, x, y]);
+  }, [open]);
 
   const sheetTween = reduce
-    ? { type: "tween" as const, duration: 0.22 }
-    : { type: "spring" as const, stiffness: 380, damping: 36, mass: 0.9 };
+    ? { type: "tween" as const, duration: 0.18 }
+    : { type: "spring" as const, stiffness: 420, damping: 38, mass: 0.9 };
 
+  // ✅ morph (shared layout) zostaje
   const layoutId = reduce ? undefined : "booking-sheet";
 
   const [hasInternalFooter, setHasInternalFooter] = useState(false);
@@ -188,41 +145,21 @@ export default function BookingLauncher({
     el?.click();
   };
 
-  const onMobileDragEnd = (_: any, info: { velocity: { y: number } }) => {
-    const cur = y.get();
-    const fastDown = info.velocity.y > 900;
-
-    if (fastDown && cur > snapY.mid) return setOpen(false);
-    if (cur > snapY.mid + (snapY.closed - snapY.mid) * 0.45) return setOpen(false);
-
-    const distFull = Math.abs(cur - snapY.full);
-    const distMid = Math.abs(cur - snapY.mid);
-    setSnap(distFull <= distMid ? "full" : "mid");
-  };
-
-  const onDesktopDragEnd = (_: any, info: { velocity: { x: number } }) => {
-    const cur = x.get();
-    const fastRight = info.velocity.x > 900;
-    if (fastRight || cur > drawer.w * 0.45) return setOpen(false);
-    x.set(0);
-  };
-
   return (
     <>
-      {/* ✅ To jest trigger na PC (i mobile też) */}
+      {/* ✅ Trigger (morph source) */}
       {!open && (
         <motion.button
           type="button"
           className="bw-launcher__cta"
           layoutId={layoutId}
-          onClick={() => {
-            setSnap(initialSnap);
-            setOpen(true);
-          }}
+          onClick={() => setOpen(true)}
           whileTap={reduce ? undefined : { scale: 0.985 }}
         >
           <span className="bw-launcher__ctaTxt">{ctaLabel}</span>
-          <span className="bw-launcher__ctaIcon" aria-hidden="true">→</span>
+          <span className="bw-launcher__ctaIcon" aria-hidden="true">
+            →
+          </span>
         </motion.button>
       )}
 
@@ -247,44 +184,18 @@ export default function BookingLauncher({
               aria-label="Booking"
               className={`bw-launcher__sheet ${isDesktop ? "is-desktop" : "is-mobile"}`}
               layoutId={layoutId}
-              style={isDesktop ? { x } : { y }}
-              initial={
-                reduce
-                  ? isDesktop
-                    ? { x: drawer.closed, opacity: 0 }
-                    : { y: snapY.closed, opacity: 0 }
-                  : false
-              }
-              animate={
-                reduce
-                  ? isDesktop
-                    ? { x: 0, opacity: 1, transition: sheetTween }
-                    : { y: snap === "full" ? snapY.full : snapY.mid, opacity: 1, transition: sheetTween }
-                  : undefined
-              }
-              exit={
-                reduce
-                  ? isDesktop
-                    ? { x: drawer.closed, opacity: 0, transition: sheetTween }
-                    : { y: snapY.closed, opacity: 0, transition: sheetTween }
-                  : undefined
-              }
-              drag={reduce ? false : isDesktop ? "x" : "y"}
-              dragElastic={reduce ? 0 : 0.08}
-              dragMomentum={false}
-              dragConstraints={
-                reduce
-                  ? undefined
-                  : isDesktop
-                    ? { left: 0, right: drawer.closed }
-                    : { top: snapY.full, bottom: snapY.closed }
-              }
-              onDragEnd={reduce ? undefined : isDesktop ? onDesktopDragEnd : onMobileDragEnd}
+              initial={reduce ? { opacity: 0, scale: 0.985 } : false}
+              animate={reduce ? { opacity: 1, scale: 1, transition: sheetTween } : undefined}
+              exit={reduce ? { opacity: 0, scale: 0.985, transition: sheetTween } : undefined}
             >
               <div className="bw-launcher__chrome">
-                {!isDesktop ? <div className="bw-launcher__handle" aria-hidden="true" /> : null}
                 <div className="bw-launcher__title">Booking</div>
-                <button type="button" className="bw-launcher__close" onClick={() => setOpen(false)} aria-label="Close">
+                <button
+                  type="button"
+                  className="bw-launcher__close"
+                  onClick={() => setOpen(false)}
+                  aria-label="Close"
+                >
                   ×
                 </button>
               </div>
