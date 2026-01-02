@@ -70,9 +70,7 @@
   color: rgba(255,255,255,0.55);
 }
 
-.bmw__topbarRow2 {
-  margin-top: 8px;
-}
+.bmw__topbarRow2 { margin-top: 8px; }
 
 .bmw__title {
   margin: 0;
@@ -124,10 +122,12 @@
 .bmw__content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.10); border-radius: 999px; border: 3px solid transparent; background-clip: content-box; }
 .bmw__content::-webkit-scrollbar-track { background: transparent; }
 
-/* ✅ Step-specific tightening for calendar */
+/* ✅ Step2: consistent gutters + centered calendar box */
 .bmw__content.is-step2 {
-  overflow: hidden; /* calendar should fit, not scroll content */
+  overflow: hidden;          /* calendar should fit, not scroll content */
   display: grid;
+  padding-inline: clamp(12px, 3.2vw, 18px); /* equal left/right space on all devices */
+  padding-block: 14px;
 }
 
 .bmw__block + .bmw__block { margin-top: 18px; }
@@ -150,10 +150,7 @@
    STEP 1
    ========================= */
 
-.bmw__panelStep1 {
-  display: grid;
-  gap: 18px;
-}
+.bmw__panelStep1 { display: grid; gap: 18px; }
 
 /* service list */
 .bmw__serviceList { display: grid; gap: 12px; }
@@ -357,9 +354,18 @@
    ========================= */
 
 .bmw__panelLite { display: grid; gap: 14px; }
-.bmw__panelMonth { min-height: 0; grid-template-rows: auto 1fr; }
+
+/* ✅ make month panel center its content */
+.bmw__panelMonth {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  justify-items: center; /* center calendar block */
+}
 
 .bmw__monthTop {
+  width: 100%;
+  max-width: 640px; /* keep header aligned with calendar width */
   display: grid;
   grid-template-columns: 52px 1fr 52px;
   align-items: center;
@@ -390,12 +396,18 @@
 .bmw__iconBtn:active { transform: scale(0.98); }
 .bmw__iconBtn:focus-visible { outline: 2px solid rgba(47,134,255,0.75); outline-offset: 2px; }
 
+/* ✅ calendar always centered + slightly smaller than content area
+   with equal left/right gap */
 .bmw__calendarFull {
   width: 100%;
-  max-width: 100%;
+  max-width: min(640px, 100%);
+  margin-inline: auto;
+
   border-radius: 20px;
   border: 1px solid rgba(255,255,255,0.10);
   background: rgba(255,255,255,0.02);
+
+  /* equal inner padding on both sides */
   padding: 12px;
 
   min-height: 0;
@@ -403,12 +415,18 @@
   align-content: start;
 }
 
-.bmw__calStack { display: grid; gap: 10px; min-height: 0; }
+.bmw__calStack {
+  width: 100%;
+  max-width: 640px;
+  display: grid;
+  gap: 10px;
+  min-height: 0;
+}
 
 /* ✅ single source of truth for spacing */
 .bmw__calendarFull {
   --cal-gap: 8px;
-  --cal-pad-x: 0px;
+  --cal-pad-x: 2px; /* tiny symmetrical inset so grid never kisses edges */
 }
 
 .bmw__weekRow {
@@ -677,10 +695,16 @@
   .bmw__topbar { padding: 14px 14px 10px; }
   .bmw__content { padding: 12px 12px; }
 
-  /* ✅ Step2: tighter typography + tighter buttons */
-  .bmw__content.is-step2 { padding: 10px 10px; }
+  /* ✅ Step2: equal gutters */
+  .bmw__content.is-step2 {
+    padding-inline: 12px;
+    padding-block: 12px;
+  }
+
+  .bmw__panelMonth { justify-items: center; }
 
   .bmw__monthTop {
+    max-width: 560px;
     grid-template-columns: 44px 1fr 44px;
     padding: 8px 0 0;
   }
@@ -693,13 +717,16 @@
     font-size: 18px;
   }
 
+  /* ✅ calendar: smaller + centered */
   .bmw__calendarFull {
+    max-width: min(560px, 100%);
+    margin-inline: auto;
     padding: 10px;
-    border-radius: 18px;
 
-    /* ✅ smaller gaps to avoid clipping */
+    /* smaller gaps to avoid clipping */
     --cal-gap: 6px;
-    --cal-pad-x: 0px;
+    --cal-pad-x: 2px;
+    border-radius: 18px;
   }
 
   .bmw__weekDay {
@@ -738,6 +765,10 @@
   .bmw__serviceName { font-size: 15px; }
   .bmw__badge { display: none; }
 
-  .bmw__calendarFull { --cal-gap: 5px; padding: 8px; }
+  .bmw__calendarFull {
+    --cal-gap: 5px;
+    --cal-pad-x: 2px;
+    padding: 8px;
+  }
   .bmw__dayNum { font-size: 14px; }
 }
