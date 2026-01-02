@@ -113,6 +113,9 @@
   transform: scale(calc(1 - (var(--bm-svc-flash) * .01)));
   transition: transform .14s ease, filter .14s ease;
   filter: saturate(.98) contrast(1.06);
+
+  /* SWIPE support (only change): allow horizontal gesture, keep vertical scroll */
+  touch-action: pan-y;
 }
 
 .bm-circle::after{

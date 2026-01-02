@@ -153,6 +153,37 @@ const { id = "services" } = Astro.props;
       prev?.addEventListener("click", () => step(-1));
       next?.addEventListener("click", () => step(1));
 
+      // --- SWIPE (only change): swipe on the circle ---
+      let sx = 0;
+      let dx = 0;
+      let dragging = false;
+
+      circleEl?.addEventListener("pointerdown", (e) => {
+        dragging = true;
+        sx = e.clientX;
+        dx = 0;
+        circleEl.setPointerCapture?.(e.pointerId);
+      });
+
+      circleEl?.addEventListener("pointermove", (e) => {
+        if (!dragging) return;
+        dx = e.clientX - sx;
+      });
+
+      function endSwipe() {
+        if (!dragging) return;
+        dragging = false;
+
+        // threshold: small enough to feel snappy, big enough to avoid accidental scroll
+        if (Math.abs(dx) > 34) {
+          step(dx > 0 ? -1 : 1); // swipe right = previous, swipe left = next
+        }
+      }
+
+      circleEl?.addEventListener("pointerup", endSwipe);
+      circleEl?.addEventListener("pointercancel", endSwipe);
+      // --- end swipe ---
+
       render(i);
     })();
   </script>
