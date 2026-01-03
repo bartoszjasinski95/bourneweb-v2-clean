@@ -1,8 +1,10 @@
 /* ===== PRICES & SERVICES ===== */
 
 .bm-services{
-  /* Local var (flash only inside this section) */
   --bm-svc-flash: 0;
+
+  /* ✅ shared axis width for carousel + prices (always centered together) */
+  --bm-services-col: min(760px, 100%);
 
   position: relative;
   background:
@@ -19,61 +21,6 @@
   z-index: 2;
 }
 
-.bm-services__top{
-  display:flex;
-  justify-content:center;
-  margin-bottom: 18px;
-}
-
-.bm-services__kicker{
-  font-size: var(--bm-kicker-size, 11px);
-  letter-spacing: var(--bm-track-kicker, .28em);
-  text-transform: uppercase;
-  color: var(--bm-kicker-color, rgba(255,255,255,.55));
-}
-
-/* Background words (big, subtle) */
-.bm-services__bg{
-  position:absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events:none;
-  contain: paint;
-}
-
-.bm-services__bgWord{
-  position:absolute;
-  top: 72px;
-  font-family: var(--bm-font-sans, Inter, system-ui, sans-serif);
-  font-weight: 800;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.10);
-  font-size: clamp(44px, 7.8vw, 112px);
-  user-select:none;
-  white-space: nowrap;
-
-  filter: none;
-
-  opacity: calc(.9 - (var(--bm-svc-flash) * .3));
-  transition: opacity .14s ease;
-
-  will-change: opacity, transform;
-  transform: translateZ(0);
-}
-
-@media (min-width: 900px){
-  .bm-services__bgWord{ filter: blur(.2px); }
-}
-
-.bm-leftWord{ left: -2vw; transform: translateY(10px) translateZ(0); opacity: .14; }
-.bm-centerWord{
-  left: 50%;
-  transform: translateX(-50%) translateZ(0);
-  color: rgba(255,255,255,.16);
-}
-.bm-rightWord{ right: -2vw; transform: translateY(10px) translateZ(0); opacity: .14; }
-
 /* Stage: circle + arrows */
 .bm-services__stage{
   margin-top: 8px;
@@ -82,7 +29,7 @@
   align-items:center;
   gap: 22px;
   justify-items:center;
-  padding: 18px 0 22px;
+  padding: 18px 0 10px;
 }
 
 .bm-arrow{
@@ -145,6 +92,109 @@
 }
 
 /* =========================
+   Category carousel overlay ON circle
+   Active always centered (infinite loop handled in JS)
+   ========================= */
+
+.bm-services__caps{
+  position: relative;
+  z-index: 6;
+
+  display: flex;
+  justify-content: center;
+
+  /* overlay onto circle */
+  margin-top: -86px;
+  margin-bottom: 12px;
+
+  pointer-events: auto;
+  user-select: none;
+}
+
+.bm-services__capsViewport{
+  width: var(--bm-services-col);
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+
+  /* readability layer */
+  padding: 10px 0;
+  background: radial-gradient(60% 140% at 50% 50%, rgba(0,0,0,.35), transparent 70%);
+
+  /* keep page scroll natural */
+  touch-action: pan-y;
+}
+
+.bm-services__capsViewport::before,
+.bm-services__capsViewport::after{
+  content:"";
+  position:absolute;
+  top: 0;
+  bottom: 0;
+  width: clamp(18px, 2.6vw, 30px);
+  pointer-events:none;
+}
+.bm-services__capsViewport::before{
+  left: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,.38), transparent);
+}
+.bm-services__capsViewport::after{
+  right: 0;
+  background: linear-gradient(270deg, rgba(0,0,0,.38), transparent);
+}
+
+.bm-services__capsTrack{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: clamp(18px, 3vw, 42px);
+
+  will-change: transform;
+  transform: translate3d(0,0,0);
+  transition: transform 260ms cubic-bezier(.2,.8,.2,1);
+}
+
+.bm-services__capItem{
+  flex: 0 0 auto;
+  background: transparent;
+  border: 0;
+  padding: 0;
+
+  font-family: var(--bm-font-sans, Inter, system-ui, sans-serif);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  line-height: 1;
+  white-space: nowrap;
+
+  font-size: clamp(22px, 5.2vw, 64px);
+  color: rgba(255,255,255,.58);
+
+  text-shadow:
+    0 2px 0 rgba(0,0,0,.65),
+    0 10px 30px rgba(0,0,0,.75),
+    0 0 24px rgba(199,162,106,.18);
+
+  opacity: .85;
+  cursor: pointer;
+  transition: opacity 200ms ease, transform 200ms ease, color 200ms ease;
+}
+
+.bm-services__capItem:hover{
+  opacity: 1;
+}
+
+.bm-services__capItem.is-active{
+  color: rgba(255,255,255,.95);
+  opacity: 1;
+  transform: scale(1.02);
+  text-shadow:
+    0 2px 0 rgba(0,0,0,.70),
+    0 14px 38px rgba(0,0,0,.85),
+    0 0 36px rgba(199,162,106,.30);
+}
+
+/* =========================
    Bottom layout (One column)
    ========================= */
 
@@ -158,10 +208,10 @@
 }
 
 .bm-services__prices{
-  width: min(760px, 100%);
+  width: var(--bm-services-col);
 }
 
-/* ✅ Social proof card: centered card, LEFT-aligned content */
+/* Social proof card: centered card, LEFT-aligned content */
 .bm-services__mini{
   width: fit-content;
   max-width: min(760px, 100%);
@@ -207,8 +257,6 @@
   font-size: 12px;
   line-height: 1.45;
   text-align: left;
-
-  /* pomaga gridowi nie wariować */
   min-width: 0;
 }
 
@@ -254,7 +302,7 @@
   }
 }
 
-/* Mobile: make it tight, thumb-friendly */
+/* Mobile: tight + thumb-friendly */
 @media (max-width: 640px){
   .bm-services{
     padding: 44px 0 66px;
@@ -264,21 +312,12 @@
     width: min(1200px, calc(100% - 28px));
   }
 
-  .bm-services__bgWord{
-    top: 64px;
-    opacity: calc(.75 - (var(--bm-svc-flash) * .25));
-    filter: none;
-  }
-  .bm-leftWord{ opacity: .10; }
-  .bm-rightWord{ opacity: .10; }
-  .bm-centerWord{ color: rgba(255,255,255,.14); }
-
-  /* Stage becomes single column; arrows float on top of the circle */
+  /* Stage becomes single column; arrows float on the circle */
   .bm-services__stage{
     position: relative;
     grid-template-columns: 1fr;
     gap: 0;
-    padding: 10px 0 14px;
+    padding: 10px 0 10px;
   }
 
   .bm-circle{
@@ -303,7 +342,29 @@
   .bm-arrow--prev{ left: 0; }
   .bm-arrow--next{ right: 0; }
 
-  /* Price rows: remove dots, keep price locked right, allow name wrap */
+  /* Carousel: still overlay, but not too aggressive */
+  .bm-services__caps{
+    margin-top: -58px;
+    margin-bottom: 8px;
+  }
+
+  .bm-services__capsViewport{
+    padding: 8px 0;
+    border-radius: 16px;
+    background: radial-gradient(70% 140% at 50% 50%, rgba(0,0,0,.42), transparent 72%);
+  }
+
+  .bm-services__capsTrack{
+    gap: 18px;
+  }
+
+  .bm-services__capItem{
+    font-size: clamp(14px, 7.2vw, 30px);
+    letter-spacing: .10em;
+    color: rgba(255,255,255,.70);
+  }
+
+  /* Price rows: remove dots, keep price right */
   .bm-priceRow{
     grid-template-columns: 1fr auto;
     gap: 10px;
@@ -325,7 +386,7 @@
     padding-top: 1px;
   }
 
-  /* ✅ FIX: na mobile nie fit-content — daj szerokość i zarezerwuj kolumnę na badge */
+  /* Mini card on mobile (no overlap with badge) */
   .bm-services__mini{
     width: min(760px, 100%);
     max-width: 100%;

@@ -3,14 +3,8 @@ const { id = "services" } = Astro.props;
 ---
 
 <section class="bm-services" id={id} aria-label="Prices & Services">
-  <div class="bm-services__bg" aria-hidden="true">
-    <div class="bm-services__bgWord bm-leftWord" data-bg-left>GROOMING</div>
-    <div class="bm-services__bgWord bm-centerWord" data-bg-center>BARBERING</div>
-    <div class="bm-services__bgWord bm-rightWord" data-bg-right>SPA &amp; MASSAGE</div>
-  </div>
-
   <div class="bm-services__inner">
-    <!-- ✅ Header like GALLERY -->
+    <!-- Header like GALLERY -->
     <header class="bm-gal__head">
       <div>
         <p class="bm-gal__kicker">PRICES &amp; SERVICES.</p>
@@ -30,6 +24,18 @@ const { id = "services" } = Astro.props;
         <span aria-hidden="true">→</span>
       </button>
     </div>
+
+    <!-- ✅ Category carousel (overlay on the circle, active always centered) -->
+    <nav class="bm-services__caps" aria-label="Service categories">
+      <div class="bm-services__capsViewport" data-caps-viewport>
+        <div class="bm-services__capsTrack" data-caps-track>
+          <!-- base 3 (JS will replace with 3x loop clones) -->
+          <button class="bm-services__capItem" type="button" data-caps-item="0">CUTS</button>
+          <button class="bm-services__capItem" type="button" data-caps-item="1">BEARD &amp; SHAVE</button>
+          <button class="bm-services__capItem" type="button" data-caps-item="2">EXTRAS</button>
+        </div>
+      </div>
+    </nav>
 
     <div class="bm-services__bottom">
       <div class="bm-services__prices" aria-label="Service price list">
@@ -55,85 +61,147 @@ const { id = "services" } = Astro.props;
 
       const data = [
         {
-          key: "barbering",
-          left: "GROOMING",
-          center: "BARBERING",
-          right: "SPA & MASSAGE",
+          key: "cuts",
+          label: "CUTS",
           img: "https://images.unsplash.com/photo-1599351431618-3174d19c93a5?auto=format&fit=crop&w=1400&q=80",
           items: [
             ["Men’s haircut", "£22"],
             ["Men’s haircut “Admiral”", "£26"],
-            ["Haircut + beard", "£30"],
             ["Skin fade", "£28"],
+            ["Haircut + beard", "£30"],
             ["Children’s haircut", "£17"],
-            ["Beard care (shape)", "£7"],
-            ["Beard colouring", "£15"],
-            ["Shaving (regular)", "£12"],
+            ["Hair wash + style", "£8"],
             ["Hair treatments", "£7–£15"],
           ],
         },
         {
-          key: "grooming",
-          left: "BARBERING",
-          center: "GROOMING",
-          right: "SPA & MASSAGE",
+          key: "beard_shave",
+          label: "BEARD & SHAVE",
           img: "https://images.unsplash.com/photo-1517832606299-7ae9b720a186?auto=format&fit=crop&w=1400&q=80",
           items: [
+            ["Beard care (shape)", "£7"],
             ["Beard trim", "£14"],
-            ["Hot towel shave", "£18"],
             ["Beard sculpt + line-up", "£16"],
+            ["Beard colouring", "£15"],
+            ["Shaving (regular)", "£12"],
+            ["Hot towel shave", "£18"],
+          ],
+        },
+        {
+          key: "extras",
+          label: "EXTRAS",
+          img: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1400&q=80",
+          items: [
             ["Eyebrows", "£6"],
             ["Nose wax", "£8"],
             ["Face cleanse", "£10"],
             ["Black mask", "£12"],
-            ["Head massage", "£10"],
-            ["Hair wash + style", "£8"],
-          ],
-        },
-        {
-          key: "spa",
-          left: "GROOMING",
-          center: "SPA & MASSAGE",
-          right: "BARBERING",
-          img: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1400&q=80",
-          items: [
-            ["Neck & shoulders (15m)", "£15"],
-            ["Relax massage (30m)", "£28"],
-            ["Full face treatment", "£22"],
             ["Steam towel finish", "£8"],
+            ["Head massage", "£10"],
             ["Scalp detox", "£16"],
-            ["Beard spa ritual", "£20"],
-            ["Premium combo", "£42"],
-            ["Student discount", "–10%"],
-            ["Gift card", "from £25"],
           ],
         },
       ];
 
-      let i = 0;
-
-      const leftEl = root.querySelector("[data-bg-left]");
-      const centerEl = root.querySelector("[data-bg-center]");
-      const rightEl = root.querySelector("[data-bg-right]");
+      // ---- elements
       const circleEl = root.querySelector("[data-svc-circle]");
       const listEl = root.querySelector("[data-svc-list]");
       const prev = root.querySelector("[data-svc-prev]");
       const next = root.querySelector("[data-svc-next]");
+
+      const capsViewport = root.querySelector("[data-caps-viewport]");
+      const capsTrack = root.querySelector("[data-caps-track]");
+
+      // ---- state
+      const N = data.length;
+      const BASE = N;           // middle copy start
+      let i = 0;                // logical index: 0..N-1
+      let pos = BASE + i;       // physical index in duplicated track
 
       function flash() {
         root.style.setProperty("--bm-svc-flash", "1");
         setTimeout(() => root.style.setProperty("--bm-svc-flash", "0"), 140);
       }
 
-      function render(idx) {
-        const d = data[idx];
-        if (leftEl) leftEl.textContent = d.left;
-        if (centerEl) centerEl.textContent = d.center;
-        if (rightEl) rightEl.textContent = d.right;
+      function clamp(n, min, max) {
+        return Math.max(min, Math.min(max, n));
+      }
 
-        if (circleEl) circleEl.setAttribute("aria-label", `Service preview: ${d.center}`);
+      // Build "infinite" caps: 3 copies of the N items (total 3N buttons)
+      function buildCapsLoop() {
+        if (!capsTrack) return;
+
+        const baseBtns = Array.from(capsTrack.querySelectorAll("[data-caps-item]"));
+        if (baseBtns.length !== N) return;
+
+        const clones = [];
+
+        for (let rep = 0; rep < 3; rep++) {
+          for (let k = 0; k < N; k++) {
+            const src = baseBtns[k];
+            const btn = src.cloneNode(true);
+            btn.classList.remove("is-active");
+            btn.setAttribute("aria-current", "false");
+            btn.dataset.capsLogical = String(k);          // logical index
+            btn.dataset.capsPos = String(rep * N + k);    // physical position
+            clones.push(btn);
+          }
+        }
+
+        capsTrack.innerHTML = "";
+        clones.forEach((b) => capsTrack.appendChild(b));
+      }
+
+      function getCapsButtons() {
+        return Array.from(capsTrack?.querySelectorAll("[data-caps-pos]") || []);
+      }
+
+      function setActiveMiddleCopy(logicalIdx) {
+        // active ONLY on the middle copy element: pos = BASE + logical
+        const targetPos = BASE + logicalIdx;
+        const all = getCapsButtons();
+        all.forEach((btn) => {
+          const active = Number(btn.dataset.capsPos) === targetPos;
+          btn.classList.toggle("is-active", active);
+          btn.setAttribute("aria-current", active ? "true" : "false");
+        });
+      }
+
+      function centerCapsByPos(p, smooth = true) {
+        if (!capsViewport || !capsTrack) return;
+        const btn = capsTrack.querySelector(`[data-caps-pos="${p}"]`);
+        if (!btn) return;
+
+        const vpW = capsViewport.clientWidth;
+        const trackW = capsTrack.scrollWidth;
+
+        const itemCenter = btn.offsetLeft + btn.offsetWidth / 2;
+        let tx = vpW / 2 - itemCenter;
+
+        const minTx = vpW - trackW;
+        const maxTx = 0;
+        tx = clamp(tx, minTx, maxTx);
+
+        capsTrack.style.transitionDuration = smooth ? "260ms" : "0ms";
+        capsTrack.style.transform = `translate3d(${tx}px, 0, 0)`;
+      }
+
+      // wrap physical pos back into the middle copy (infinite illusion)
+      function normalizePos() {
+        if (pos < N) {
+          pos += N;
+          centerCapsByPos(pos, false);
+        } else if (pos >= 2 * N) {
+          pos -= N;
+          centerCapsByPos(pos, false);
+        }
+      }
+
+      function render(logicalIdx) {
+        const d = data[logicalIdx];
 
         if (circleEl) {
+          circleEl.setAttribute("aria-label", `Service preview: ${d.label}`);
           circleEl.style.backgroundImage =
             `radial-gradient(700px 520px at 35% 30%, rgba(199,162,106,.18), transparent 60%),
              url("${d.img}")`;
@@ -160,39 +228,57 @@ const { id = "services" } = Astro.props;
             row.appendChild(nameEl);
             row.appendChild(dotsEl);
             row.appendChild(priceEl);
-
             listEl.appendChild(row);
           });
         }
+
+        requestAnimationFrame(() => {
+          setActiveMiddleCopy(logicalIdx);
+          centerCapsByPos(pos, true);
+          setTimeout(normalizePos, 280);
+        });
       }
 
-      function step(dir) {
-        i = (i + dir + data.length) % data.length;
+      function goToLogical(nextLogical) {
+        i = (nextLogical + N) % N;
+        pos = BASE + i; // ✅ always snap to middle copy => perfect neighbors
         flash();
         render(i);
       }
 
+      function step(dir) {
+        pos += dir;
+        i = (i + dir + N) % N;
+        flash();
+        render(i);
+      }
+
+      // init caps loop + listeners
+      buildCapsLoop();
+
+      // click any cap => jump to that category (centered)
+      root.addEventListener("click", (e) => {
+        const btn = e.target?.closest?.("[data-caps-logical]");
+        if (!btn) return;
+        const logical = Number(btn.dataset.capsLogical);
+        if (Number.isNaN(logical)) return;
+        if (logical === i) return;
+        goToLogical(logical);
+      });
+
       prev?.addEventListener("click", () => step(-1));
       next?.addEventListener("click", () => step(1));
 
-      // Swipe: scoped + direction lock + iOS-safety
-      let startX = 0;
-      let startY = 0;
-      let dx = 0;
-      let dy = 0;
-      let dragging = false;
-      let axis = null; // "x" | "y" | null
-
+      // swipe on circle
+      let startX = 0, startY = 0, dx = 0, dy = 0, dragging = false, axis = null;
       const THRESH_LOCK = 8;
       const THRESH_SWIPE = 34;
 
       function begin(x, y) {
         dragging = true;
         axis = null;
-        startX = x;
-        startY = y;
-        dx = 0;
-        dy = 0;
+        startX = x; startY = y;
+        dx = 0; dy = 0;
       }
 
       function move(x, y, ev) {
@@ -206,9 +292,7 @@ const { id = "services" } = Astro.props;
           if (axis === "x") root.classList.add("is-swipeX");
         }
 
-        if (axis === "x") {
-          ev?.preventDefault?.();
-        }
+        if (axis === "x") ev?.preventDefault?.();
       }
 
       function end() {
@@ -219,12 +303,10 @@ const { id = "services" } = Astro.props;
           root.classList.remove("is-swipeX");
           const horiz = Math.abs(dx);
           const vert = Math.abs(dy);
-
           if (horiz > THRESH_SWIPE && horiz > vert * 1.2) {
             step(dx > 0 ? -1 : 1);
           }
         }
-
         axis = null;
       }
 
@@ -233,31 +315,20 @@ const { id = "services" } = Astro.props;
           begin(e.clientX, e.clientY);
           circleEl.setPointerCapture?.(e.pointerId);
         });
-
         circleEl.addEventListener("pointermove", (e) => move(e.clientX, e.clientY, e));
         circleEl.addEventListener("pointerup", end);
         circleEl.addEventListener("pointercancel", end);
         circleEl.addEventListener("lostpointercapture", end);
-
-        if (!("PointerEvent" in window)) {
-          circleEl.addEventListener("touchstart", (e) => {
-            const t = e.touches[0];
-            if (!t) return;
-            begin(t.clientX, t.clientY);
-          }, { passive: true });
-
-          circleEl.addEventListener("touchmove", (e) => {
-            const t = e.touches[0];
-            if (!t) return;
-            move(t.clientX, t.clientY, e);
-          }, { passive: false });
-
-          circleEl.addEventListener("touchend", end, { passive: true });
-          circleEl.addEventListener("touchcancel", end, { passive: true });
-        }
       }
 
-      render(i);
+      // keep centered on resize
+      window.addEventListener("resize", () => {
+        setActiveMiddleCopy(i);
+        centerCapsByPos(pos, false);
+      }, { passive: true });
+
+      // init
+      goToLogical(0);
     })();
   </script>
 </section>
