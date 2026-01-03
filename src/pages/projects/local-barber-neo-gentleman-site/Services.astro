@@ -11,7 +11,7 @@ const { id = "services" } = Astro.props;
 
   <div class="bm-services__inner">
     <div class="bm-services__top">
-      <div class="bm-services__kicker">PRICES & SERVICES</div>
+      <div class="bm-services__kicker">PRICES &amp; SERVICES.</div>
     </div>
 
     <div class="bm-services__stage">
@@ -26,23 +26,20 @@ const { id = "services" } = Astro.props;
       </button>
     </div>
 
+    <!-- ✅ One column: prices first, then social proof under the price list -->
     <div class="bm-services__bottom">
-      <div class="bm-services__copy">
-        <h2 class="bm-services__headline">We know our job<br/>perfectly</h2>
-
-        <div class="bm-services__mini">
-          <div class="bm-mini__badge">+10%</div>
-          <p class="bm-mini__text">
-            Most of our first-time clients book again within 30 days.
-            Clean fades. Sharp beards. Zero drama.
-          </p>
-        </div>
-      </div>
-
       <div class="bm-services__prices" aria-label="Service price list">
         <div class="bm-priceGrid" data-svc-list>
           <!-- JS fills list -->
         </div>
+      </div>
+
+      <div class="bm-services__mini" aria-label="Social proof">
+        <div class="bm-mini__badge">+10%</div>
+        <p class="bm-mini__text">
+          Most of our first-time clients book again within 30 days.
+          Clean fades. Sharp beards. Zero drama.
+        </p>
       </div>
     </div>
   </div>
@@ -111,7 +108,7 @@ const { id = "services" } = Astro.props;
 
       let i = 0;
 
-      // Scoped queries (fix #1)
+      // Scoped queries
       const leftEl = root.querySelector("[data-bg-left]");
       const centerEl = root.querySelector("[data-bg-center]");
       const rightEl = root.querySelector("[data-bg-right]");
@@ -121,7 +118,6 @@ const { id = "services" } = Astro.props;
       const next = root.querySelector("[data-svc-next]");
 
       function flash() {
-        // Local CSS var (fix #4)
         root.style.setProperty("--bm-svc-flash", "1");
         setTimeout(() => root.style.setProperty("--bm-svc-flash", "0"), 140);
       }
@@ -132,7 +128,6 @@ const { id = "services" } = Astro.props;
         if (centerEl) centerEl.textContent = d.center;
         if (rightEl) rightEl.textContent = d.right;
 
-        // Better a11y (optional but harmless)
         if (circleEl) circleEl.setAttribute("aria-label", `Service preview: ${d.center}`);
 
         if (circleEl) {
@@ -177,7 +172,7 @@ const { id = "services" } = Astro.props;
       prev?.addEventListener("click", () => step(-1));
       next?.addEventListener("click", () => step(1));
 
-      // Swipe: scoped + direction lock + iOS-safety (fix #2 + #3)
+      // Swipe: scoped + direction lock + iOS-safety
       let startX = 0;
       let startY = 0;
       let dx = 0;
@@ -185,7 +180,7 @@ const { id = "services" } = Astro.props;
       let dragging = false;
       let axis = null; // "x" | "y" | null
 
-      const THRESH_LOCK = 8;  // when we decide axis
+      const THRESH_LOCK = 8;   // when we decide axis
       const THRESH_SWIPE = 34; // when we commit page change
 
       function begin(x, y) {
@@ -208,7 +203,6 @@ const { id = "services" } = Astro.props;
           if (axis === "x") root.classList.add("is-swipeX");
         }
 
-        // If we are swiping horizontally, reduce iOS weirdness
         if (axis === "x") {
           ev?.preventDefault?.();
         }
@@ -223,7 +217,6 @@ const { id = "services" } = Astro.props;
           const horiz = Math.abs(dx);
           const vert = Math.abs(dy);
 
-          // Direction lock: only if really horizontal
           if (horiz > THRESH_SWIPE && horiz > vert * 1.2) {
             step(dx > 0 ? -1 : 1); // swipe right = prev, left = next
           }
@@ -233,7 +226,6 @@ const { id = "services" } = Astro.props;
       }
 
       if (circleEl) {
-        // Pointer events
         circleEl.addEventListener("pointerdown", (e) => {
           begin(e.clientX, e.clientY);
           circleEl.setPointerCapture?.(e.pointerId);
@@ -244,7 +236,6 @@ const { id = "services" } = Astro.props;
         circleEl.addEventListener("pointercancel", end);
         circleEl.addEventListener("lostpointercapture", end);
 
-        // Touch fallback (only if PointerEvent is flaky/missing)
         if (!("PointerEvent" in window)) {
           circleEl.addEventListener("touchstart", (e) => {
             const t = e.touches[0];
