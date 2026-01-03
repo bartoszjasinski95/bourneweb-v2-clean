@@ -38,8 +38,6 @@
   inset: 0;
   z-index: 1;
   pointer-events:none;
-
-  /* perf containment */
   contain: paint;
 }
 
@@ -55,7 +53,6 @@
   user-select:none;
   white-space: nowrap;
 
-  /* perf: avoid heavy blur by default */
   filter: none;
 
   opacity: calc(.9 - (var(--bm-svc-flash) * .3));
@@ -65,11 +62,8 @@
   transform: translateZ(0);
 }
 
-/* subtle blur only on larger screens */
 @media (min-width: 900px){
-  .bm-services__bgWord{
-    filter: blur(.2px);
-  }
+  .bm-services__bgWord{ filter: blur(.2px); }
 }
 
 .bm-leftWord{ left: -2vw; transform: translateY(10px) translateZ(0); opacity: .14; }
@@ -129,19 +123,15 @@
   transition: transform .14s ease, filter .14s ease;
   filter: saturate(.98) contrast(1.06);
 
-  /* swipe friendliness */
   touch-action: pan-y;
   user-select: none;
   cursor: grab;
 
-  /* perf hints */
   will-change: transform;
   transform: translateZ(0);
 }
 
-.bm-services.is-swipeX .bm-circle{
-  cursor: grabbing;
-}
+.bm-services.is-swipeX .bm-circle{ cursor: grabbing; }
 
 .bm-circle::after{
   content:"";
@@ -164,8 +154,6 @@
   grid-template-columns: 1fr;
   gap: clamp(12px, 2.4vw, 18px);
   align-items:start;
-
-  /* keeps content tidy + centered */
   justify-items: center;
 }
 
@@ -173,13 +161,10 @@
   width: min(760px, 100%);
 }
 
-/* ✅ Social proof card: centered card, LEFT-aligned content (desktop + mobile) */
+/* ✅ Social proof card: centered card, LEFT-aligned content */
 .bm-services__mini{
-  /* size to content, but cap it for readability */
   width: fit-content;
   max-width: min(760px, 100%);
-
-  /* center the whole card under prices */
   margin: 14px auto 0;
 
   border: 1px solid rgba(255,255,255,.10);
@@ -189,7 +174,6 @@
 
   padding: 14px 16px;
 
-  /* left-start layout like before */
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 12px;
@@ -198,7 +182,6 @@
   justify-items: start;
   text-align: left;
 
-  /* make sure it doesn't behave like a sticky/side panel */
   position: static;
 }
 
@@ -219,15 +202,14 @@
 
 .bm-mini__text{
   margin: 0;
-
-  /* readable line length */
   max-width: 56ch;
-
   color: rgba(255,255,255,.60);
   font-size: 12px;
   line-height: 1.45;
-
   text-align: left;
+
+  /* pomaga gridowi nie wariować */
+  min-width: 0;
 }
 
 /* Price list */
@@ -313,7 +295,6 @@
     background: rgba(0,0,0,.30);
     border-color: rgba(255,255,255,.12);
 
-    /* perf: remove heavy blur */
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
@@ -329,9 +310,7 @@
     align-items: start;
   }
 
-  .bm-priceRow__dots{
-    display: none;
-  }
+  .bm-priceRow__dots{ display: none; }
 
   .bm-priceRow__name{
     font-size: 10.5px;
@@ -346,15 +325,29 @@
     padding-top: 1px;
   }
 
-  /* ✅ mini: still centered as a card, but left-start content */
+  /* ✅ FIX: na mobile nie fit-content — daj szerokość i zarezerwuj kolumnę na badge */
   .bm-services__mini{
+    width: min(760px, 100%);
+    max-width: 100%;
+    margin: 14px auto 0;
+
     padding: 12px 14px;
-    grid-template-columns: 56px 1fr;
-    gap: 10px;
+
+    display: grid;
+    grid-template-columns: 84px 1fr;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .bm-mini__badge{
+    min-width: 84px;
+    padding: 10px 12px;
   }
 
   .bm-mini__text{
-    max-width: 34ch;
+    max-width: none;
+    overflow-wrap: anywhere;
+    min-width: 0;
   }
 }
 

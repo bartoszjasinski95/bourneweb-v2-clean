@@ -6,13 +6,18 @@ const { id = "services" } = Astro.props;
   <div class="bm-services__bg" aria-hidden="true">
     <div class="bm-services__bgWord bm-leftWord" data-bg-left>GROOMING</div>
     <div class="bm-services__bgWord bm-centerWord" data-bg-center>BARBERING</div>
-    <div class="bm-services__bgWord bm-rightWord" data-bg-right>SPA & MASSAGE</div>
+    <div class="bm-services__bgWord bm-rightWord" data-bg-right>SPA &amp; MASSAGE</div>
   </div>
 
   <div class="bm-services__inner">
-    <div class="bm-services__top">
-      <div class="bm-services__kicker">PRICES &amp; SERVICES.</div>
-    </div>
+    <!-- ✅ Header like GALLERY -->
+    <header class="bm-gal__head">
+      <div>
+        <p class="bm-gal__kicker">PRICES &amp; SERVICES.</p>
+        <h2 class="bm-gal__title">Pick your service</h2>
+        <p class="bm-gal__sub">Swipe the circle or tap arrows — prices update live.</p>
+      </div>
+    </header>
 
     <div class="bm-services__stage">
       <button class="bm-arrow bm-arrow--prev" type="button" aria-label="Previous category" data-svc-prev>
@@ -26,7 +31,6 @@ const { id = "services" } = Astro.props;
       </button>
     </div>
 
-    <!-- ✅ One column: prices first, then social proof under the price list -->
     <div class="bm-services__bottom">
       <div class="bm-services__prices" aria-label="Service price list">
         <div class="bm-priceGrid" data-svc-list>
@@ -34,11 +38,11 @@ const { id = "services" } = Astro.props;
         </div>
       </div>
 
+      <!-- Social proof under prices -->
       <div class="bm-services__mini" aria-label="Social proof">
         <div class="bm-mini__badge">+10%</div>
         <p class="bm-mini__text">
-          Most of our first-time clients book again within 30 days.
-          Clean fades. Sharp beards. Zero drama.
+          Most of our first-time clients book again within 30 days. Clean fades. Sharp beards. Zero drama.
         </p>
       </div>
     </div>
@@ -108,7 +112,6 @@ const { id = "services" } = Astro.props;
 
       let i = 0;
 
-      // Scoped queries
       const leftEl = root.querySelector("[data-bg-left]");
       const centerEl = root.querySelector("[data-bg-center]");
       const rightEl = root.querySelector("[data-bg-right]");
@@ -180,8 +183,8 @@ const { id = "services" } = Astro.props;
       let dragging = false;
       let axis = null; // "x" | "y" | null
 
-      const THRESH_LOCK = 8;   // when we decide axis
-      const THRESH_SWIPE = 34; // when we commit page change
+      const THRESH_LOCK = 8;
+      const THRESH_SWIPE = 34;
 
       function begin(x, y) {
         dragging = true;
@@ -218,7 +221,7 @@ const { id = "services" } = Astro.props;
           const vert = Math.abs(dy);
 
           if (horiz > THRESH_SWIPE && horiz > vert * 1.2) {
-            step(dx > 0 ? -1 : 1); // swipe right = prev, left = next
+            step(dx > 0 ? -1 : 1);
           }
         }
 

@@ -388,3 +388,4 @@
   .bm-galTile, .bm-galCta{ transition:none !important; }
   .bm-galTile__img{ transition:none !important; }
 }
+.bm-services .bm-gal__head{ margin-bottom: 18px; }
